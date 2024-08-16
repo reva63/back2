@@ -2,19 +2,19 @@ import { ParamsDtoInterface } from './dto/paramsDto.interface';
 import { BodyDtoInterface } from './dto/bodyDto.interface';
 import { QueryDtoInterface } from './dto/queryDto.interface';
 
-export interface ControllerInterface {
+export interface ControllerInterface<T> {
     list?(
         params: ParamsDtoInterface,
         query?: QueryDtoInterface,
         body?: BodyDtoInterface,
-    ): Promise<string>;
+    ): Promise<T[]>;
 
-    show?(params: ParamsDtoInterface, body?: BodyDtoInterface): Promise<string>;
+    show?(params: ParamsDtoInterface, body?: BodyDtoInterface): Promise<T>;
 
     store?(
         params: ParamsDtoInterface,
         body: BodyDtoInterface,
-    ): Promise<void | string>;
+    ): Promise<void | T>;
 
     update?(params: ParamsDtoInterface, body: BodyDtoInterface): Promise<void>;
 
