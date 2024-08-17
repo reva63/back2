@@ -1,7 +1,6 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { BusinessModule } from './business/business.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 
 @Module({
     imports: [
@@ -18,17 +17,6 @@ import { DataSource } from 'typeorm';
         BusinessModule,
     ],
     controllers: [],
-    providers: [
-        {
-            provide: 'APP_PIPE',
-            useFactory: () =>
-                new ValidationPipe({
-                    transform: true,
-                    validateCustomDecorators: true,
-                    whitelist: true,
-                    stopAtFirstError: true,
-                }),
-        },
-    ],
+    providers: [],
 })
 export class AppModule {}

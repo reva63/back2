@@ -11,9 +11,6 @@ import {
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 
-const port = process.env.APP_LISTEN_PORT;
-const address = process.env.APP_LISTEN_ADDRESS;
-
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
@@ -29,6 +26,9 @@ async function bootstrap() {
 
     await app.register(fastifyCookie);
 
-    await app.listen(port || 3000, address || '0.0.0.0');
+    await app.listen(
+        process.env.APP_LISTEN_PORT || 3000,
+        process.env.APP_LISTEN_ADDRESS || '0.0.0.0',
+    );
 }
 bootstrap();
