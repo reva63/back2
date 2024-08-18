@@ -27,8 +27,8 @@ async function bootstrap() {
     await app.register(fastifyCookie);
 
     await app.listen(
-        +process.env.APP_LISTEN_PORT! || 3000,
-        process.env.APP_LISTEN_ADDRESS! || '0.0.0.0',
+        process.env.APP_LISTEN_PORT || 3000,
+        process.env.APP_LISTEN_ADDRESS || '0.0.0.0',
     );
 }
 bootstrap();
