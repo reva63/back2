@@ -1,11 +1,8 @@
 import { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { PayloadDtoInterface } from './dto/payloadDto.interface';
 
-export interface ServiceInterface
+export interface WebSocketInterface
     extends OnGatewayConnection,
         OnGatewayDisconnect {
-    sendNotification(
-        topic: string,
-        payload: PayloadDtoInterface,
-    ): Promise<void>;
+    emitNotification(topic: string, payload: PayloadDtoInterface): void;
 }

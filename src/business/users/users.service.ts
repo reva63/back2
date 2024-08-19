@@ -36,15 +36,16 @@ export class UsersSevice implements ServiceInterface<UserResponse> {
     async list(params: GetUsersParamsDto) {
         const users = await this.usersRepository.find();
 
+        // for testing purposes
         const notification_data = {
             title: 'test notification',
             message: 'notification',
         };
-
         this.notificationsService.sendNotification(
             NotificationTopics.Info,
             notification_data,
         );
+        //
 
         return users.map((user) => {
             return {

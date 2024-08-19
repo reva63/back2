@@ -34,9 +34,6 @@ export class Notification implements EntityInterface {
     @Column({ type: 'bigint' })
     update_at: number;
 
-    @Column({ type: 'bigint' })
-    expiration_date: number;
-
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_id' })
     @Index('idx_notification_user_id')

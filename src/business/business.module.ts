@@ -5,6 +5,7 @@ import { ContestsModule } from './contests/contests.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { PostsModule } from './posts/posts.module';
         PostsModule,
         RatingsModule,
         UsersModule,
+        ScheduleModule.forRoot(),
     ],
 })
 export class BusinessModule {}
