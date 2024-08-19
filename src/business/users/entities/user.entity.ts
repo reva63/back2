@@ -2,17 +2,17 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { EntityInterface } from 'src/core/abstract/base/entity.interface';
 import { UserRoles } from '../types/user-roles.enum';
 
-@Entity()
+@Entity('User')
 export class User implements EntityInterface {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, unique: true })
     email: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     password: string;
 
-    @Column()
+    @Column({ type: 'enum', enum: UserRoles })
     role: UserRoles;
 }

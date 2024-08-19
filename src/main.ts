@@ -22,6 +22,7 @@ async function bootstrap() {
 
     app.use(cookieParser());
     app.enableCors({ origin: '*' });
+    app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
     await app.register(fastifyCookie);

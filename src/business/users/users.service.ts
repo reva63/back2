@@ -1,7 +1,7 @@
 import {
-    BadRequestException,
     Injectable,
     NotFoundException,
+    BadRequestException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,12 +15,16 @@ import { CreateUserParamsDto } from './dto/create/createUser.params.dto';
 import { GetUsersParamsDto } from './dto/get/getUsers.params.dto';
 import { GetUserByIdParamsDto } from './dto/get/getUserById.params.dto';
 import { DeleteUserParamsDto } from './dto/delete/deleteUser.params.dto';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationTopics } from '../notifications/types/notificationTopics.enum';
+import { Notification } from '../notifications/entities/notification.entity';
 
 @Injectable()
 export class UsersSevice implements ServiceInterface<UserResponse> {
     constructor(
         @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        private readonly usersRepository: Repository<User>,
+        private readonly notificationsService: NotificationsService,
     ) {}
 
     async store(params: CreateUserParamsDto, body: CreateUserBodyDto) {
@@ -31,6 +35,17 @@ export class UsersSevice implements ServiceInterface<UserResponse> {
 
     async list(params: GetUsersParamsDto) {
         const users = await this.usersRepository.find();
+
+        const notification_data = {
+            title: 'test notification',
+            message: 'notification',
+        };
+
+        this.notificationsService.sendNotification(
+            NotificationTopics.Info,
+            notification_data,
+        );
+
         return users.map((user) => {
             return {
                 id: user.id,
