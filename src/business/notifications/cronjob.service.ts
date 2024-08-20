@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { join } from 'path';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { MailerService } from '@nestjs-modules/mailer';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notification } from './entities/notification.entity';
@@ -12,9 +14,10 @@ export class CronJobService implements CronJobInterface {
     constructor(
         @InjectRepository(Notification)
         private readonly notifRepository: Repository<Notification>,
+        private readonly mailerService: MailerService,
     ) {}
 
-    @Cron(CronExpression.EVERY_30_SECONDS)
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async handleUnseenNotifications() {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -41,9 +44,26 @@ export class CronJobService implements CronJobInterface {
                 },
             );
 
-            notifications.forEach((notification) => {
-                console.log('Updated notifications:', notification.user.email);
-            });
+            try {
+                await Promise.all(
+                    notifications.map((notification) =>
+                        this.mailerService.sendMail({
+                            to: notification.user.email,
+                            subject: 'Оповещение',
+                            template: join(
+                                __dirname,
+                                'templates',
+                                'basic_template',
+                            ),
+                        }),
+                    ),
+                );
+            } catch (e) {
+                throw new HttpException(
+                    `Mailer error: ${JSON.stringify(e)}`,
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                );
+            }
         }
     }
 }

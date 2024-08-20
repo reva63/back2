@@ -21,7 +21,8 @@ export class NotificationsService implements NotificationsInterface {
     ) {}
 
     async sendNotification(topic: string, payload: PayloadDtoInterface) {
-        const user = await this.userRepository.findOneBy({ id: 1 });
+        // in future id will be changed, now it hardcoded
+        const user = await this.userRepository.findOneBy({ id: 2 });
 
         if (!user) {
             throw new Error('User not found!');
