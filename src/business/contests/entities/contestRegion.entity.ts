@@ -13,6 +13,9 @@ export class ContestRegion {
     region: string;
 
     @Column()
+    city: string;
+
+    @Column()
     postalCode: number;
 
     @ManyToOne(() => Contest, (contest) => contest.regions)
