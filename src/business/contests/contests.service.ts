@@ -26,8 +26,9 @@ export class ContestsService implements ServiceInterface<Contest> {
     }
 
     async show(params: GetContestByIdParamsDto): Promise<Contest> {
-        const { id } = params;
-        const contest = await this.contestRepository.findOneBy({ id });
+        const contest = await this.contestRepository.findOneBy({
+            id: params.id,
+        });
         if (!contest) {
             throw new NotFoundException();
         }
@@ -46,18 +47,20 @@ export class ContestsService implements ServiceInterface<Contest> {
         params: UpdateContestParamsDto,
         body: UpdateContestBodyDto,
     ): Promise<boolean> {
-        const { id } = params;
         return Boolean(
-            await this.contestRepository.update({ id }, body).catch((error) => {
-                console.error(error);
-                throw new BadRequestException();
-            }),
+            await this.contestRepository
+                .update({ id: params.id }, body)
+                .catch((error) => {
+                    console.error(error);
+                    throw new BadRequestException();
+                }),
         );
     }
 
     async remove(params: DeleteContestParamsDto): Promise<boolean> {
-        const { id } = params;
-        const contest = await this.contestRepository.findOneBy({ id });
+        const contest = await this.contestRepository.findOneBy({
+            id: params.id,
+        });
         if (!contest) {
             throw new NotFoundException();
         }
