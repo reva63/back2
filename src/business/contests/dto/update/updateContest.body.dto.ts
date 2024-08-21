@@ -1,13 +1,12 @@
-import { Optional } from '@nestjs/common';
-import { IsBoolean } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
 import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
 
 export class UpdateContestBodyDto extends BodyDtoAbstract {
     @IsBoolean()
-    @Optional()
+    @IsOptional()
     areViewersAllowed: boolean;
 
     @IsBoolean()
-    @Optional()
+    @IsOptional()
     isOnline: boolean;
 }
