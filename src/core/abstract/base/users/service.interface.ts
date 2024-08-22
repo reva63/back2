@@ -15,7 +15,7 @@ export interface ServiceInterface<T> {
         body?: BodyDtoInterface,
     ): Promise<T | null>;
 
-    store?(params: ParamsDtoInterface, body: BodyDtoInterface): Promise<T>;
+    store?(body: BodyDtoInterface, params?: ParamsDtoInterface): Promise<T>;
 
     update?(
         params: ParamsDtoInterface,

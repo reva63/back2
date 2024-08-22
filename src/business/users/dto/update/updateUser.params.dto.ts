@@ -1,8 +1,7 @@
 import { IsNotEmpty, IsNumberString } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
+import { ParamsDtoAbstract } from 'src/core/abstract/base/users/dto/paramsDto.abstract';
 
 export class UpdateUserParamsDto extends ParamsDtoAbstract {
-    @IsNumberString()
     @IsNotEmpty()
-    id: number;
+    idOrEmail: string;
 }

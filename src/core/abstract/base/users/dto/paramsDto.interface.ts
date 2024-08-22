@@ -1,3 +1,3 @@
 export interface ParamsDtoInterface {
-    id?: number;
+    idOrEmail?: string;
 }
