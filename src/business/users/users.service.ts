@@ -41,30 +41,29 @@ export class UsersSevice implements ServiceInterface<UserResponse> {
     }
 
     async show(params: GetUserByIdParamsDto) {
-        const { id } = params;
         const user: User = await this.usersRepository.findOneBy({
-            id,
+            id: params.id,
         });
         if (!user) {
             throw new NotFoundException();
         }
 
-        const { email, role } = user;
+        const { id, email, role }: UserResponse = user;
         return { id, email, role } as UserResponse;
     }
 
     async update(params: UpdateUserParamsDto, body: UpdateUserBodyDto) {
-        const { id } = params;
         return Boolean(
-            await this.usersRepository.update({ id }, body).catch(() => {
-                throw new BadRequestException();
-            }),
+            await this.usersRepository
+                .update({ id: params.id }, body)
+                .catch(() => {
+                    throw new BadRequestException();
+                }),
         );
     }
 
     async remove(params: DeleteUserParamsDto) {
-        const { id } = params;
-        const user = await this.usersRepository.findOneBy({ id });
+        const user = await this.usersRepository.findOneBy({ id: params.id });
         if (!user) {
             throw new NotFoundException();
         }
