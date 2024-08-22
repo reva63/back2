@@ -9,7 +9,7 @@ import {
 import { User } from 'src/business/users/entities/user.entity';
 import { EntityInterface } from 'src/core/abstract/base/auth/entity.interface';
 
-@Entity('AuthSessions')
+@Entity('auth_sessions')
 export class AuthSessions implements EntityInterface {
     @PrimaryGeneratedColumn('uuid')
     id: string;

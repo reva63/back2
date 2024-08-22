@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { EntityInterface } from 'src/core/abstract/base/users/entity.interface';
 import { UserRoles } from '../types/user-roles.enum';
 
-@Entity('User')
+@Entity('user')
 export class User implements EntityInterface {
     @PrimaryGeneratedColumn('uuid')
     id: string;
