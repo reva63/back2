@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { EntityInterface } from 'src/core/abstract/base/entity.interface';
 import { UserRoles } from '../types/user-roles.enum';
+import { Application } from 'src/business/applications/entities/application.entity';
 
 @Entity()
 export class User implements EntityInterface {
@@ -15,4 +16,7 @@ export class User implements EntityInterface {
 
     @Column()
     role: UserRoles;
+
+    @OneToMany(() => Application, (application) => application.participant)
+    applications: Application[];
 }
