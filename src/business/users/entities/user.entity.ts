@@ -17,6 +17,6 @@ export class User implements EntityInterface {
     @Column()
     role: UserRoles;
 
-    @OneToMany(() => Application, (application) => application.participant)
+    @OneToMany(() => Application, (application) => application.user)
     applications: Application[];
 }
