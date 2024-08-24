@@ -8,7 +8,7 @@ import {
     Post,
 } from '@nestjs/common';
 import { Contest } from './entities/contest.entity';
-import { ControllerInterface } from 'src/core/abstract/base/controller.interface';
+import { ControllerInterface } from 'src/core/abstract/base/contests/controller.interface';
 import { ContestsService } from './contests.service';
 import { CreateContestParamsDto } from './dto/create/createContest.params.dto';
 import { CreateContestBodyDto } from './dto/create/createContest.body.dto';

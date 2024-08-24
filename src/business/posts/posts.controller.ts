@@ -7,7 +7,7 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
-import { ControllerInterface } from 'src/core/abstract/base/controller.interface';
+import { ControllerInterface } from 'src/core/abstract/base/posts/controller.interface';
 import { Post as BlogPost } from './entities/post.entity';
 import { GetPostsParamsDto } from './dto/get/getPosts.params.dto';
 import { GetPostByIdParamsDto } from './dto/get/getPostById.params.dto';

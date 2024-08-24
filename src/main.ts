@@ -1,15 +1,16 @@
 import { config } from 'dotenv';
 config();
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import * as process from 'node:process';
+import * as cookieParser from 'cookie-parser';
+import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import fastifyCookie from '@fastify/cookie';
-import * as cookieParser from 'cookie-parser';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import {
     FastifyAdapter,
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -20,8 +21,25 @@ async function bootstrap() {
         },
     );
 
+    const fastifyInstance = app.getHttpAdapter().getInstance();
+
+    fastifyInstance.addHook(
+        'onRequest',
+        (request: FastifyRequest, reply: FastifyReply, done: () => void) => {
+            reply.setHeader = function (key, value) {
+                return this.raw.setHeader(key, value);
+            };
+            reply.end = function () {
+                this.raw.end();
+            };
+            request.res = reply;
+            done();
+        },
+    );
+
     app.use(cookieParser());
     app.enableCors({ origin: '*' });
+    app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
     await app.register(fastifyCookie);

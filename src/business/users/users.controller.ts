@@ -7,37 +7,33 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
-import { UsersSevice } from './users.service';
+import { UsersService } from './users.service';
 import { UpdateUserBodyDto } from './dto/update/updateUser.body.dto';
-import { ControllerInterface } from 'src/core/abstract/base/controller.interface';
+import { ControllerInterface } from 'src/core/abstract/base/users/controller.interface';
 import { UserResponse } from './interfaces/user-response.interface';
 import { UpdateUserParamsDto } from './dto/update/updateUser.params.dto';
 import { CreateUserBodyDto } from './dto/create/createUser.body.dto';
 import { GetUsersParamsDto } from './dto/get/getUsers.params.dto';
 import { GetUserByIdParamsDto } from './dto/get/getUserById.params.dto';
-import { CreateUserParamsDto } from './dto/create/createUser.params.dto';
 import { DeleteUserParamsDto } from './dto/delete/deleteUser.params.dto';
 
 @Controller('/users')
 export class UsersController implements ControllerInterface<UserResponse> {
-    constructor(private usersService: UsersSevice) {}
+    constructor(private usersService: UsersService) {}
 
     @Get()
     async list(@Param() params: GetUsersParamsDto) {
         return await this.usersService.list(params);
     }
 
-    @Get('/:id')
+    @Get('/:idOrEmail')
     async show(@Param() params: GetUserByIdParamsDto) {
         return await this.usersService.show(params);
     }
 
     @Post()
-    async store(
-        @Param() params: CreateUserParamsDto,
-        @Body() body: CreateUserBodyDto,
-    ) {
-        return await this.usersService.store(params, body);
+    async store(@Body() body: CreateUserBodyDto) {
+        return await this.usersService.store(body);
     }
 
     @Patch('/:id')
