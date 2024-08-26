@@ -3,9 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './entities/application.entity';
 import { ApplicationsService } from './applications.service';
 import { ApplicationsController } from './applications.controller';
+import { UsersModule } from '../users/users.module';
+import { ContestsModule } from '../contests/contests.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Application])],
+    imports: [
+        UsersModule,
+        ContestsModule,
+        TypeOrmModule.forFeature([Application]),
+    ],
     controllers: [ApplicationsController],
     providers: [ApplicationsService],
     exports: [ApplicationsService],

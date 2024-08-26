@@ -3,7 +3,6 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { ServiceInterface } from 'src/core/abstract/base/service.interface';
 import { Application } from './entities/application.entity';
 import { GetApplicationsParamsDto } from './dto/get/getApplications.params.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,12 +13,13 @@ import { CreateApplicationBodyDto } from './dto/create/createApplication.body.dt
 import { UpdateApplicationParamsDto } from './dto/update/updateApplication.params.dto';
 import { UpdateApplicationBodyDto } from './dto/update/updateApplication.body.dto';
 import { DeleteApplicationParamsDto } from './dto/delete/deleteApplication.params.dto';
+import { ServiceInterface } from 'src/core/abstract/base/applications/service.interface';
 
 @Injectable()
 export class ApplicationsService implements ServiceInterface<Application> {
     constructor(
         @InjectRepository(Application)
-        private applicationsRepository: Repository<Application>,
+        private readonly applicationsRepository: Repository<Application>,
     ) {}
 
     async list(params: GetApplicationsParamsDto): Promise<Application[]> {
@@ -27,17 +27,28 @@ export class ApplicationsService implements ServiceInterface<Application> {
     }
 
     async show(params: GetApplicationByIdParamsDto): Promise<Application> {
-        return await this.applicationsRepository.findOneBy({ id: params.id });
+        const application = await this.applicationsRepository.findOneBy({
+            id: params.id,
+        });
+        if (!application) {
+            throw new NotFoundException();
+        }
+        return application;
     }
 
     async store(
         params: CreateApplicationParamsDto,
         body: CreateApplicationBodyDto,
     ): Promise<Application> {
-        const { contestId, ...data } = body;
-        const application = this.applicationsRepository.create(data);
-        application.contest.id = contestId;
-        return await this.applicationsRepository.save(application);
+        const { contestId, userId, ...data } = body;
+        const application = this.applicationsRepository.create({
+            ...data,
+            contest: { id: contestId },
+            user: { id: userId },
+        });
+        return await this.applicationsRepository.save(application).catch(() => {
+            throw new BadRequestException();
+        });
     }
 
     async update(

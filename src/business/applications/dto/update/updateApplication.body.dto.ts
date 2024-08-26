@@ -1,6 +1,6 @@
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
-import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
 import { ApplicationReviewStatus } from '../../types/applicationReviewStatus.enum';
+import { BodyDtoAbstract } from 'src/core/abstract/base/applications/dto/bodyDto.abstract';
 
 export class UpdateApplicationBodyDto extends BodyDtoAbstract {
     @IsBoolean()

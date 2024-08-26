@@ -1,10 +1,13 @@
-import { IsBoolean, IsNumberString } from 'class-validator';
-import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
+import { IsBoolean, IsNumber, IsUUID } from 'class-validator';
+import { BodyDtoAbstract } from 'src/core/abstract/base/applications/dto/bodyDto.abstract';
 
 export class CreateApplicationBodyDto extends BodyDtoAbstract {
     @IsBoolean()
     isAsParticipant: boolean;
 
-    @IsNumberString()
+    @IsNumber()
     contestId: number;
+
+    @IsUUID()
+    userId: string;
 }

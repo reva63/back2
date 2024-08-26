@@ -3,7 +3,7 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { ServiceInterface } from 'src/core/abstract/base/service.interface';
+import { ServiceInterface } from 'src/core/abstract/base/posts/service.interface';
 import { Post } from './entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

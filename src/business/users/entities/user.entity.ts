@@ -1,20 +1,17 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { EntityInterface } from 'src/core/abstract/base/entity.interface';
+import { EntityInterface } from 'src/core/abstract/base/users/entity.interface';
 import { UserRoles } from '../types/user-roles.enum';
 import { Application } from 'src/business/applications/entities/application.entity';
 
-@Entity()
+@Entity('user')
 export class User implements EntityInterface {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, unique: true })
     email: string;
 
-    @Column()
-    password: string;
-
-    @Column()
+    @Column({ type: 'enum', enum: UserRoles })
     role: UserRoles;
 
     @OneToMany(() => Application, (application) => application.user)

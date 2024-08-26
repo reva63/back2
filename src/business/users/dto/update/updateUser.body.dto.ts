@@ -1,4 +1,4 @@
-import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
+import { BodyDtoAbstract } from 'src/core/abstract/base/users/dto/bodyDto.abstract';
 import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserBodyDto extends BodyDtoAbstract {
@@ -6,8 +6,4 @@ export class UpdateUserBodyDto extends BodyDtoAbstract {
     @IsString()
     @IsOptional()
     email?: string;
-
-    @IsString()
-    @IsOptional()
-    password?: string;
 }

@@ -1,7 +1,7 @@
 import { UserRoles } from '../types/user-roles.enum';
 
 export interface UserResponse {
-    id: number;
+    id: string;
     email: string;
     role: UserRoles;
 }
