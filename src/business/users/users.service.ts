@@ -8,36 +8,35 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateUserBodyDto } from './dto/update/updateUser.body.dto';
 import { ServiceInterface } from 'src/core/abstract/base/users/service.interface';
-import { UserResponse } from './interfaces/user-response.interface';
+import { UserResponse } from './interfaces/userResponse.interface';
 import { UpdateUserParamsDto } from './dto/update/updateUser.params.dto';
 import { CreateUserBodyDto } from './dto/create/createUser.body.dto';
 import { GetUsersParamsDto } from './dto/get/getUsers.params.dto';
 import { GetUserByIdParamsDto } from './dto/get/getUserById.params.dto';
 import { DeleteUserParamsDto } from './dto/delete/deleteUser.params.dto';
+import { Role } from './entities/role.entity';
 
 @Injectable()
 export class UsersService implements ServiceInterface<UserResponse> {
     constructor(
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
+        @InjectRepository(Role)
+        private readonly rolesRepository: Repository<Role>,
     ) {}
 
     async store(body: CreateUserBodyDto) {
-        const user: User = this.usersRepository.create(body);
-        const { id, email, role }: User = await this.usersRepository.save(user);
-        return { id, email, role } as UserResponse;
+        const roles = await Promise.all(
+            body.roles.map((role) => this.rolesRepository.findOneBy({ role })),
+        );
+        const user = this.usersRepository.create({ email: body.email });
+        user.roles = roles;
+
+        return await this.usersRepository.save(user);
     }
 
     async list(params: GetUsersParamsDto) {
-        const users = await this.usersRepository.find();
-
-        return users.map((user) => {
-            return {
-                id: user.id,
-                email: user.email,
-                role: user.role,
-            } as UserResponse;
-        });
+        return await this.usersRepository.find();
     }
 
     async show(params: GetUserByIdParamsDto) {
@@ -51,12 +50,7 @@ export class UsersService implements ServiceInterface<UserResponse> {
                 { email: idOrEmail },
             ],
         });
-        if (!user) {
-            return null;
-        }
-
-        const { email, role } = user;
-        return { id: user.id, email, role } as UserResponse;
+        return user ?? null;
     }
 
     async update(params: UpdateUserParamsDto, body: UpdateUserBodyDto) {

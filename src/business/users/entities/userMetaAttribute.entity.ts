@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserBirthCity } from '../types/user-birth-city.enum';
+import { UserBirthCity } from '../types/userBirthCity.enum';
 
 @Entity('user_attribute')
 export class UserMetaAttribute {

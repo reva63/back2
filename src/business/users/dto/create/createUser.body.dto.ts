@@ -1,13 +1,20 @@
 import { BodyDtoAbstract } from 'src/core/abstract/base/users/dto/bodyDto.abstract';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { UserRoles } from '../../types/user-roles.enum';
+import {
+    ArrayMinSize,
+    IsArray,
+    IsEmail,
+    IsEnum,
+    IsString,
+} from 'class-validator';
+import { UserRoles } from '../../types/userRoles.enum';
 
 export class CreateUserBodyDto extends BodyDtoAbstract {
     @IsEmail()
     @IsString()
     email: string;
 
-    @IsEnum(UserRoles)
-    @IsNotEmpty()
-    role: UserRoles;
+    @IsEnum(UserRoles, { each: true })
+    @ArrayMinSize(1)
+    @IsArray()
+    roles: UserRoles[];
 }
