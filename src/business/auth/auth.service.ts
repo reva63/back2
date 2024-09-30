@@ -9,8 +9,8 @@ import { Repository } from 'typeorm';
 import { AuthSessions } from './entities/authSessions.entity';
 import { v4 } from 'uuid';
 import { UsersService } from '../users/users.service';
-import { UserRoles } from '../users/types/user-roles.enum';
-import { UserResponse } from '../users/interfaces/user-response.interface';
+import { UserRoles } from '../users/types/userRoles.enum';
+import { UserResponse } from '../users/interfaces/userResponse.interface';
 import { ServiceInterface } from 'src/core/abstract/base/auth/service.interface';
 import { TokensInterface } from './interfaces/tokens.interface';
 import { SessionPayloadInterface } from './interfaces/sessionPayload.interface';
@@ -43,7 +43,7 @@ export class AuthService implements ServiceInterface<TokensInterface> {
         try {
             return await this.usersService.store({
                 email,
-                role: UserRoles.Participant,
+                roles: [UserRoles.Participant],
             });
         } catch {
             throw new BadRequestException('Unable to create user');
@@ -76,7 +76,7 @@ export class AuthService implements ServiceInterface<TokensInterface> {
                 {
                     id: user.id,
                     email: user.email,
-                    roles: user.role,
+                    roles: user.roles,
                 },
                 { expiresIn: this.accessTokenExpiration },
             )

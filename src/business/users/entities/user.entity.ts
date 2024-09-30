@@ -1,7 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { EntityInterface } from 'src/core/abstract/base/users/entity.interface';
-import { UserRoles } from '../types/user-roles.enum';
 import { Application } from 'src/business/applications/entities/application.entity';
+import { Role } from './role.entity';
 
 @Entity('user')
 export class User implements EntityInterface {
@@ -11,9 +18,13 @@ export class User implements EntityInterface {
     @Column({ type: 'varchar', length: 255, unique: true })
     email: string;
 
-    @Column({ type: 'enum', enum: UserRoles })
-    role: UserRoles;
-
     @OneToMany(() => Application, (application) => application.user)
     applications: Application[];
+
+    @ManyToMany(() => Role, (role) => role.users, {
+        cascade: true,
+        eager: true,
+    })
+    @JoinTable()
+    roles: Role[];
 }
