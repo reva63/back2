@@ -1,7 +1,7 @@
-import { IsNumberString } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/contests/dto/paramsDto.abstract';
+import { IsNumber } from 'class-validator';
+import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
 
 export class GetContestByIdParamsDto extends ParamsDtoAbstract {
-    @IsNumberString()
-    id: number;
+    @IsNumber()
+    contest: number;
 }

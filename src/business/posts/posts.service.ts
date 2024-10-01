@@ -1,62 +1,67 @@
-import {
-    BadRequestException,
-    Injectable,
-    NotFoundException,
-} from '@nestjs/common';
-import { ServiceInterface } from 'src/core/abstract/base/posts/service.interface';
-import { Post } from './entities/post.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PostEntity } from './entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { GetPostsParamsDto } from './dto/get/getPosts.params.dto';
-import { GetPostByIdParamsDto } from './dto/get/getPostById.params.dto';
-import { CreatePostParamsDto } from './dto/create/createPost.param.dto';
-import { CreatePostBodyDto } from './dto/create/createPost.body.dto';
-import { UpdatePostParamsDto } from './dto/update/updatePost.param.dto';
-import { UpdatePostBodyDto } from './dto/update/updatePost.body.dto';
-import { DeletePostParamsDto } from './dto/delete/deletePost.params.dto';
+import { DeepPartial, Repository } from 'typeorm';
+import { IService } from 'src/core/abstract/base/service.interface';
+import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
+import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
+import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 
 @Injectable()
-export class PostsService implements ServiceInterface<Post> {
+export class PostsService implements IService<PostEntity> {
     constructor(
-        @InjectRepository(Post) private postsRepository: Repository<Post>,
+        @InjectRepository(PostEntity)
+        private postsRepository: Repository<PostEntity>,
     ) {}
 
-    async list(params: GetPostsParamsDto): Promise<Post[]> {
+    async list(options: {
+        params?: IParamsDto;
+        query?: IQueryDto;
+    }): Promise<PostEntity[]> {
         return await this.postsRepository.find();
     }
 
-    async show(params: GetPostByIdParamsDto): Promise<Post> {
-        const { id } = params;
-        const post = await this.postsRepository.findOneBy({ id });
+    async show(options: {
+        params?: IParamsDto;
+        body?: IBodyDto;
+    }): Promise<PostEntity> {
+        const post = await this.postsRepository.findOneBy({
+            id: options.params.post,
+        });
         if (!post) {
             throw new NotFoundException();
         }
         return post;
     }
 
-    async store(
-        params: CreatePostParamsDto,
-        body: CreatePostBodyDto,
-    ): Promise<Post> {
-        const post = this.postsRepository.create(body);
-        return await this.postsRepository.save(post);
+    async store(options: {
+        params?: IParamsDto;
+        body?: IBodyDto;
+    }): Promise<any> {
+        const creatable = {} as DeepPartial<PostEntity>;
+        return await this.postsRepository.save(creatable);
     }
 
-    async update(
-        params: UpdatePostParamsDto,
-        body: UpdatePostBodyDto,
-    ): Promise<boolean> {
-        const { id } = params;
+    async update(options: {
+        params?: IParamsDto;
+        body?: IBodyDto;
+    }): Promise<boolean> {
+        const creatable = {} as DeepPartial<PostEntity>;
         return Boolean(
-            await this.postsRepository.update({ id }, body).catch(() => {
-                throw new BadRequestException();
-            }),
+            await this.postsRepository.update(
+                { id: options.params.post },
+                creatable,
+            ),
         );
     }
 
-    async remove(params: DeletePostParamsDto): Promise<boolean> {
-        const { id } = params;
-        const post = await this.postsRepository.findOneBy({ id });
+    async remove(options: {
+        params?: IParamsDto;
+        body?: IBodyDto;
+    }): Promise<boolean> {
+        const post = await this.postsRepository.findOneBy({
+            id: options.params.post,
+        });
         if (!post) {
             throw new NotFoundException();
         }

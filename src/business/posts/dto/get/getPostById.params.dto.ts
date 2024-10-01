@@ -1,7 +1,7 @@
-import { IsNumberString } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/posts/dto/paramsDto.abstract';
+import { IsNumber } from 'class-validator';
+import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
 
 export class GetPostByIdParamsDto extends ParamsDtoAbstract {
-    @IsNumberString()
-    id: number;
+    @IsNumber()
+    post: number;
 }

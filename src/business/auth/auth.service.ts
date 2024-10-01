@@ -11,13 +11,12 @@ import { v4 } from 'uuid';
 import { UsersService } from '../users/users.service';
 import { UserRoles } from '../users/types/userRoles.enum';
 import { UserResponse } from '../users/interfaces/userResponse.interface';
-import { ServiceInterface } from 'src/core/abstract/base/auth/service.interface';
 import { TokensInterface } from './interfaces/tokens.interface';
 import { SessionPayloadInterface } from './interfaces/sessionPayload.interface';
 import { RefreshTokenPayloadInterface } from './interfaces/refreshTokenPayload.interface';
 
 @Injectable()
-export class AuthService implements ServiceInterface<TokensInterface> {
+export class AuthService {
     private readonly accessTokenExpiration = '5m';
     private readonly refreshTokenExpiration = '30d';
 
@@ -34,7 +33,7 @@ export class AuthService implements ServiceInterface<TokensInterface> {
         device_id: string | null,
     ) {
         const user =
-            (await this.usersService.show({ idOrEmail: email })) ||
+            (await this.usersService.show({ body: { email } })) ||
             (await this.createUser(email));
         return this.generateTokens(user, payload, device_id);
     }
@@ -42,8 +41,7 @@ export class AuthService implements ServiceInterface<TokensInterface> {
     private async createUser(email: string): Promise<UserResponse> {
         try {
             return await this.usersService.store({
-                email,
-                roles: [UserRoles.Participant],
+                body: { email, role: UserRoles.Participant },
             });
         } catch {
             throw new BadRequestException('Unable to create user');

@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { UserMetaAttribute } from './userMetaAttribute.entity';
+import { UserMetaAttributeEntity } from './userMetaAttribute.entity';
 
 @Entity('user_value')
 export class UserMetaValue {
@@ -35,9 +35,9 @@ export class UserMetaValue {
     @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @ManyToOne(() => UserMetaAttribute, (attribute) => attribute.id, {
+    @ManyToOne(() => UserMetaAttributeEntity, (attribute) => attribute.id, {
         onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'attribute_id' })
-    attribute: UserMetaAttribute;
+    attribute: UserMetaAttributeEntity;
 }

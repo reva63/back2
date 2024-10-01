@@ -7,10 +7,9 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from 'src/business/users/entities/user.entity';
-import { EntityInterface } from 'src/core/abstract/base/auth/entity.interface';
 
 @Entity('auth_sessions')
-export class AuthSessions implements EntityInterface {
+export class AuthSessions {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

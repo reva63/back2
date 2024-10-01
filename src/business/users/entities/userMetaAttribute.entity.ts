@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UserBirthCity } from '../types/userBirthCity.enum';
 
 @Entity('user_attribute')
-export class UserMetaAttribute {
+export class UserMetaAttributeEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
