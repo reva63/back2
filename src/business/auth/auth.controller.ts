@@ -16,7 +16,6 @@ import { YandexGuard } from './guard/yandex.guard';
 import { handleTimeoutAndErrors } from './common/helpers/timeout-error.helper';
 import { SessionPayload } from './common/decorators/rt-creation.decorator';
 import { Cookie } from './common/decorators/cookie.decorator';
-import { ControllerInterface } from 'src/core/abstract/base/auth/controller.interface';
 import { SessionPayloadInterface } from 'src/business/auth/interfaces/sessionPayload.interface';
 import { TokensInterface } from 'src/business/auth/interfaces/tokens.interface';
 
@@ -24,7 +23,7 @@ const REFRESH_TOKEN = 'refreshtoken';
 const DEVICE_ID = 'deviceid';
 
 @Controller('auth')
-export class AuthController implements ControllerInterface {
+export class AuthController {
     constructor(
         private readonly HttpService: HttpService,
         private readonly authService: AuthService,

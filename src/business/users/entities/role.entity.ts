@@ -1,10 +1,9 @@
-import { EntityInterface } from 'src/core/abstract/base/users/entity.interface';
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRoles } from '../types/userRoles.enum';
 import { User } from './user.entity';
 
 @Entity()
-export class Role implements EntityInterface {
+export class Role {
     @PrimaryGeneratedColumn()
     id: number;
 

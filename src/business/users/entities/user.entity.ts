@@ -6,12 +6,11 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EntityInterface } from 'src/core/abstract/base/users/entity.interface';
 import { Application } from 'src/business/applications/entities/application.entity';
 import { Role } from './role.entity';
 
 @Entity('user')
-export class User implements EntityInterface {
+export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

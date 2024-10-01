@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Contest } from './contest.entity';
 
 @Entity()
-export class ContestRegion {
+export class ContestRegionEntity {
     @PrimaryGeneratedColumn()
     id: number;
 

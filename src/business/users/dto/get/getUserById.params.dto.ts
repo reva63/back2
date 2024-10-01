@@ -1,7 +1,7 @@
-import { IsString } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/users/dto/paramsDto.abstract';
+import { IsUUID } from 'class-validator';
+import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
 
 export class GetUserByIdParamsDto extends ParamsDtoAbstract {
-    @IsString()
-    idOrEmail: string;
+    @IsUUID('4')
+    user: string;
 }

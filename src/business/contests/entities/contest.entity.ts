@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ContestStage } from './contestStage.entity';
-import { ContestRegion } from './contestRegion.entity';
+import { ContestRegionEntity } from './contestRegion.entity';
 import { Application } from 'src/business/applications/entities/application.entity';
 
 @Entity()
@@ -14,8 +14,8 @@ export class Contest {
     @Column()
     isOnline: boolean;
 
-    @OneToMany(() => ContestRegion, (region) => region.contest)
-    regions: ContestRegion[];
+    @OneToMany(() => ContestRegionEntity, (region) => region.contest)
+    regions: ContestRegionEntity[];
 
     @OneToMany(() => Application, (application) => application.contest)
     applications: Application[];

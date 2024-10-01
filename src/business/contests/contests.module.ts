@@ -4,10 +4,12 @@ import { Contest } from './entities/contest.entity';
 import { ContestsController } from './contests.controller';
 import { ContestsService } from './contests.service';
 import { ContestStage } from './entities/contestStage.entity';
-import { ContestRegion } from './entities/contestRegion.entity';
+import { ContestRegionEntity } from './entities/contestRegion.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Contest, ContestStage, ContestRegion])],
+    imports: [
+        TypeOrmModule.forFeature([Contest, ContestStage, ContestRegionEntity]),
+    ],
     controllers: [ContestsController],
     providers: [ContestsService],
     exports: [ContestsService],
