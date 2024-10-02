@@ -7,27 +7,27 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
-import { PostEntity } from './entities/post.entity';
-import { GetPostsParamsDto } from './dto/get/getPosts.params.dto';
-import { GetPostByIdParamsDto } from './dto/get/getPostById.params.dto';
-import { CreatePostParamsDto } from './dto/create/createPost.param.dto';
-import { CreatePostBodyDto } from './dto/create/createPost.body.dto';
-import { UpdatePostParamsDto } from './dto/update/updatePost.param.dto';
-import { UpdatePostBodyDto } from './dto/update/updatePost.body.dto';
-import { DeletePostParamsDto } from './dto/delete/deletePost.params.dto';
-import { PostsService } from './posts.service';
+import { PostsService } from '../services/posts.service';
+import { ListPostsParamsDto } from '../dto/get/list/listPosts.params.dto';
+import { ShowPostByIdParamsDto } from '../dto/get/show/showPostById.params.dto';
+import { CreatePostParamsDto } from '../dto/create/createPost.param.dto';
+import { PostEntity } from '../entities/post.entity';
+import { CreatePostBodyDto } from '../dto/create/createPost.body.dto';
+import { UpdatePostParamsDto } from '../dto/update/updatePost.param.dto';
+import { UpdatePostBodyDto } from '../dto/update/updatePost.body.dto';
+import { DeletePostParamsDto } from '../dto/delete/deletePost.params.dto';
 
 @Controller('/posts')
 export class PostsController {
     constructor(private postsService: PostsService) {}
 
     @Get()
-    async list(@Param() params: GetPostsParamsDto): Promise<PostEntity[]> {
+    async list(@Param() params: ListPostsParamsDto): Promise<PostEntity[]> {
         return await this.postsService.list({ params });
     }
 
     @Get('/:post')
-    async show(@Param() params: GetPostByIdParamsDto): Promise<PostEntity> {
+    async show(@Param() params: ShowPostByIdParamsDto): Promise<PostEntity> {
         return await this.postsService.show({ params });
     }
 

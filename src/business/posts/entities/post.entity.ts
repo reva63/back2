@@ -1,10 +1,13 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { PostAttachmentEntity } from './postAttachment.entity';
 
 @Entity()
 export class PostEntity {
@@ -14,12 +17,18 @@ export class PostEntity {
     @Column({ type: 'varchar', length: 255 })
     title: string;
 
-    @Column()
-    content: string;
+    @Column({ type: 'text' })
+    text: string;
 
-    @CreateDateColumn()
+    @OneToMany(() => PostAttachmentEntity, (postAttachment) => postAttachment.post)
+    attachments: PostAttachmentEntity[];
+
+    @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz' })
     updatedAt: Date;
+
+    @DeleteDateColumn({ type: 'timestamptz' })
+    deletedAt: Date;
 }
