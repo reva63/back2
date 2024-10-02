@@ -1,27 +1,54 @@
-import { Contest } from 'src/business/contests/entities/contest.entity';
-import { User } from 'src/business/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { ApplicationReviewStatus } from '../types/applicationReviewStatus.enum';
-import { EntityInterface } from 'src/core/abstract/base/applications/entity.interface';
+import { ContestEntity } from 'src/business/contests/entities/contest.entity';
+import { UserEntity } from 'src/business/users/entities/user.entity';
+import {
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+import { ApplicationAttachmentEntity } from './applicationAttachment.entity';
+import { ApplicationAttributeEntity } from './applicationAttribute.entity';
+import { RatingEntity } from 'src/business/ratings/entities/rating.entity';
+import { CategoryEntity } from 'src/business/categories/entities/category.entity';
 
 @Entity()
-export class Application implements EntityInterface {
+export class ApplicationEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    isAsParticipant: boolean;
+    @CreateDateColumn()
+    createdAt: Date;
 
-    @Column({
-        type: 'enum',
-        enum: ApplicationReviewStatus,
-        default: ApplicationReviewStatus.OnReview,
-    })
-    reviewStatus: ApplicationReviewStatus;
+    @UpdateDateColumn()
+    editedAt: Date;
 
-    @ManyToOne(() => Contest, (contest) => contest.applications)
-    contest: Contest;
+    @DeleteDateColumn()
+    deletedAt: Date;
 
-    @ManyToOne(() => User, (user) => user.applications)
-    user: User;
+    @OneToMany(
+        () => ApplicationAttributeEntity,
+        (attribute) => attribute.applicaion,
+    )
+    attributes: ApplicationAttributeEntity[];
+
+    @OneToMany(
+        () => ApplicationAttachmentEntity,
+        (attachment) => attachment.application,
+    )
+    attachments: ApplicationAttachmentEntity[];
+
+    @ManyToOne(() => UserEntity, (user) => user.applications)
+    applicant: UserEntity;
+
+    @ManyToOne(() => ContestEntity, (contest) => contest.applications)
+    contest: ContestEntity;
+
+    @ManyToOne(() => CategoryEntity, (category) => category.applications)
+    category: CategoryEntity;
+
+    @OneToMany(() => RatingEntity, (rating) => rating.applicaion)
+    ratings: RatingEntity[];
 }

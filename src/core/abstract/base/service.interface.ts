@@ -3,24 +3,24 @@ import { IParamsDto } from './dto/paramsDto.interface';
 import { IQueryDto } from './dto/queryDto.interface';
 
 export interface IService<T> {
-    list(options: { params?: IParamsDto; query?: IQueryDto }): Promise<T[]>;
+    list?(options: { params?: IParamsDto; query?: IQueryDto }): Promise<T[]>;
 
-    show(options: {
+    show?(options: {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<boolean | T>;
 
-    store(options: {
+    store?(options: {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<boolean | T | T[]>;
 
-    update(options: {
+    update?(options: {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<boolean | T | T[]>;
 
-    remove(options: {
+    remove?(options: {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<boolean | T>;

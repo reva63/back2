@@ -1,21 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { UserMetaValue } from './entities/userMetaValue.entity';
-import { UserMetaAttributeEntity } from './entities/userMetaAttribute.entity';
-import { Role } from './entities/role.entity';
+import { UserAttributeEntity } from './entities/userAttribute.entity';
+import { UserEntity } from './entities/user.entity';
+import { UsersController } from './controllers/users.controller';
+import { UsersService } from './services/users.service';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            User,
-            UserMetaAttributeEntity,
-            UserMetaValue,
-            Role,
-        ]),
-    ],
+    imports: [TypeOrmModule.forFeature([UserEntity, UserAttributeEntity])],
     controllers: [UsersController],
     providers: [UsersService],
     exports: [UsersService],

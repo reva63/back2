@@ -1,7 +1,7 @@
-import { IsNumberString } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/applications/dto/paramsDto.abstract';
+import { IsNumber } from 'class-validator';
+import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
 
 export class UpdateApplicationParamsDto extends ParamsDtoAbstract {
-    @IsNumberString()
-    id: number;
+    @IsNumber()
+    application: number;
 }
