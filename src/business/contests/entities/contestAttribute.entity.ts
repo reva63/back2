@@ -1,27 +1,10 @@
-import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ContestEntity } from './contest.entity';
 
 @Entity()
 export class ContestAttributeEntity {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    editedAt: Date;
-
-    @DeleteDateColumn()
-    deletedAt: Date;
 
     @Column('varchar')
     key: string;
