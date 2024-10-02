@@ -8,12 +8,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthSessions } from './entities/authSessions.entity';
 import { v4 } from 'uuid';
-import { UsersService } from '../users/users.service';
-import { UserRoles } from '../users/types/userRoles.enum';
-import { UserResponse } from '../users/interfaces/userResponse.interface';
+import { UserRoles } from '../permissions/types/userRoles.enum';
 import { TokensInterface } from './interfaces/tokens.interface';
 import { SessionPayloadInterface } from './interfaces/sessionPayload.interface';
 import { RefreshTokenPayloadInterface } from './interfaces/refreshTokenPayload.interface';
+import { UserEntity } from '../users/entities/user.entity';
+import { UsersService } from '../users/services/users.service';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +38,7 @@ export class AuthService {
         return this.generateTokens(user, payload, device_id);
     }
 
-    private async createUser(email: string): Promise<UserResponse> {
+    private async createUser(email: string): Promise<UserEntity> {
         try {
             return await this.usersService.store({
                 body: { email, role: UserRoles.Participant },
@@ -49,7 +49,7 @@ export class AuthService {
     }
 
     private async generateTokens(
-        user: UserResponse,
+        user: UserEntity,
         payload: SessionPayloadInterface,
         device_id: string | null,
     ): Promise<TokensInterface> {
@@ -67,14 +67,12 @@ export class AuthService {
         };
     }
 
-    private createAccessToken(user: UserResponse): string {
+    private createAccessToken(user: UserEntity): string {
         return (
             'Bearer ' +
             this.jwtService.sign(
                 {
                     id: user.id,
-                    email: user.email,
-                    roles: user.roles,
                 },
                 { expiresIn: this.accessTokenExpiration },
             )
@@ -83,7 +81,7 @@ export class AuthService {
 
     private async createNewSession(
         payload: SessionPayloadInterface,
-        user: UserResponse,
+        user: UserEntity,
     ): Promise<RefreshTokenPayloadInterface> {
         try {
             const refreshToken = this.jwtService.sign(
@@ -131,7 +129,7 @@ export class AuthService {
     private async updateExistingSession(
         device_id: string,
         payload: SessionPayloadInterface,
-        user: UserResponse,
+        user: UserEntity,
     ): Promise<RefreshTokenPayloadInterface> {
         const refreshToken = this.jwtService.sign(
             { device_name: payload.device_name },

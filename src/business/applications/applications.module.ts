@@ -1,16 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Application } from './entities/application.entity';
-import { ApplicationsService } from './applications.service';
-import { ApplicationsController } from './applications.controller';
+import { ApplicationsService } from './services/applications.service';
+import { ApplicationsController } from './controllers/applications.controller';
 import { UsersModule } from '../users/users.module';
 import { ContestsModule } from '../contests/contests.module';
+import { ApplicationEntity } from './entities/application.entity';
+import { ApplicationAttributeEntity } from './entities/applicationAttribute.entity';
+import { ApplicationAttachmentEntity } from './entities/applicationAttachment.entity';
 
 @Module({
     imports: [
         UsersModule,
         ContestsModule,
-        TypeOrmModule.forFeature([Application]),
+        TypeOrmModule.forFeature([
+            ApplicationEntity,
+            ApplicationAttributeEntity,
+            ApplicationAttachmentEntity,
+        ]),
     ],
     controllers: [ApplicationsController],
     providers: [ApplicationsService],
