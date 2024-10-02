@@ -1,9 +1,3 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
-import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
+import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 
-export class UpdateUserBodyDto extends BodyDtoAbstract {
-    @IsEmail()
-    @IsString()
-    @IsOptional()
-    email?: string;
-}
+export class UpdateUserBodyDto implements IBodyDto {}

@@ -1,7 +1,7 @@
-import { QueryDtoAbstract } from '../../../../../core/abstract/base/dto/queryDto.abstract';
 import { IsIn, IsNotEmpty, IsNumber } from 'class-validator';
+import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 
-export class ListPostsQueryDto extends QueryDtoAbstract {
+export class ListPostsQueryDto implements IQueryDto {
     @IsNotEmpty()
     @IsNumber()
     page: number;

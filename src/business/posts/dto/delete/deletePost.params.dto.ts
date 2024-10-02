@@ -1,7 +1,7 @@
 import { IsNumber } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
+import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 
-export class DeletePostParamsDto extends ParamsDtoAbstract {
+export class DeletePostParamsDto implements IParamsDto {
     @IsNumber()
     post: number;
 }

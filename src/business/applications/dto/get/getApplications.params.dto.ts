@@ -1,3 +1,3 @@
-import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
+import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 
-export class GetApplicationsParamsDto extends ParamsDtoAbstract {}
+export class GetApplicationsParamsDto implements IParamsDto {}
