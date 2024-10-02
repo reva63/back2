@@ -1,3 +1,4 @@
+import { UserEntity } from 'src/business/users/entities/user.entity';
 import {
     Column,
     Entity,
@@ -6,9 +7,8 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from 'src/business/users/entities/user.entity';
 
-@Entity('auth_sessions')
+@Entity()
 export class AuthSessions {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -25,8 +25,8 @@ export class AuthSessions {
     @Column({ type: 'varchar', length: 255 })
     device_name: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => UserEntity)
     @JoinColumn({ name: 'user_id' })
     @Index('idx_session_user_id')
-    user: User;
+    user: UserEntity;
 }

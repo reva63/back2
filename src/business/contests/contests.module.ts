@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Contest } from './entities/contest.entity';
-import { ContestsController } from './contests.controller';
-import { ContestsService } from './contests.service';
-import { ContestStage } from './entities/contestStage.entity';
-import { ContestRegionEntity } from './entities/contestRegion.entity';
+import { ContestEntity } from './entities/contest.entity';
+import { ContestAttributeEntity } from './entities/contestAttribute.entity';
+import { ContestsController } from './controllers/contests.controller';
+import { ContestsService } from './services/contests.service';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Contest, ContestStage, ContestRegionEntity]),
+        TypeOrmModule.forFeature([ContestEntity, ContestAttributeEntity]),
     ],
     controllers: [ContestsController],
     providers: [ContestsService],

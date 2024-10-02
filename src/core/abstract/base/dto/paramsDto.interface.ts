@@ -1,5 +1,7 @@
 export interface IParamsDto {
-    user?: string;
+    user?: number;
     post?: number;
     contest?: number;
+    rating?: number;
+    application?: number;
 }

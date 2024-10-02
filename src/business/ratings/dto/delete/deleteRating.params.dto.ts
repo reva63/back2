@@ -1,7 +1,7 @@
-import { IsNumberString } from 'class-validator';
-import { ParamsDtoAbstract } from 'src/core/abstract/base/ratings/dto/paramsDto.abstract';
+import { IsNumber } from 'class-validator';
+import { ParamsDtoAbstract } from 'src/core/abstract/base/dto/paramsDto.abstract';
 
 export class DeleteRatingParamsDto extends ParamsDtoAbstract {
-    @IsNumberString()
-    id: number;
+    @IsNumber()
+    rating: number;
 }

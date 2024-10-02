@@ -22,7 +22,7 @@ import { TokensInterface } from 'src/business/auth/interfaces/tokens.interface';
 const REFRESH_TOKEN = 'refreshtoken';
 const DEVICE_ID = 'deviceid';
 
-@Controller('auth')
+@Controller('/auth')
 export class AuthController {
     constructor(
         private readonly HttpService: HttpService,
