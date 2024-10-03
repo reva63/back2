@@ -33,16 +33,14 @@ export class AuthService {
         device_id: string | null,
     ) {
         const user =
-            (await this.usersService.show({ body: { email } })) ||
+            (await this.usersService.show({ body: {} })) ||
             (await this.createUser(email));
         return this.generateTokens(user, payload, device_id);
     }
 
     private async createUser(email: string): Promise<UserEntity> {
         try {
-            return await this.usersService.store({
-                body: { email, role: UserRoles.Participant },
-            });
+            return await this.usersService.store({});
         } catch {
             throw new BadRequestException('Unable to create user');
         }

@@ -1,3 +1,3 @@
-import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
+import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 
-export class UpdateContestBodyDto extends BodyDtoAbstract {}
+export class UpdateContestBodyDto implements IBodyDto {}

@@ -1,6 +1,7 @@
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PostEntity } from './post.entity';
 
+@Entity()
 export class PostAttachmentEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -9,5 +10,5 @@ export class PostAttachmentEntity {
     key: string;
 
     @ManyToOne(() => PostEntity, (post) => post.attachments)
-    post: PostEntity
+    post: PostEntity;
 }

@@ -1,9 +1,15 @@
-import { BodyDtoAbstract } from 'src/core/abstract/base/dto/bodyDto.abstract';
-import { IsArray, IsString, MaxLength, MinLength, ValidateNested } from 'class-validator';
+import {
+    IsArray,
+    IsString,
+    MaxLength,
+    MinLength,
+    ValidateNested,
+} from 'class-validator';
 import { FileType } from '../../../../core/types/file.type';
 import { Type } from 'class-transformer';
+import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 
-export class CreatePostBodyDto extends BodyDtoAbstract {
+export class CreatePostBodyDto implements IBodyDto {
     @IsString()
     @MinLength(1)
     @MaxLength(255)
