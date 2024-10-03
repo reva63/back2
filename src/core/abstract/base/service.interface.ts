@@ -1,3 +1,4 @@
+import { DeepPartial } from 'typeorm';
 import { IBodyDto } from './dto/bodyDto.interface';
 import { IParamsDto } from './dto/paramsDto.interface';
 import { IQueryDto } from './dto/queryDto.interface';
@@ -9,6 +10,11 @@ export interface IService<T> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<boolean | T>;
+
+    create?(options: {
+        params?: IParamsDto;
+        body?: IBodyDto;
+    }): Promise<DeepPartial<T> | DeepPartial<T>[]>;
 
     store?(options: {
         params?: IParamsDto;

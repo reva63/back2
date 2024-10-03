@@ -1,14 +1,22 @@
+import { ApplicantDataBodyDto } from 'src/business/applications/dto/applicantData.body.dto';
 import { FileType } from '../../../types/file.type';
 
 export interface IBodyDto {
+    // common
+    files?: FileType[];
+    categories?: number[];
+    contest?: number;
+    certificates?: number[];
+
     // posts
     title?: string;
     text?: string;
-    files?: FileType[];
 
     // stages
     startDate?: Date;
     endDate?: Date;
-    contest?: number;
-    certificates?: number[];
+
+    // applications
+    applicantData?: ApplicantDataBodyDto;
+    applicantSocials?: { [key: string]: string };
 }

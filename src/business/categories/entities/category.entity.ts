@@ -4,6 +4,7 @@ import { ContestEntity } from 'src/business/contests/entities/contest.entity';
 import {
     Column,
     Entity,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -23,6 +24,6 @@ export class CategoryEntity {
     @OneToMany(() => CertificateEntity, (certificate) => certificate.category)
     certificates: CertificateEntity[];
 
-    @OneToMany(() => ApplicationEntity, (application) => application.category)
+    @ManyToMany(() => ApplicationEntity, (application) => application.category)
     applications: ApplicationEntity[];
 }
