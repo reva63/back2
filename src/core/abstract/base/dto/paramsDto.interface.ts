@@ -4,4 +4,5 @@ export interface IParamsDto {
     contest?: number;
     rating?: number;
     application?: number;
+    stage?: number;
 }
