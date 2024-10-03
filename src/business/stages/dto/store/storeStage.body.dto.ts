@@ -1,10 +1,4 @@
-import {
-    IsArray,
-    IsDateString,
-    IsNumber,
-    IsOptional,
-    IsString,
-} from 'class-validator';
+import { IsDateString, IsString } from 'class-validator';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 
 export class StoreStageBodyDto implements IBodyDto {
@@ -16,13 +10,4 @@ export class StoreStageBodyDto implements IBodyDto {
 
     @IsDateString()
     endDate: Date;
-
-    @IsNumber()
-    @IsOptional()
-    contest: number;
-
-    @IsNumber({}, { each: true })
-    @IsArray()
-    @IsOptional()
-    certificates: number[];
 }
