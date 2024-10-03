@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthSessions } from './entities/authSessions.entity';
 import { v4 } from 'uuid';
-import { UserRoles } from '../permissions/types/userRoles.enum';
 import { TokensInterface } from './interfaces/tokens.interface';
 import { SessionPayloadInterface } from './interfaces/sessionPayload.interface';
 import { RefreshTokenPayloadInterface } from './interfaces/refreshTokenPayload.interface';

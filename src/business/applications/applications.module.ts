@@ -7,6 +7,7 @@ import { ContestsModule } from '../contests/contests.module';
 import { ApplicationEntity } from './entities/application.entity';
 import { ApplicationAttributeEntity } from './entities/applicationAttribute.entity';
 import { ApplicationAttachmentEntity } from './entities/applicationAttachment.entity';
+import { ApplicationAttributesService } from './services/applicationAttributes.service';
 
 @Module({
     imports: [
@@ -19,7 +20,7 @@ import { ApplicationAttachmentEntity } from './entities/applicationAttachment.en
         ]),
     ],
     controllers: [ApplicationsController],
-    providers: [ApplicationsService],
+    providers: [ApplicationsService, ApplicationAttributesService],
     exports: [ApplicationsService],
 })
 export class ApplicationsModule {}

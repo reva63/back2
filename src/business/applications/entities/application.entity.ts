@@ -4,6 +4,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -31,6 +32,9 @@ export class ApplicationEntity {
     @OneToMany(
         () => ApplicationAttributeEntity,
         (attribute) => attribute.applicaion,
+        {
+            cascade: ['remove', 'insert'],
+        },
     )
     attributes: ApplicationAttributeEntity[];
 
@@ -46,8 +50,8 @@ export class ApplicationEntity {
     @ManyToOne(() => ContestEntity, (contest) => contest.applications)
     contest: ContestEntity;
 
-    @ManyToOne(() => CategoryEntity, (category) => category.applications)
-    category: CategoryEntity;
+    @ManyToMany(() => CategoryEntity, (category) => category.applications)
+    category: CategoryEntity[];
 
     @OneToMany(() => RatingEntity, (rating) => rating.applicaion)
     ratings: RatingEntity[];

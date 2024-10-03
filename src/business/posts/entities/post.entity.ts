@@ -20,7 +20,10 @@ export class PostEntity {
     @Column({ type: 'text' })
     text: string;
 
-    @OneToMany(() => PostAttachmentEntity, (postAttachment) => postAttachment.post)
+    @OneToMany(
+        () => PostAttachmentEntity,
+        (postAttachment) => postAttachment.post,
+    )
     attachments: PostAttachmentEntity[];
 
     @CreateDateColumn({ type: 'timestamptz' })
