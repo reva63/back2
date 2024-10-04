@@ -14,6 +14,7 @@ import { ApplicationEntity } from 'src/business/applications/entities/applicatio
 import { StageEntity } from 'src/business/stages/entities/stage.entity';
 import { CategoryEntity } from 'src/business/categories/entities/category.entity';
 import { BlockEntity } from 'src/business/blocks/entities/block.entity';
+import { Paragraph } from './paragraph.entity';
 
 @Entity()
 export class ContestEntity {
@@ -40,6 +41,11 @@ export class ContestEntity {
 
     @OneToMany(() => ContestAttributeEntity, (attribute) => attribute.contest)
     attributes: ContestAttributeEntity[];
+
+    @OneToMany(() => Paragraph, (paragraph) => paragraph.contest, {
+        cascade: ['insert', 'remove'],
+    })
+    paragraphs: Paragraph[];
 
     @ManyToMany(() => BlockEntity, (block) => block.contests)
     blocks: BlockEntity[];
