@@ -19,4 +19,8 @@ export interface IBodyDto {
     // applications
     applicantData?: ApplicantDataBodyDto;
     applicantSocials?: { [key: string]: string };
+
+    // certificates
+    key?: string;
+    name?: string;
 }

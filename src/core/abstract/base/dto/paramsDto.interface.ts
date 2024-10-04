@@ -5,4 +5,5 @@ export interface IParamsDto {
     rating?: number;
     application?: number;
     stage?: number;
+    certificate?: number;
 }
