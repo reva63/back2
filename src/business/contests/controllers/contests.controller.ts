@@ -9,13 +9,13 @@ import {
 } from '@nestjs/common';
 import { ContestEntity } from '../entities/contest.entity';
 import { ContestsService } from '../services/contests.service';
-import { GetContestsParamsDto } from '../dto/get/getContests.params.dto';
-import { GetContestByIdParamsDto } from '../dto/get/getContestById.params.dto';
-import { CreateContestParamsDto } from '../dto/create/createContest.params.dto';
-import { CreateContestBodyDto } from '../dto/create/createContest.body.dto';
+import { ListContestsParamsDto } from '../dto/list/listContests.params.dto';
+import { ShowContestParamsDto } from '../dto/show/showContest.params.dto';
 import { UpdateContestParamsDto } from '../dto/update/updateContest.params.dto';
 import { UpdateContestBodyDto } from '../dto/update/updateContest.body.dto';
-import { DeleteContestParamsDto } from '../dto/delete/deleteContest.params.dto';
+import { RemoveContestParamsDto } from '../dto/remove/removeContest.params.dto';
+import { StoreContestBodyDto } from '../dto/store/storeContest.body.dto';
+import { StoreContestParamsDto } from '../dto/store/storeContest.params.dto';
 
 @Controller('/contests')
 export class ContestsController {
@@ -23,22 +23,20 @@ export class ContestsController {
 
     @Get()
     async list(
-        @Param() params: GetContestsParamsDto,
+        @Param() params: ListContestsParamsDto,
     ): Promise<ContestEntity[]> {
         return await this.contestsService.list({ params });
     }
 
     @Get('/:id')
-    async show(
-        @Param() params: GetContestByIdParamsDto,
-    ): Promise<ContestEntity> {
+    async show(@Param() params: ShowContestParamsDto): Promise<ContestEntity> {
         return await this.contestsService.show({ params });
     }
 
     @Post()
     async store(
-        @Param() params: CreateContestParamsDto,
-        @Body() body: CreateContestBodyDto,
+        @Param() params: StoreContestParamsDto,
+        @Body() body: StoreContestBodyDto,
     ): Promise<void | ContestEntity> {
         return this.contestsService.store({ params, body });
     }
@@ -52,7 +50,7 @@ export class ContestsController {
     }
 
     @Delete('/:id')
-    async remove(@Param() params: DeleteContestParamsDto): Promise<void> {
+    async remove(@Param() params: RemoveContestParamsDto): Promise<void> {
         await this.contestsService.remove({ params });
     }
 }

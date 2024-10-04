@@ -8,33 +8,33 @@ import {
     Post,
 } from '@nestjs/common';
 import { StagesService } from '../services/stages.service';
-import { GetStagesParamsDto } from '../dto/get/getStages.params.dto';
-import { GetStageByIdParamsDto } from '../dto/get/getStageById.params.dto';
+import { ListStagesParamsDto } from '../dto/list/listStages.params.dto';
+import { ShowStageParamsDto } from '../dto/show/showStage.params.dto';
 import { StageEntity } from '../entities/stage.entity';
-import { CreateStageParamsDto } from '../dto/create/createStage.params.dto';
-import { CreateStageBodyDto } from '../dto/create/createStage.body.dto';
+import { StoreStageParamsDto } from '../dto/store/storeStage.params.dto';
+import { StoreStageBodyDto } from '../dto/store/storeStage.body.dto';
 import { UpdateStageParamsDto } from '../dto/update/updateStage.params.dto';
 import { UpdateStageBodyDto } from '../dto/update/updateStage.body.dto';
-import { DeleteStageParamsDto } from '../dto/delete/deleteStage.params.dto';
+import { RemoveStageParamsDto } from '../dto/remove/removeStage.params.dto';
 
 @Controller('/stages')
 export class StagesController {
     constructor(private stagesService: StagesService) {}
 
     @Get()
-    async list(@Param() params: GetStagesParamsDto): Promise<StageEntity[]> {
+    async list(@Param() params: ListStagesParamsDto): Promise<StageEntity[]> {
         return await this.stagesService.list({ params });
     }
 
     @Get('/:stage')
-    async show(@Param() params: GetStageByIdParamsDto): Promise<StageEntity> {
+    async show(@Param() params: ShowStageParamsDto): Promise<StageEntity> {
         return this.stagesService.show({ params });
     }
 
     @Post()
     async store(
-        @Param() params: CreateStageParamsDto,
-        @Body() body: CreateStageBodyDto,
+        @Param() params: StoreStageParamsDto,
+        @Body() body: StoreStageBodyDto,
     ): Promise<void | StageEntity> {
         return this.stagesService.store({ params, body });
     }
@@ -48,7 +48,7 @@ export class StagesController {
     }
 
     @Delete('/:stage')
-    async remove(@Param() params: DeleteStageParamsDto): Promise<void> {
+    async remove(@Param() params: RemoveStageParamsDto): Promise<void> {
         await this.stagesService.remove({ params });
     }
 }

@@ -8,33 +8,33 @@ import {
     Post,
 } from '@nestjs/common';
 import { RatingsService } from '../services/ratings.service';
-import { GetRatingsParamsDto } from '../dto/get/getRatings.params.dto';
+import { ListRatingsParamsDto } from '../dto/list/listRatings.params.dto';
 import { RatingEntity } from '../entities/rating.entity';
-import { GetRatingByIdParamsDto } from '../dto/get/getRatingById.params.dto';
-import { CreateRatingParamsDto } from '../dto/create/createRating.params.dto';
-import { CreateRatingBodyDto } from '../dto/create/createRating.body.dto';
+import { ShowRatingParamsDto } from '../dto/show/showRating.params.dto';
+import { StoreRatingParamsDto } from '../dto/store/storeRating.params.dto';
+import { StoreRatingBodyDto } from '../dto/store/storeRating.body.dto';
 import { UpdateRatingParamsDto } from '../dto/update/updateRating.params.dto';
 import { UpdateRatingBodyDto } from '../dto/update/updateRating.body.dto';
-import { DeleteRatingParamsDto } from '../dto/delete/deleteRating.params.dto';
+import { RemoveRatingParamsDto } from '../dto/remove/removeRating.params.dto';
 
 @Controller('/ratings')
 export class RatingsController {
     constructor(private readonly ratingsService: RatingsService) {}
 
     @Get()
-    async list(@Param() params: GetRatingsParamsDto): Promise<RatingEntity[]> {
+    async list(@Param() params: ListRatingsParamsDto): Promise<RatingEntity[]> {
         return await this.ratingsService.list({ params });
     }
 
     @Get('/:rating')
-    async show(@Param() params: GetRatingByIdParamsDto): Promise<RatingEntity> {
+    async show(@Param() params: ShowRatingParamsDto): Promise<RatingEntity> {
         return await this.ratingsService.show({ params });
     }
 
     @Post()
     async store(
-        @Param() params: CreateRatingParamsDto,
-        @Body() body: CreateRatingBodyDto,
+        @Param() params: StoreRatingParamsDto,
+        @Body() body: StoreRatingBodyDto,
     ): Promise<RatingEntity> {
         return await this.store(params, body);
     }
@@ -48,7 +48,7 @@ export class RatingsController {
     }
 
     @Delete('/:rating')
-    async remove(@Param() params: DeleteRatingParamsDto): Promise<void> {
+    async remove(@Param() params: RemoveRatingParamsDto): Promise<void> {
         await this.ratingsService.remove({ params });
     }
 }
