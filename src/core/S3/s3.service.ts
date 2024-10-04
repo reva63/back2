@@ -10,6 +10,7 @@ import { S3ModuleOptions } from './interfaces/s3ModuleOptions.interface';
 import axios, { AxiosResponse } from 'axios';
 import { createHash } from 'crypto';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { Upload } from '@aws-sdk/lib-storage';
 
 @Injectable()
 export class S3Service {
@@ -97,5 +98,16 @@ export class S3Service {
         }
 
         return key;
+    }
+
+    /**     *
+     * @description upload file to s3
+     * @returns output data including location url
+     */
+    async uploadObject(options: { Bucket: any; Key: string; Body: Buffer }) {
+        return await new Upload({
+            client: this.client,
+            params: options,
+        }).done();
     }
 }

@@ -1,20 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne } from 'typeorm';
 import { ApplicationEntity } from './application.entity';
+import { Attachment } from 'src/core/attachments/entities/attachment.abstract';
 
 @Entity()
-export class ApplicationAttachmentEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column('varchar')
-    key: string;
-
-    @Column('varchar')
-    link: string;
-
-    @Column('varchar')
-    name: string;
-
+export class ApplicationAttachmentEntity extends Attachment {
     @ManyToOne(
         () => ApplicationEntity,
         (application) => application.attachments,
