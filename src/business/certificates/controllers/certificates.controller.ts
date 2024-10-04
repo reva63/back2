@@ -9,13 +9,13 @@ import {
 } from '@nestjs/common';
 import { CertificatesService } from '../services/certificates.service';
 import { CertificateEntity } from '../entities/certificate.entity';
-import { CreateCertificateBodyDto } from '../dto/create/createCertificate.body.dto';
-import { CreateCertificateParamsDto } from '../dto/create/createCertificate.params.dto';
-import { DeleteCertificateParamsDto } from '../dto/delete/deleteCertificate.params.dto';
-import { GetCertificateByIdParamsDto } from '../dto/get/getCertificateById.params.dto';
+import { StoreCertificateBodyDto } from '../dto/store/storeCertificate.body.dto';
+import { StoreCertificateParamsDto } from '../dto/store/storeCertificate.params.dto';
+import { RemoveCertificateParamsDto } from '../dto/remove/removeCertificate.params.dto';
 import { UpdateCertificateBodyDto } from '../dto/update/updateCertificate.body.dto';
 import { UpdateCertificateParamsDto } from '../dto/update/updateCertificate.params.dto';
-import { GetCertificatesParamsDto } from '../dto/get/getCertificates.params.dto';
+import { ListCertificatesParamsDto } from '../dto/list/listCertificates.params.dto';
+import { ShowCertificateParamsDto } from '../dto/show/ShowCertificate.params.dto';
 
 @Controller('/certificates')
 export class CertificatesController {
@@ -23,22 +23,22 @@ export class CertificatesController {
 
     @Get()
     async list(
-        @Param() params: GetCertificatesParamsDto,
+        @Param() params: ListCertificatesParamsDto,
     ): Promise<CertificateEntity[]> {
         return await this.certificatesService.list({ params });
     }
 
     @Get('/:certificate')
     async show(
-        @Param() params: GetCertificateByIdParamsDto,
+        @Param() params: ShowCertificateParamsDto,
     ): Promise<CertificateEntity> {
         return this.certificatesService.show({ params });
     }
 
     @Post()
     async store(
-        @Param() params: CreateCertificateParamsDto,
-        @Body() body: CreateCertificateBodyDto,
+        @Param() params: StoreCertificateParamsDto,
+        @Body() body: StoreCertificateBodyDto,
     ): Promise<void | CertificateEntity> {
         return this.certificatesService.store({ params, body });
     }
@@ -52,7 +52,7 @@ export class CertificatesController {
     }
 
     @Delete('/:certificate')
-    async remove(@Param() params: DeleteCertificateParamsDto): Promise<void> {
+    async remove(@Param() params: RemoveCertificateParamsDto): Promise<void> {
         await this.certificatesService.remove({ params });
     }
 }
