@@ -70,7 +70,7 @@ export class StagesService implements IService<StageEntity> {
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean | StageEntity> {
+    }): Promise<boolean> {
         const stage = await this.stagesRepository.findOneBy({
             id: options.params.stage,
         });

@@ -25,4 +25,8 @@ export interface IBodyDto {
     description?: string;
     upsertParagraphs?: ParagraphDto[];
     removeParagraphs?: number[];
+
+    // certificates
+    key?: string;
+    name?: string;
 }
