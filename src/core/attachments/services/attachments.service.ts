@@ -6,7 +6,7 @@ import { randomBytes } from 'crypto';
 import { FileType } from 'src/core/types/file.type';
 
 @Injectable()
-export class AttachmentsService<T extends Attachment> {
+export class AttachmentsService {
     constructor(private readonly s3Service: S3Service) {}
 
     /**
