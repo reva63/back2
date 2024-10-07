@@ -19,7 +19,7 @@ import { StoreContestParamsDto } from '../dto/store/storeContest.params.dto';
 
 @Controller('/contests')
 export class ContestsController {
-    constructor(private contestsService: ContestsService) {}
+    constructor(private readonly contestsService: ContestsService) {}
 
     @Get()
     async list(

@@ -6,19 +6,23 @@ import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { ContestEntity } from '../entities/contest.entity';
+import { ParagraphsService } from './paragraphs.service';
 
 @Injectable()
 export class ContestsService implements IService<ContestEntity> {
     constructor(
         @InjectRepository(ContestEntity)
-        private contestsRepository: Repository<ContestEntity>,
+        private readonly contestsRepository: Repository<ContestEntity>,
+        private readonly paragraphsService: ParagraphsService,
     ) {}
 
     async list(options: {
         params?: IParamsDto;
         query?: IQueryDto;
     }): Promise<ContestEntity[]> {
-        return await this.contestsRepository.find();
+        return await this.contestsRepository.find({
+            relations: { paragraphs: true },
+        });
     }
 
     async show(options: {
@@ -37,8 +41,12 @@ export class ContestsService implements IService<ContestEntity> {
     async store(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<any> {
-        const creatable = {} as DeepPartial<ContestEntity>;
+    }): Promise<ContestEntity> {
+        const paragraphs = await this.paragraphsService.create(options);
+        const creatable = {
+            paragraphs,
+        } as DeepPartial<ContestEntity>;
+
         return await this.contestsRepository.save(creatable);
     }
 
@@ -46,6 +54,14 @@ export class ContestsService implements IService<ContestEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<boolean> {
+        if (options.body.upsertParagraphs?.length > 0) {
+            await this.paragraphsService.update(options);
+        }
+
+        if (options.body.removeParagraphs?.length > 0) {
+            await this.paragraphsService.remove(options);
+        }
+
         const creatable = {} as DeepPartial<ContestEntity>;
         return Boolean(
             await this.contestsRepository.update(

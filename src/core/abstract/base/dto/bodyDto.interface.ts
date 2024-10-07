@@ -1,5 +1,6 @@
 import { ApplicantDataBodyDto } from 'src/business/applications/dto/applicantData.body.dto';
 import { FileType } from '../../../types/file.type';
+import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
 
 export interface IBodyDto {
     // common
@@ -7,9 +8,9 @@ export interface IBodyDto {
     categories?: number[];
     contest?: number;
     certificates?: number[];
+    title?: string;
 
     // posts
-    title?: string;
     text?: string;
 
     // stages
@@ -19,6 +20,11 @@ export interface IBodyDto {
     // applications
     applicantData?: ApplicantDataBodyDto;
     applicantSocials?: { [key: string]: string };
+
+    // contests
+    description?: string;
+    upsertParagraphs?: ParagraphDto[];
+    removeParagraphs?: number[];
 
     // certificates
     key?: string;
