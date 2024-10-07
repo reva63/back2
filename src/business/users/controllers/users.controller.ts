@@ -8,29 +8,29 @@ import {
     Post,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { GetUsersParamsDto } from '../dto/get/getUsers.params.dto';
-import { GetUserByIdParamsDto } from '../dto/get/getUserById.params.dto';
-import { CreateUserBodyDto } from '../dto/create/createUser.body.dto';
+import { ListUsersParamsDto } from '../dto/list/listUsers.params.dto';
+import { ShowUserParamsDto } from '../dto/show/showUser.params.dto';
+import { StoreUserBodyDto } from '../dto/store/storeUser.body.dto';
 import { UpdateUserParamsDto } from '../dto/update/updateUser.params.dto';
 import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
-import { DeleteUserParamsDto } from '../dto/delete/deleteUser.params.dto';
+import { RemoveUserParamsDto } from '../dto/remove/removeUser.params.dto';
 
 @Controller('/users')
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
     @Get()
-    async list(@Param() params: GetUsersParamsDto) {
+    async list(@Param() params: ListUsersParamsDto) {
         return await this.usersService.list({ params });
     }
 
     @Get('/:user')
-    async show(@Param() params: GetUserByIdParamsDto) {
+    async show(@Param() params: ShowUserParamsDto) {
         return await this.usersService.show({ params });
     }
 
     @Post()
-    async store(@Body() body: CreateUserBodyDto) {
+    async store(@Body() body: StoreUserBodyDto) {
         return await this.usersService.store({ body });
     }
 
@@ -43,7 +43,7 @@ export class UsersController {
     }
 
     @Delete('/:user')
-    async remove(@Param() params: DeleteUserParamsDto) {
+    async remove(@Param() params: RemoveUserParamsDto) {
         await this.usersService.remove({ params });
     }
 }
