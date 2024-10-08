@@ -14,6 +14,7 @@ import { ApplicationAttachmentEntity } from './applicationAttachment.entity';
 import { ApplicationAttributeEntity } from './applicationAttribute.entity';
 import { RatingEntity } from 'src/business/ratings/entities/rating.entity';
 import { CategoryEntity } from 'src/business/categories/entities/category.entity';
+import { DirectionEntity } from 'src/business/directions/entities/direction.entity';
 
 @Entity()
 export class ApplicationEntity {
@@ -49,6 +50,9 @@ export class ApplicationEntity {
 
     @ManyToOne(() => ContestEntity, (contest) => contest.applications)
     contest: ContestEntity;
+
+    @ManyToMany(() => DirectionEntity, (direction) => direction.applications)
+    directions: DirectionEntity[];
 
     @ManyToMany(() => CategoryEntity, (category) => category.applications)
     category: CategoryEntity[];
