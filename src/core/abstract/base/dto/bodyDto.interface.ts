@@ -29,4 +29,7 @@ export interface IBodyDto {
     // certificates
     key?: string;
     name?: string;
+
+    // categories
+    direction?: number;
 }
