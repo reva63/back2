@@ -6,4 +6,6 @@ export interface IParamsDto {
     application?: number;
     stage?: number;
     certificate?: number;
+    direction?: number;
+    category?: number;
 }

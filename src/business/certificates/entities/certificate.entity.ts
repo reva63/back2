@@ -1,5 +1,6 @@
 import { CategoryEntity } from 'src/business/categories/entities/category.entity';
 import { ContestEntity } from 'src/business/contests/entities/contest.entity';
+import { DirectionEntity } from 'src/business/directions/entities/direction.entity';
 import { StageEntity } from 'src/business/stages/entities/stage.entity';
 import { UserEntity } from 'src/business/users/entities/user.entity';
 import {
@@ -40,6 +41,9 @@ export class CertificateEntity {
 
     @ManyToOne(() => UserEntity, (user) => user.certificates)
     user: UserEntity;
+
+    @ManyToOne(() => DirectionEntity, (direction) => direction.certificates)
+    direction: DirectionEntity;
 
     @ManyToOne(() => CategoryEntity, (category) => category.certificates)
     category: CategoryEntity;

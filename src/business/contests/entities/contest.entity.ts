@@ -15,6 +15,7 @@ import { StageEntity } from 'src/business/stages/entities/stage.entity';
 import { CategoryEntity } from 'src/business/categories/entities/category.entity';
 import { BlockEntity } from 'src/business/blocks/entities/block.entity';
 import { Paragraph } from './paragraph.entity';
+import { DirectionEntity } from 'src/business/directions/entities/direction.entity';
 
 @Entity()
 export class ContestEntity {
@@ -55,6 +56,9 @@ export class ContestEntity {
 
     @OneToMany(() => CertificateEntity, (certificate) => certificate.contest)
     certificates: CertificateEntity[];
+
+    @OneToMany(() => DirectionEntity, (direction) => direction.contest)
+    directions: CategoryEntity[];
 
     @OneToMany(() => CategoryEntity, (category) => category.contest)
     categories: CategoryEntity[];
