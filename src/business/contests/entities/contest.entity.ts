@@ -3,6 +3,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinTable,
     ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -40,6 +41,9 @@ export class ContestEntity {
     @Column('text')
     description: string;
 
+    @Column('numeric', { default: 0 })
+    views: number;
+
     @OneToMany(() => ContestAttributeEntity, (attribute) => attribute.contest)
     attributes: ContestAttributeEntity[];
 
@@ -49,6 +53,7 @@ export class ContestEntity {
     paragraphs: Paragraph[];
 
     @ManyToMany(() => BlockEntity, (block) => block.contests)
+    @JoinTable()
     blocks: BlockEntity[];
 
     @OneToMany(() => StageEntity, (stage) => stage.contest)

@@ -24,6 +24,7 @@ export interface IBodyDto {
     // contests
     description?: string;
     upsertParagraphs?: ParagraphDto[];
+    preview?: string;
     removeParagraphs?: number[];
 
     // certificates
