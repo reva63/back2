@@ -1,13 +1,13 @@
-import { IsIn, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsIn, IsNotEmpty, IsNumberString } from 'class-validator';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 
 export class ListPostsQueryDto implements IQueryDto {
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     page: number;
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     limit: number;
 
     @IsNotEmpty()
