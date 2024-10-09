@@ -28,7 +28,7 @@ export class ContestsController {
         return await this.contestsService.list({ params });
     }
 
-    @Get('/:id')
+    @Get('/:contest')
     async show(@Param() params: ShowContestParamsDto): Promise<ContestEntity> {
         return await this.contestsService.show({ params });
     }
@@ -41,7 +41,7 @@ export class ContestsController {
         return this.contestsService.store({ params, body });
     }
 
-    @Patch('/:id')
+    @Patch('/:contest')
     async update(
         @Param() params: UpdateContestParamsDto,
         @Body() body: UpdateContestBodyDto,
@@ -49,7 +49,7 @@ export class ContestsController {
         await this.contestsService.update({ params, body });
     }
 
-    @Delete('/:id')
+    @Delete('/:contest')
     async remove(@Param() params: RemoveContestParamsDto): Promise<void> {
         await this.contestsService.remove({ params });
     }
