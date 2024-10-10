@@ -11,10 +11,13 @@ export interface IService<T> {
         body?: IBodyDto;
     }): Promise<boolean | T>;
 
-    create?(options: {
-        params?: IParamsDto;
-        body?: IBodyDto;
-    }): Promise<DeepPartial<T> | DeepPartial<T>[]>;
+    create?(
+        options: {
+            params?: IParamsDto;
+            body?: IBodyDto;
+        },
+        isUpdate?: boolean,
+    ): Promise<DeepPartial<T> | DeepPartial<T>[]>;
 
     store?(options: {
         params?: IParamsDto;
@@ -29,5 +32,5 @@ export interface IService<T> {
     remove?(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean | T>;
+    }): Promise<boolean | T | void>;
 }

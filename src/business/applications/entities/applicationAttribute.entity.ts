@@ -1,17 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne } from 'typeorm';
 import { ApplicationEntity } from './application.entity';
+import { AttributeEntityAbstract } from 'src/core/abstract/entities/attribute.entity.abstract';
 
 @Entity()
-export class ApplicationAttributeEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column('varchar')
-    key: string;
-
-    @Column('varchar')
-    value: string;
-
+export class ApplicationAttributeEntity extends AttributeEntityAbstract {
     @ManyToOne(() => ApplicationEntity, (application) => application.attributes)
     applicaion: ApplicationEntity;
 }

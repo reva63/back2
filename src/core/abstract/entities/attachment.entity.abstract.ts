@@ -1,6 +1,6 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
-export abstract class Attachment {
+export abstract class AttachmentEntityAbstract {
     @PrimaryGeneratedColumn()
     id: number;
 

@@ -8,7 +8,7 @@ import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { Repository, DeepPartial } from 'typeorm';
 
 @Injectable()
-export class DirectionsService implements IService<DirectionEntity>{
+export class DirectionsService implements IService<DirectionEntity> {
     constructor(
         @InjectRepository(DirectionEntity)
         private directionsRepository: Repository<DirectionEntity>,

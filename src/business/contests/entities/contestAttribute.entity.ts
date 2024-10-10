@@ -1,17 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne } from 'typeorm';
 import { ContestEntity } from './contest.entity';
+import { AttributeEntityAbstract } from 'src/core/abstract/entities/attribute.entity.abstract';
 
 @Entity()
-export class ContestAttributeEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column('varchar')
-    key: string;
-
-    @Column('varchar')
-    value: string;
-
+export class ContestAttributeEntity extends AttributeEntityAbstract {
     @ManyToOne(() => ContestEntity, (contest) => contest.attributes)
     contest: ContestEntity;
 }

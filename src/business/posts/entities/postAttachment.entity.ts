@@ -1,9 +1,9 @@
 import { Entity, ManyToOne } from 'typeorm';
 import { PostEntity } from './post.entity';
-import { Attachment } from 'src/core/attachments/entities/attachment.abstract';
+import { AttachmentEntityAbstract } from 'src/core/abstract/entities/attachment.entity.abstract';
 
 @Entity()
-export class PostAttachmentEntity extends Attachment {
+export class PostAttachmentEntity extends AttachmentEntityAbstract {
     @ManyToOne(() => PostEntity, (post) => post.attachments)
     post: PostEntity;
 }
