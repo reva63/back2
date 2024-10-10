@@ -43,8 +43,8 @@ export class StagesController {
     async update(
         @Param() params: UpdateStageParamsDto,
         @Body() body: UpdateStageBodyDto,
-    ): Promise<void> {
-        await this.stagesService.update({ params, body });
+    ): Promise<StageEntity> {
+        return await this.stagesService.update({ params, body });
     }
 
     @Delete('/:stage')

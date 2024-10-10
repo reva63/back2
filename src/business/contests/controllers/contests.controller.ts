@@ -45,8 +45,8 @@ export class ContestsController {
     async update(
         @Param() params: UpdateContestParamsDto,
         @Body() body: UpdateContestBodyDto,
-    ): Promise<void> {
-        await this.contestsService.update({ params, body });
+    ): Promise<ContestEntity> {
+        return await this.contestsService.update({ params, body });
     }
 
     @Delete('/:contest')

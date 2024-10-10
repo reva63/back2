@@ -53,7 +53,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<ApplicationEntity> {
         const creatable = {} as DeepPartial<ApplicationEntity>;
         const applicaion = await this.applicationsRepository.findOneBy({
             id: options.params.application,
@@ -73,13 +73,15 @@ export class ApplicationsService implements IService<ApplicationEntity> {
             await this.applicationAttributesService.update(options);
         }
 
-        return true;
+        return await this.applicationsRepository.findOneBy({
+            id: options.params.application,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const applicaion = await this.applicationsRepository.findOneBy({
             id: options.params.application,
         });
@@ -88,19 +90,18 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         }
 
         await this.applicationsRepository.remove(applicaion);
-        return true;
     }
 
     async removeAttributes(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const applicaion = await this.applicationsRepository.findOneBy({
             id: options.params.application,
         });
         if (!applicaion) {
             throw new ApplicationNotFoundException();
         }
-        return await this.applicationAttributesService.remove(options);
+        await this.applicationAttributesService.remove(options);
     }
 }

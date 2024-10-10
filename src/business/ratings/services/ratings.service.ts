@@ -40,26 +40,29 @@ export class RatingsService implements IService<RatingEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<RatingEntity> {
         const creatable = {} as DeepPartial<RatingEntity>;
-        return Boolean(
-            await this.ratingsRepository.update(
-                { id: options.params.rating },
-                creatable,
-            ),
+
+        await this.ratingsRepository.update(
+            { id: options.params.rating },
+            creatable,
         );
+
+        return await this.ratingsRepository.findOneBy({
+            id: options.params.rating,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const rating = await this.ratingsRepository.findOneBy({
             id: options.params.rating,
         });
         if (!rating) {
             throw new NotFoundException();
         }
-        return Boolean(await this.ratingsRepository.remove(rating));
+        await this.ratingsRepository.remove(rating);
     }
 }

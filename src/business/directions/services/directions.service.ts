@@ -47,28 +47,31 @@ export class DirectionsService implements IService<DirectionEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<DirectionEntity> {
         const creatable = {
             title: options.body.title,
         } as DeepPartial<DirectionEntity>;
-        return Boolean(
-            await this.directionsRepository.update(
-                { id: options.params.direction },
-                creatable,
-            ),
+
+        await this.directionsRepository.update(
+            { id: options.params.direction },
+            creatable,
         );
+
+        return await this.directionsRepository.findOneBy({
+            id: options.params.direction,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const direction = await this.directionsRepository.findOneBy({
             id: options.params.direction,
         });
         if (!direction) {
             throw new NotFoundException();
         }
-        return Boolean(await this.directionsRepository.remove(direction));
+        await this.directionsRepository.remove(direction);
     }
 }

@@ -43,7 +43,7 @@ export class UsersService implements IService<UserEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<UserEntity> {
         const user = await this.usersRepository.findOne({
             where: { id: options.params.user },
         });
@@ -51,15 +51,17 @@ export class UsersService implements IService<UserEntity> {
             throw new NotFoundException();
         }
         const creatable = {} as DeepPartial<UserEntity>;
-        return Boolean(
-            await this.usersRepository.update({ id: user.id }, creatable),
-        );
+
+        await this.usersRepository.update({ id: user.id }, creatable);
+        return await this.usersRepository.findOne({
+            where: { id: options.params.user },
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const user = await this.usersRepository.findOne({
             where: { id: options.params.user },
         });
@@ -67,6 +69,6 @@ export class UsersService implements IService<UserEntity> {
             throw new NotFoundException();
         }
 
-        return Boolean(await this.usersRepository.remove(user));
+        await this.usersRepository.remove(user);
     }
 }

@@ -47,8 +47,8 @@ export class DirectionsController {
     async update(
         @Param() params: UpdateDirectionParamsDto,
         @Body() body: UpdateDirectionBodyDto,
-    ): Promise<void> {
-        await this.directionsService.update({ params, body });
+    ): Promise<DirectionEntity> {
+        return await this.directionsService.update({ params, body });
     }
 
     @Delete('/:direction')

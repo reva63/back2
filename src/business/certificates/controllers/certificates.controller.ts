@@ -47,8 +47,8 @@ export class CertificatesController {
     async update(
         @Param() params: UpdateCertificateParamsDto,
         @Body() body: UpdateCertificateBodyDto,
-    ): Promise<void> {
-        await this.certificatesService.update({ params, body });
+    ): Promise<CertificateEntity> {
+        return await this.certificatesService.update({ params, body });
     }
 
     @Delete('/:certificate')

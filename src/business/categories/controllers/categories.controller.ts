@@ -47,8 +47,8 @@ export class CategoriesController {
     async update(
         @Param() params: UpdateCategoryParamsDto,
         @Body() body: UpdateCategoryBodyDto,
-    ): Promise<void> {
-        await this.categoriesService.update({ params, body });
+    ): Promise<CategoryEntity> {
+        return await this.categoriesService.update({ params, body });
     }
 
     @Delete('/:category')

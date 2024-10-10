@@ -27,10 +27,7 @@ export interface IService<T> {
     update?(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean | T | T[]>;
+    }): Promise<T | T[]>;
 
-    remove?(options: {
-        params?: IParamsDto;
-        body?: IBodyDto;
-    }): Promise<boolean | T | void>;
+    remove?(options: { params?: IParamsDto; body?: IBodyDto }): Promise<void>;
 }

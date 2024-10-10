@@ -34,20 +34,18 @@ export class ParagraphsService implements IService<Paragraph> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<Paragraph[]> {
         const creatables = await this.create(options, true);
-        await this.paragraphsRepository.save(creatables);
-        return true;
+        return await this.paragraphsRepository.save(creatables);
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const paragraphs = await this.paragraphsRepository.findBy({
             id: In(options.body.removeParagraphs),
         });
         await this.paragraphsRepository.remove(paragraphs);
-        return true;
     }
 }

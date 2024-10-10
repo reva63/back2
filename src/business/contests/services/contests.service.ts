@@ -59,7 +59,7 @@ export class ContestsService implements IService<ContestEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<ContestEntity> {
         if (options.body.upsertParagraphs?.length > 0) {
             await this.paragraphsService.update(options);
         }
@@ -73,24 +73,27 @@ export class ContestsService implements IService<ContestEntity> {
             description: options.body.description,
             preview: options.body.preview,
         } as DeepPartial<ContestEntity>;
-        return Boolean(
-            await this.contestsRepository.update(
-                { id: options.params.contest },
-                creatable,
-            ),
+
+        await this.contestsRepository.update(
+            { id: options.params.contest },
+            creatable,
         );
+
+        return await this.contestsRepository.findOneBy({
+            id: options.params.contest,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const constest = await this.contestsRepository.findOneBy({
             id: options.params.contest,
         });
         if (!constest) {
             throw new NotFoundException();
         }
-        return Boolean(await this.contestsRepository.remove(constest));
+        await this.contestsRepository.remove(constest);
     }
 }

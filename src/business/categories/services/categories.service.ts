@@ -48,29 +48,32 @@ export class CategoriesService implements IService<CategoryEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<CategoryEntity> {
         const creatable = {
             title: options.body.title,
             direction: options.body.direction,
         } as DeepPartial<CategoryEntity>;
-        return Boolean(
-            await this.categoriesRepository.update(
-                { id: options.params.category },
-                creatable,
-            ),
+
+        await this.categoriesRepository.update(
+            { id: options.params.category },
+            creatable,
         );
+
+        return await this.categoriesRepository.findOneBy({
+            id: options.params.category,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const category = await this.categoriesRepository.findOneBy({
             id: options.params.category,
         });
         if (!category) {
             throw new NotFoundException();
         }
-        return Boolean(await this.categoriesRepository.remove(category));
+        await this.categoriesRepository.remove(category)
     }
 }

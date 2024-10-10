@@ -44,8 +44,8 @@ export class PostsController {
     async update(
         @Param() params: UpdatePostParamsDto,
         @Body() body: UpdatePostBodyDto,
-    ): Promise<void> {
-        await this.postsService.update({ params, body });
+    ): Promise<PostEntity> {
+        return await this.postsService.update({ params, body });
     }
 
     @Delete('/:post')
