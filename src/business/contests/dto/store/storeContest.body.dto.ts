@@ -10,6 +10,9 @@ export class StoreContestBodyDto implements IBodyDto {
     @IsString()
     description: string;
 
+    @IsString()
+    preview: string;
+
     @ValidateParagraphs()
     upsertParagraphs: ParagraphDto[];
 }

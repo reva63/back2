@@ -15,6 +15,8 @@ export class Paragraph {
     @Column('jsonb')
     data: object;
 
-    @ManyToOne(() => ContestEntity, (contest) => contest.paragraphs)
+    @ManyToOne(() => ContestEntity, (contest) => contest.paragraphs, {
+        onDelete: 'CASCADE',
+    })
     contest: ContestEntity;
 }

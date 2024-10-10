@@ -30,11 +30,14 @@ export class ContestsService implements IService<ContestEntity> {
         body?: IBodyDto;
     }): Promise<ContestEntity> {
         const contest = await this.contestsRepository.findOneBy({
-            id: options.params.post,
+            id: options.params.contest,
         });
         if (!contest) {
             throw new NotFoundException();
         }
+
+        contest.views = Number(contest.views) + 1;
+        await this.contestsRepository.save(contest);
         return contest;
     }
 
@@ -44,6 +47,9 @@ export class ContestsService implements IService<ContestEntity> {
     }): Promise<ContestEntity> {
         const paragraphs = await this.paragraphsService.create(options);
         const creatable = {
+            title: options.body.title,
+            description: options.body.description,
+            preview: options.body.preview,
             paragraphs,
         } as DeepPartial<ContestEntity>;
 
@@ -62,7 +68,11 @@ export class ContestsService implements IService<ContestEntity> {
             await this.paragraphsService.remove(options);
         }
 
-        const creatable = {} as DeepPartial<ContestEntity>;
+        const creatable = {
+            title: options.body.title,
+            description: options.body.description,
+            preview: options.body.preview,
+        } as DeepPartial<ContestEntity>;
         return Boolean(
             await this.contestsRepository.update(
                 { id: options.params.contest },

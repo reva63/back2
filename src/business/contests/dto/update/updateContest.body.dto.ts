@@ -12,6 +12,10 @@ export class UpdateContestBodyDto implements IBodyDto {
     @IsOptional()
     description: string;
 
+    @IsString()
+    @IsOptional()
+    preview: string;
+
     @ValidateParagraphs()
     @IsOptional()
     upsertParagraphs: ParagraphDto[];
