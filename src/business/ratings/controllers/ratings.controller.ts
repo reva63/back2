@@ -43,8 +43,8 @@ export class RatingsController {
     async update(
         @Param() params: UpdateRatingParamsDto,
         @Body() body: UpdateRatingBodyDto,
-    ): Promise<void> {
-        await this.ratingsService.update({ params, body });
+    ): Promise<RatingEntity> {
+        return await this.ratingsService.update({ params, body });
     }
 
     @Delete('/:rating')

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { ApplicationAttributeEntity } from '../entities/applicationAttribute.entity';
 import { DeepPartial, In, Repository } from 'typeorm';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
+import { ApplicationNotFoundException } from 'src/exceptions/applications/applicationNotFound.exception';
 
 @Injectable()
 export class ApplicationAttributesService
@@ -48,22 +49,21 @@ export class ApplicationAttributesService
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<ApplicationAttributeEntity> {
         const creatables = await this.create(options);
-        await this.applicationAttributesRepository.save(creatables);
-        return true;
+        return (await this.applicationAttributesRepository.save(creatables))[0];
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const keys = Object.keys({
             ...options.body.applicantData,
             ...options.body.applicantSocials,
         });
         if (!options.params.application) {
-            return false;
+            throw new ApplicationNotFoundException();
         }
         const attributes = await this.applicationAttributesRepository.findBy({
             applicaion: { id: options.params.application },
@@ -71,6 +71,5 @@ export class ApplicationAttributesService
         });
 
         await this.applicationAttributesRepository.remove(attributes);
-        return true;
     }
 }

@@ -39,7 +39,7 @@ export class UsersController {
         @Param() params: UpdateUserParamsDto,
         @Body() body: UpdateUserBodyDto,
     ) {
-        await this.usersService.update({ params, body });
+        return await this.usersService.update({ params, body });
     }
 
     @Delete('/:user')

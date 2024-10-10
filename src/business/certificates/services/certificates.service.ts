@@ -48,29 +48,32 @@ export class CertificatesService implements IService<CertificateEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<CertificateEntity> {
         const creatable = {
             key: options.body.key,
             name: options.body.name,
         } as DeepPartial<CertificateEntity>;
-        return Boolean(
-            await this.certificatesRepository.update(
-                { id: options.params.certificate },
-                creatable,
-            ),
+
+        await this.certificatesRepository.update(
+            { id: options.params.certificate },
+            creatable,
         );
+
+        return await this.certificatesRepository.findOneBy({
+            id: options.params.certificate,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const certificate = await this.certificatesRepository.findOneBy({
             id: options.params.certificate,
         });
         if (!certificate) {
             throw new NotFoundException();
         }
-        return Boolean(await this.certificatesRepository.remove(certificate));
+        await this.certificatesRepository.remove(certificate);
     }
 }

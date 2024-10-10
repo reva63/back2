@@ -28,9 +28,11 @@ export class StagesService implements IService<StageEntity> {
         const stage = await this.stagesRepository.findOneBy({
             id: options.params.stage,
         });
+
         if (!stage) {
             throw new NotFoundException();
         }
+
         return stage;
     }
 
@@ -45,13 +47,14 @@ export class StagesService implements IService<StageEntity> {
             contest: options.body.contest,
             certificates: options.body.certificates,
         } as DeepPartial<StageEntity>;
+
         return await this.stagesRepository.save(creatable);
     }
 
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean | StageEntity | StageEntity[]> {
+    }): Promise<StageEntity> {
         const creatable = {
             title: options.body.title,
             startDate: options.body.startDate,
@@ -59,24 +62,27 @@ export class StagesService implements IService<StageEntity> {
             contest: options.body.contest,
             certificates: options.body.certificates,
         } as DeepPartial<StageEntity>;
-        return Boolean(
-            await this.stagesRepository.update(
-                { id: options.params.stage },
-                creatable,
-            ),
+
+        await this.stagesRepository.update(
+            { id: options.params.stage },
+            creatable,
         );
+
+        return await this.stagesRepository.findOneBy({
+            id: options.params.stage,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const stage = await this.stagesRepository.findOneBy({
             id: options.params.stage,
         });
         if (!stage) {
             throw new NotFoundException();
         }
-        return Boolean(await this.stagesRepository.remove(stage));
+        await this.stagesRepository.remove(stage);
     }
 }

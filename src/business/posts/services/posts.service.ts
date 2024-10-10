@@ -56,27 +56,29 @@ export class PostsService implements IService<PostEntity> {
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<PostEntity> {
         const creatable = {} as DeepPartial<PostEntity>;
 
-        return Boolean(
-            await this.postsRepository.update(
-                { id: options.params.post },
-                creatable,
-            ),
+        await this.postsRepository.update(
+            { id: options.params.post },
+            creatable,
         );
+
+        return await this.postsRepository.findOneBy({
+            id: options.params.post,
+        });
     }
 
     async remove(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean> {
+    }): Promise<void> {
         const post = await this.postsRepository.findOneBy({
             id: options.params.post,
         });
 
         if (!post) throw new NotFoundException();
 
-        return Boolean(await this.postsRepository.remove(post));
+        await this.postsRepository.remove(post);
     }
 }
