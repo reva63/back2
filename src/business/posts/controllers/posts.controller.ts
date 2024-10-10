@@ -6,9 +6,9 @@ import {
     Param,
     Patch,
     Post,
+    Query,
 } from '@nestjs/common';
 import { PostsService } from '../services/posts.service';
-import { ListPostsParamsDto } from '../dto/list/listPosts.params.dto';
 import { ShowPostParamsDto } from '../dto/show/showPost.params.dto';
 import { StorePostParamsDto } from '../dto/store/storePost.param.dto';
 import { PostEntity } from '../entities/post.entity';
@@ -16,14 +16,15 @@ import { StorePostBodyDto } from '../dto/store/storePost.body.dto';
 import { UpdatePostParamsDto } from '../dto/update/updatePost.param.dto';
 import { UpdatePostBodyDto } from '../dto/update/updatePost.body.dto';
 import { RemovePostParamsDto } from '../dto/remove/removePost.params.dto';
+import { ListPostsQueryDto } from '../dto/list/listPosts.query.dto';
 
 @Controller('/posts')
 export class PostsController {
     constructor(private postsService: PostsService) {}
 
     @Get()
-    async list(@Param() params: ListPostsParamsDto): Promise<PostEntity[]> {
-        return await this.postsService.list({ params });
+    async list(@Query() query: ListPostsQueryDto): Promise<PostEntity[]> {
+        return await this.postsService.list({ query });
     }
 
     @Get('/:post')
