@@ -15,6 +15,7 @@ import { BlocksModule } from './blocks/blocks.module';
 import { StagesModule } from './stages/stages.module';
 import { CategoriesModule } from './categories/categories.module';
 import { DirectionsModule } from './directions/directions.module';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
     imports: [
@@ -34,6 +35,7 @@ import { DirectionsModule } from './directions/directions.module';
         NotificationsModule,
         ScheduleModule.forRoot(),
         DirectionsModule,
+        ProfilesModule,
     ],
 })
 export class BusinessModule {}

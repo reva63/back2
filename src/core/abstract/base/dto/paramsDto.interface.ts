@@ -8,4 +8,5 @@ export interface IParamsDto {
     certificate?: number;
     direction?: number;
     category?: number;
+    profile?: number;
 }

@@ -18,7 +18,7 @@ export class ParagraphsService implements IService<Paragraph> {
             params?: IParamsDto;
             body?: IBodyDto;
         },
-        isUpdate: boolean = false,
+        isUpdate?: boolean,
     ): Promise<DeepPartial<Paragraph>[]> {
         return options.body.upsertParagraphs.map((paragraph) => {
             const { id, type, order, ...data } = paragraph;

@@ -8,7 +8,7 @@ import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { Repository, DeepPartial } from 'typeorm';
 
 @Injectable()
-export class CategoriesService implements IService<CategoryEntity>{
+export class CategoriesService implements IService<CategoryEntity> {
     constructor(
         @InjectRepository(CategoryEntity)
         private categoriesRepository: Repository<CategoryEntity>,

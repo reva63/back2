@@ -1,6 +1,7 @@
 import { ApplicantDataBodyDto } from 'src/business/applications/dto/applicantData.body.dto';
 import { FileType } from '../../../types/file.type';
 import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
+import { IAttributeDto } from 'src/core/abstract/base/dto/attribute.dto.interface';
 
 export interface IBodyDto {
     // common
@@ -33,4 +34,21 @@ export interface IBodyDto {
 
     // categories
     direction?: number;
+
+    // profiles
+    firstName?: string;
+    lastName?: string;
+    middleName?: string | null;
+    gender?: 'male' | 'female';
+    dateOfBirth?: Date;
+    citizenship?: string;
+    country?: string;
+    region?: string;
+    city?: string;
+    email?: string;
+    phone?: string;
+
+    // attributes
+    upsertAttributes?: IAttributeDto[];
+    removeAttributes?: number[];
 }

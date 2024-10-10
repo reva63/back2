@@ -5,6 +5,7 @@ import {
     Entity,
     ManyToMany,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -17,6 +18,7 @@ import { UserAttributeEntity } from './userAttribute.entity';
 import { NotificationEntity } from 'src/business/notifications/entities/notification.entity';
 import { ApplicationEntity } from 'src/business/applications/entities/application.entity';
 import { RatingEntity } from 'src/business/ratings/entities/rating.entity';
+import { ProfileEntity } from 'src/business/profiles/entities/profile.entity';
 
 @Entity()
 export class UserEntity {
@@ -35,7 +37,12 @@ export class UserEntity {
     @Column('varchar')
     rvsId: string;
 
-    @OneToMany(() => UserAttributeEntity, (attribute) => attribute.user)
+    @OneToOne(() => ProfileEntity, (profile) => profile.user)
+    profile: ProfileEntity;
+
+    @OneToMany(() => UserAttributeEntity, (attribute) => attribute.user, {
+        cascade: ['insert'],
+    })
     attributes: UserAttributeEntity[];
 
     @ManyToMany(() => RoleEnity, (role) => role.users)
