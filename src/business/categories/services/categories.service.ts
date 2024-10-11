@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { CategoryEntity } from '../entities/category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,12 +6,15 @@ import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { Repository, DeepPartial } from 'typeorm';
+import { DirectionsService } from 'src/business/directions/services/directions.service';
+import { CategoryNotFoundException } from 'src/exceptions/categories/categoryNotFound.exception';
 
 @Injectable()
 export class CategoriesService implements IService<CategoryEntity> {
     constructor(
         @InjectRepository(CategoryEntity)
         private categoriesRepository: Repository<CategoryEntity>,
+        private directionsService: DirectionsService,
     ) {}
 
     async list(options: {
@@ -29,7 +32,7 @@ export class CategoriesService implements IService<CategoryEntity> {
             id: options.params.category,
         });
         if (!category) {
-            throw new NotFoundException();
+            throw new CategoryNotFoundException();
         }
         return category;
     }
@@ -38,6 +41,10 @@ export class CategoriesService implements IService<CategoryEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<CategoryEntity> {
+        await this.directionsService.show({
+            params: { direction: options.body.direction },
+        });
+
         const creatable = {
             title: options.body.title,
             direction: options.body.direction,
@@ -49,6 +56,10 @@ export class CategoriesService implements IService<CategoryEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<CategoryEntity> {
+        await this.directionsService.show({
+            params: { direction: options.body.direction },
+        });
+
         const creatable = {
             title: options.body.title,
             direction: options.body.direction,
@@ -72,8 +83,8 @@ export class CategoriesService implements IService<CategoryEntity> {
             id: options.params.category,
         });
         if (!category) {
-            throw new NotFoundException();
+            throw new CategoryNotFoundException();
         }
-        await this.categoriesRepository.remove(category)
+        await this.categoriesRepository.remove(category);
     }
 }

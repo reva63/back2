@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { DirectionEntity } from '../entities/direction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,7 @@ import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { Repository, DeepPartial } from 'typeorm';
+import { DirectionNotFoundException } from 'src/exceptions/directions/directionNotFound.exception';
 
 @Injectable()
 export class DirectionsService implements IService<DirectionEntity> {
@@ -29,7 +30,7 @@ export class DirectionsService implements IService<DirectionEntity> {
             id: options.params.direction,
         });
         if (!direction) {
-            throw new NotFoundException();
+            throw new DirectionNotFoundException();
         }
         return direction;
     }
@@ -70,7 +71,7 @@ export class DirectionsService implements IService<DirectionEntity> {
             id: options.params.direction,
         });
         if (!direction) {
-            throw new NotFoundException();
+            throw new DirectionNotFoundException();
         }
         await this.directionsRepository.remove(direction);
     }
