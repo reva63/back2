@@ -5,6 +5,7 @@ import {
     IsDateString,
     IsEmail,
     IsIn,
+    IsNumber,
     IsOptional,
     IsPhoneNumber,
     IsString,
@@ -13,6 +14,10 @@ import {
 import { Type } from 'class-transformer';
 
 export class StoreProfileBodyDto implements IBodyDto {
+    // TODO: remove after authentication comes
+    @IsNumber()
+    user: number;
+
     @IsString()
     firstName: string;
 
@@ -50,5 +55,6 @@ export class StoreProfileBodyDto implements IBodyDto {
     @ArrayMinSize(1)
     @ValidateNested({ each: true })
     @Type(() => ProfileAttributeBodyDto)
-    profileAttributes: ProfileAttributeBodyDto[];
+    @IsOptional()
+    upsertAttributes: ProfileAttributeBodyDto[];
 }

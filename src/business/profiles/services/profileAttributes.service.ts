@@ -5,7 +5,6 @@ import { DeepPartial, In, Repository } from 'typeorm';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
-import { ProfileAttributeTypes } from 'src/core/types/profileAttributeTypes.enum';
 
 @Injectable()
 export class ProfileAttributesService
@@ -24,18 +23,15 @@ export class ProfileAttributesService
         isUpdate?: boolean,
     ): Promise<DeepPartial<ProfileAttributeEntity>[]> {
         const attributes = [] as DeepPartial<ProfileAttributeEntity>[];
-        const profile = { id: options.params.profile };
+        const profile = isUpdate ? { id: options.params.profile } : undefined;
         for (const attribute of options.body.upsertAttributes) {
             const creatable = {
                 id: isUpdate ? attribute.id : undefined,
-                key: attribute.type,
+                type: attribute.type,
+                key: attribute.name,
+                value: attribute.value,
                 profile,
             } as DeepPartial<ProfileAttributeEntity>;
-
-            switch (attribute.type) {
-                case ProfileAttributeTypes.Social:
-                    creatable.value = `${attribute.name}|${attribute.value}`;
-            }
 
             attributes.push(creatable);
         }

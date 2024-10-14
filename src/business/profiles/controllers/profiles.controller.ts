@@ -31,7 +31,7 @@ export class ProfilesController {
     @Post()
     async store(@Body() body: StoreProfileBodyDto) {
         // TODO: assign user id in params (from authentication)
-        const user = 1;
+        const user = body.user;
         return await this.profilesService.store({ params: { user }, body });
     }
 
