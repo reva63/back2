@@ -25,19 +25,23 @@ export class ContestsService implements IService<ContestEntity> {
         });
     }
 
-    async show(options: {
-        params?: IParamsDto;
-        body?: IBodyDto;
-    }): Promise<ContestEntity> {
+    async show(
+        options: {
+            params?: IParamsDto;
+            body?: IBodyDto;
+        },
+        fromController = false,
+    ): Promise<ContestEntity> {
         const contest = await this.contestsRepository.findOneBy({
             id: options.params.contest,
         });
         if (!contest) {
             throw new NotFoundException();
         }
-
-        contest.views = Number(contest.views) + 1;
-        await this.contestsRepository.save(contest);
+        if (fromController) {
+            contest.views = Number(contest.views) + 1;
+            await this.contestsRepository.save(contest);
+        }
         return contest;
     }
 
