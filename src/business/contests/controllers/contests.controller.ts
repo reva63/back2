@@ -30,7 +30,7 @@ export class ContestsController {
 
     @Get('/:contest')
     async show(@Param() params: ShowContestParamsDto): Promise<ContestEntity> {
-        return await this.contestsService.show({ params });
+        return await this.contestsService.show({ params }, true);
     }
 
     @Post()
