@@ -31,7 +31,10 @@ export class CategoryEntity {
     @OneToMany(() => CertificateEntity, (certificate) => certificate.category)
     certificates: CertificateEntity[];
 
-    @ManyToMany(() => ApplicationEntity, (application) => application.category)
+    @ManyToMany(
+        () => ApplicationEntity,
+        (application) => application.categories,
+    )
     @JoinTable()
     applications: ApplicationEntity[];
 }

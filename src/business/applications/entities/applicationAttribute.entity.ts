@@ -4,6 +4,12 @@ import { AttributeEntityAbstract } from 'src/core/abstract/entities/attribute.en
 
 @Entity()
 export class ApplicationAttributeEntity extends AttributeEntityAbstract {
-    @ManyToOne(() => ApplicationEntity, (application) => application.attributes)
+    @ManyToOne(
+        () => ApplicationEntity,
+        (application) => application.attributes,
+        {
+            onDelete: 'CASCADE',
+        },
+    )
     applicaion: ApplicationEntity;
 }

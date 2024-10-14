@@ -15,7 +15,7 @@ import { ApplicationEntity } from 'src/business/applications/entities/applicatio
 import { StageEntity } from 'src/business/stages/entities/stage.entity';
 import { CategoryEntity } from 'src/business/categories/entities/category.entity';
 import { BlockEntity } from 'src/business/blocks/entities/block.entity';
-import { Paragraph } from './paragraph.entity';
+import { ParagraphEntity } from './paragraph.entity';
 import { DirectionEntity } from 'src/business/directions/entities/direction.entity';
 
 @Entity()
@@ -47,10 +47,10 @@ export class ContestEntity {
     @OneToMany(() => ContestAttributeEntity, (attribute) => attribute.contest)
     attributes: ContestAttributeEntity[];
 
-    @OneToMany(() => Paragraph, (paragraph) => paragraph.contest, {
+    @OneToMany(() => ParagraphEntity, (paragraph) => paragraph.contest, {
         cascade: ['insert', 'remove'],
     })
-    paragraphs: Paragraph[];
+    paragraphs: ParagraphEntity[];
 
     @ManyToMany(() => BlockEntity, (block) => block.contests)
     @JoinTable()

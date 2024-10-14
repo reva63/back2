@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ContestEntity } from './contest.entity';
 
 @Entity()
-export class Paragraph {
+export class ParagraphEntity {
     @PrimaryGeneratedColumn()
     id: number;
 

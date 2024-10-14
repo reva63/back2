@@ -34,7 +34,7 @@ export class ApplicationEntity {
         () => ApplicationAttributeEntity,
         (attribute) => attribute.applicaion,
         {
-            cascade: ['remove', 'insert'],
+            cascade: ['insert'],
         },
     )
     attributes: ApplicationAttributeEntity[];
@@ -55,7 +55,7 @@ export class ApplicationEntity {
     directions: DirectionEntity[];
 
     @ManyToMany(() => CategoryEntity, (category) => category.applications)
-    category: CategoryEntity[];
+    categories: CategoryEntity[];
 
     @OneToMany(() => RatingEntity, (rating) => rating.applicaion)
     ratings: RatingEntity[];

@@ -8,8 +8,6 @@ import {
     Post,
 } from '@nestjs/common';
 import { ApplicationsService } from '../services/applications.service';
-import { ListApplicationsParamsDto } from '../dto/list/listApplications.params.dto';
-import { StoreApplicationParamsDto } from '../dto/store/storeApplication.params.dto';
 import { StoreApplicationBodyDto } from '../dto/store/storeApplication.body.dto';
 import { ShowApplicationParamsDto } from '../dto/show/showApplication.params.dto';
 import { UpdateApplicationBodyDto } from '../dto/update/updateApplication.body.dto';
@@ -21,8 +19,8 @@ export class ApplicationsController {
     constructor(private applicationsService: ApplicationsService) {}
 
     @Get()
-    async list(@Param() params: ListApplicationsParamsDto) {
-        return await this.applicationsService.list({ params });
+    async list() {
+        return await this.applicationsService.list({});
     }
 
     @Get('/:application')
@@ -31,11 +29,10 @@ export class ApplicationsController {
     }
 
     @Post()
-    async store(
-        @Param() params: StoreApplicationParamsDto,
-        @Body() body: StoreApplicationBodyDto,
-    ) {
-        return await this.applicationsService.store({ params, body });
+    async store(@Body() body: StoreApplicationBodyDto) {
+        // TODO: assign user id in params (from authentication)
+        const user = body.user;
+        return await this.applicationsService.store({ params: { user }, body });
     }
 
     @Patch('/:application')

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Paragraph } from '../entities/paragraph.entity';
+import { ParagraphEntity } from '../entities/paragraph.entity';
 import { DeepPartial, In, Repository } from 'typeorm';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 
 @Injectable()
-export class ParagraphsService implements IService<Paragraph> {
+export class ParagraphsService implements IService<ParagraphEntity> {
     constructor(
-        @InjectRepository(Paragraph)
-        private readonly paragraphsRepository: Repository<Paragraph>,
+        @InjectRepository(ParagraphEntity)
+        private readonly paragraphsRepository: Repository<ParagraphEntity>,
     ) {}
 
     async create(
@@ -19,7 +19,7 @@ export class ParagraphsService implements IService<Paragraph> {
             body?: IBodyDto;
         },
         isUpdate?: boolean,
-    ): Promise<DeepPartial<Paragraph>[]> {
+    ): Promise<DeepPartial<ParagraphEntity>[]> {
         return options.body.upsertParagraphs.map((paragraph) => {
             const { id, type, order, ...data } = paragraph;
             return {
@@ -27,14 +27,14 @@ export class ParagraphsService implements IService<Paragraph> {
                 order,
                 type,
                 data,
-            } as DeepPartial<Paragraph>;
+            } as DeepPartial<ParagraphEntity>;
         });
     }
 
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<Paragraph[]> {
+    }): Promise<ParagraphEntity[]> {
         const creatables = await this.create(options, true);
         return await this.paragraphsRepository.save(creatables);
     }

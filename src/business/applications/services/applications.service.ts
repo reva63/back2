@@ -22,7 +22,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         query?: IQueryDto;
     }): Promise<ApplicationEntity[]> {
         return await this.applicationsRepository.find({
-            relations: { attributes: true },
+            relations: { attributes: true, attachments: true },
         });
     }
 
@@ -30,9 +30,34 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<ApplicationEntity> {
-        return await this.applicationsRepository.findOneBy({
-            id: options.params.application,
+        return await this.applicationsRepository.findOne({
+            where: { id: options.params.application },
+            relations: { attributes: true, attachments: true },
         });
+    }
+
+    async create(
+        options: { params?: IParamsDto; body?: IBodyDto },
+        isUpdate?: boolean,
+    ): Promise<DeepPartial<ApplicationEntity>> {
+        const directions = options.body.directions
+            ? options.body.directions.map((id) => ({
+                  id,
+              }))
+            : undefined;
+        const categories = options.body.categories
+            ? options.body.categories.map((id) => ({
+                  id,
+              }))
+            : undefined;
+
+        return {
+            id: isUpdate ? options.params.application : undefined,
+            contest: { id: options.body.contest },
+            applicant: { id: options.params.user },
+            directions,
+            categories,
+        } as DeepPartial<ApplicationEntity>;
     }
 
     async store(options: {
@@ -41,40 +66,35 @@ export class ApplicationsService implements IService<ApplicationEntity> {
     }): Promise<ApplicationEntity> {
         const attributes =
             await this.applicationAttributesService.create(options);
-        const creatable = {
-            applicant: { id: options.params.user },
-            contest: { id: options.params.contest },
-            attributes,
-        } as DeepPartial<ApplicationEntity>;
+        const creatable = await this.create(options);
 
-        return await this.applicationsRepository.save(creatable);
+        return await this.applicationsRepository.save({
+            ...creatable,
+            attributes,
+        });
     }
 
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<ApplicationEntity> {
-        const creatable = {} as DeepPartial<ApplicationEntity>;
-        const applicaion = await this.applicationsRepository.findOneBy({
-            id: options.params.application,
-        });
-        if (!applicaion) {
+        const application = { id: options.params.application };
+        const isExists =
+            await this.applicationsRepository.existsBy(application);
+        if (!isExists) {
             throw new ApplicationNotFoundException();
         }
 
-        await this.applicationsRepository.update(
-            {
-                id: options.params.application,
-            },
-            creatable,
-        );
+        const creatable = await this.create(options);
+        await this.applicationsRepository.update(application, creatable);
 
-        if (options.body.applicantData || options.body.applicantSocials) {
+        if (options.body.profileData || options.body.socialData?.length) {
             await this.applicationAttributesService.update(options);
         }
 
-        return await this.applicationsRepository.findOneBy({
-            id: options.params.application,
+        return await this.applicationsRepository.findOne({
+            where: application,
+            relations: { attributes: true, attachments: true },
         });
     }
 
@@ -82,26 +102,16 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<void> {
-        const applicaion = await this.applicationsRepository.findOneBy({
-            id: options.params.application,
+        const applicaion = await this.applicationsRepository.findOne({
+            where: {
+                id: options.params.application,
+            },
+            loadRelationIds: { relations: ['directions', 'categories'] },
         });
         if (!applicaion) {
             throw new ApplicationNotFoundException();
         }
 
         await this.applicationsRepository.remove(applicaion);
-    }
-
-    async removeAttributes(options: {
-        params?: IParamsDto;
-        body?: IBodyDto;
-    }): Promise<void> {
-        const applicaion = await this.applicationsRepository.findOneBy({
-            id: options.params.application,
-        });
-        if (!applicaion) {
-            throw new ApplicationNotFoundException();
-        }
-        await this.applicationAttributesService.remove(options);
     }
 }

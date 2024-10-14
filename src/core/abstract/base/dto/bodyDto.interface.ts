@@ -1,7 +1,8 @@
-import { ApplicantDataBodyDto } from 'src/business/applications/dto/applicantData.body.dto';
 import { FileType } from '../../../types/file.type';
 import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
 import { IAttributeDto } from 'src/core/abstract/base/dto/attribute.dto.interface';
+import { IProfile } from '../../interfaces/profile.interface';
+import { ISocial } from '../../interfaces/social.interface';
 
 export interface IBodyDto {
     // common
@@ -19,8 +20,8 @@ export interface IBodyDto {
     endDate?: Date;
 
     // applications
-    applicantData?: ApplicantDataBodyDto;
-    applicantSocials?: { [key: string]: string };
+    profileData?: IProfile;
+    socialData?: ISocial[];
 
     // contests
     description?: string;
@@ -34,6 +35,7 @@ export interface IBodyDto {
 
     // categories
     direction?: number;
+    directions?: number[];
 
     // profiles
     firstName?: string;

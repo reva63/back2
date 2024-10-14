@@ -6,8 +6,9 @@ import {
     IsPhoneNumber,
     IsString,
 } from 'class-validator';
+import { IProfile } from 'src/core/abstract/interfaces/profile.interface';
 
-export class ApplicantDataBodyDto {
+export class ProfileDataBodyDto implements IProfile {
     @IsString()
     lastName: string;
 
@@ -19,7 +20,7 @@ export class ApplicantDataBodyDto {
     middleName: string;
 
     @IsIn(['male', 'female'])
-    gender: string;
+    gender: 'male' | 'female';
 
     @IsDateString()
     dateOfBirth: Date;

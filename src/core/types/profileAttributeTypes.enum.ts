@@ -1,3 +1,4 @@
-export enum ProfileAttributeTypes {
+export enum AttributeTypes {
     Social = 'social',
+    Profile = 'profile',
 }

@@ -7,7 +7,6 @@ import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { ProfileAttributesService } from './profileAttributes.service';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
-import { ProfileAttributeEntity } from '../entities/profileAttributes.entity';
 import { ProfileNotFoundException } from 'src/exceptions/profiles/profileNotFound.exception';
 
 @Injectable()
@@ -33,6 +32,7 @@ export class ProfilesService implements IService<ProfileEntity> {
     }): Promise<ProfileEntity> {
         return await this.profilesRepository.findOne({
             where: { id: options.params.profile },
+            relations: { attributes: true },
         });
     }
 
@@ -55,7 +55,7 @@ export class ProfilesService implements IService<ProfileEntity> {
     async store(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<boolean | ProfileEntity | ProfileEntity[]> {
+    }): Promise<ProfileEntity> {
         const attributes = options.body.upsertAttributes?.length
             ? await this.profileAttributesService.create(options)
             : undefined;

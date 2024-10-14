@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import {
-    ArrayMinSize,
     IsArray,
     IsEmail,
     IsNumber,

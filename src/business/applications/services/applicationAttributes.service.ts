@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { ApplicationAttributeEntity } from '../entities/applicationAttribute.entity';
@@ -6,6 +6,8 @@ import { DeepPartial, In, Repository } from 'typeorm';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { ApplicationNotFoundException } from 'src/exceptions/applications/applicationNotFound.exception';
+import { AttributeTypes } from 'src/core/types/profileAttributeTypes.enum';
+import { ProfileAttributesService } from 'src/business/profiles/services/profileAttributes.service';
 
 @Injectable()
 export class ApplicationAttributesService
@@ -14,24 +16,32 @@ export class ApplicationAttributesService
     constructor(
         @InjectRepository(ApplicationAttributeEntity)
         private readonly applicationAttributesRepository: Repository<ApplicationAttributeEntity>,
+        private readonly profileAttributesService: ProfileAttributesService,
     ) {}
 
-    async create(options: {
-        params?: IParamsDto;
-        body?: IBodyDto;
-    }): Promise<DeepPartial<ApplicationAttributeEntity>[]> {
-        const attributes = {
-            ...options.body.applicantData,
-            ...options.body.applicantSocials,
-        };
+    async create(
+        options: {
+            params?: IParamsDto;
+            body?: IBodyDto;
+        },
+        isUpdate?: boolean,
+    ): Promise<DeepPartial<ApplicationAttributeEntity>[]> {
         const creatables = [] as DeepPartial<ApplicationAttributeEntity>[];
-        const applicaion = { id: options.params.application };
 
-        for (const [key, value] of Object.entries(attributes)) {
+        for (const [key, value] of Object.entries(options.body.profileData)) {
             const creatable = {
+                type: AttributeTypes.Profile,
                 key,
                 value,
-                applicaion,
+            } as DeepPartial<ApplicationAttributeEntity>;
+            creatables.push(creatable);
+        }
+
+        for (const social of options.body.socialData) {
+            const creatable = {
+                type: AttributeTypes.Social,
+                key: social.type,
+                value: social.link,
             } as DeepPartial<ApplicationAttributeEntity>;
             creatables.push(creatable);
         }
@@ -49,9 +59,9 @@ export class ApplicationAttributesService
     async update(options: {
         params?: IParamsDto;
         body?: IBodyDto;
-    }): Promise<ApplicationAttributeEntity> {
-        const creatables = await this.create(options);
-        return (await this.applicationAttributesRepository.save(creatables))[0];
+    }): Promise<ApplicationAttributeEntity[]> {
+        const creatables = await this.create(options, true);
+        return await this.applicationAttributesRepository.save(creatables);
     }
 
     async remove(options: {
@@ -59,8 +69,8 @@ export class ApplicationAttributesService
         body?: IBodyDto;
     }): Promise<void> {
         const keys = Object.keys({
-            ...options.body.applicantData,
-            ...options.body.applicantSocials,
+            ...options.body.profileData,
+            ...options.body.socialData,
         });
         if (!options.params.application) {
             throw new ApplicationNotFoundException();

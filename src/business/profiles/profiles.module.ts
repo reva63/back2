@@ -12,6 +12,6 @@ import { ProfileAttributesService } from './services/profileAttributes.service';
     ],
     controllers: [ProfilesController],
     providers: [ProfilesService, ProfileAttributesService],
-    exports: [ProfilesService],
+    exports: [ProfilesService, ProfileAttributesService],
 })
 export class ProfilesModule {}

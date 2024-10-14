@@ -4,7 +4,7 @@ import { ContestEntity } from './entities/contest.entity';
 import { ContestAttributeEntity } from './entities/contestAttribute.entity';
 import { ContestsController } from './controllers/contests.controller';
 import { ContestsService } from './services/contests.service';
-import { Paragraph } from './entities/paragraph.entity';
+import { ParagraphEntity } from './entities/paragraph.entity';
 import { ParagraphsService } from './services/paragraphs.service';
 
 @Module({
@@ -12,7 +12,7 @@ import { ParagraphsService } from './services/paragraphs.service';
         TypeOrmModule.forFeature([
             ContestEntity,
             ContestAttributeEntity,
-            Paragraph,
+            ParagraphEntity,
         ]),
     ],
     controllers: [ContestsController],
