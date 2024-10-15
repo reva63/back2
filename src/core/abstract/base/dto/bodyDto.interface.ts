@@ -11,8 +11,6 @@ export interface IBodyDto {
     contest?: number;
     certificates?: number[];
     title?: string;
-
-    // posts
     text?: string;
 
     // stages
@@ -53,4 +51,7 @@ export interface IBodyDto {
     // attributes
     upsertAttributes?: IAttributeDto[];
     removeAttributes?: number[];
+
+    // notifications
+    reciever?: number;
 }

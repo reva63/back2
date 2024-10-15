@@ -9,4 +9,5 @@ export interface IParamsDto {
     direction?: number;
     category?: number;
     profile?: number;
+    notification?: number;
 }
