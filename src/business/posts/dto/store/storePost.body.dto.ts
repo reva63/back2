@@ -5,9 +5,9 @@ import {
     MinLength,
     ValidateNested,
 } from 'class-validator';
-import { FileType } from '../../../../core/types/file.type';
 import { Type } from 'class-transformer';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
+import { PostFileDataBodyDto } from '../postFileData.body.dto';
 
 export class StorePostBodyDto implements IBodyDto {
     @IsString()
@@ -20,6 +20,6 @@ export class StorePostBodyDto implements IBodyDto {
 
     @IsArray()
     @ValidateNested({ each: true })
-    @Type(() => FileType)
-    files: FileType[];
+    @Type(() => PostFileDataBodyDto)
+    files: PostFileDataBodyDto[];
 }

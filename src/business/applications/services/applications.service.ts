@@ -22,6 +22,9 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         query?: IQueryDto;
     }): Promise<ApplicationEntity[]> {
         return await this.applicationsRepository.find({
+            loadRelationIds: {
+                relations: ['applicant', 'directions', 'categories', 'contest'],
+            },
             relations: { attributes: true, attachments: true },
         });
     }
@@ -32,6 +35,9 @@ export class ApplicationsService implements IService<ApplicationEntity> {
     }): Promise<ApplicationEntity> {
         return await this.applicationsRepository.findOne({
             where: { id: options.params.application },
+            loadRelationIds: {
+                relations: ['applicant', 'directions', 'categories', 'contest'],
+            },
             relations: { attributes: true, attachments: true },
         });
     }
@@ -40,6 +46,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         options: { params?: IParamsDto; body?: IBodyDto },
         isUpdate?: boolean,
     ): Promise<DeepPartial<ApplicationEntity>> {
+        console.log(options.body);
         const directions = options.body.directions
             ? options.body.directions.map((id) => ({
                   id,
@@ -66,12 +73,14 @@ export class ApplicationsService implements IService<ApplicationEntity> {
     }): Promise<ApplicationEntity> {
         const attributes =
             await this.applicationAttributesService.create(options);
-        const creatable = await this.create(options);
 
-        return await this.applicationsRepository.save({
+        const creatable = await this.create(options);
+        const application = await this.applicationsRepository.save({
             ...creatable,
             attributes,
         });
+
+        return await this.show({ params: { application: application.id } });
     }
 
     async update(options: {
@@ -92,10 +101,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
             await this.applicationAttributesService.update(options);
         }
 
-        return await this.applicationsRepository.findOne({
-            where: application,
-            relations: { attributes: true, attachments: true },
-        });
+        return await this.show(options);
     }
 
     async remove(options: {

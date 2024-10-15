@@ -11,6 +11,7 @@ import {
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import multiPart from '@fastify/multipart';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -47,6 +48,11 @@ async function bootstrap() {
         }),
     );
 
+    await app.register(multiPart, {
+        limits: {
+            fileSize: 1024 * 1024 * 2, // 2 Mb,
+        },
+    });
     await app.register(fastifyCookie);
 
     await app.listen(

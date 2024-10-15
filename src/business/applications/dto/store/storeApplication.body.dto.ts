@@ -1,9 +1,15 @@
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
-import { ProfileDataBodyDto } from '../profileData.body.dto';
-import { FileType } from 'src/core/types/file.type';
-import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
+import { ApplicationProfileDataBodyDto } from '../applicationProfileData.body.dto';
+import {
+    IsArray,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
-import { SocialDataBodyDto } from '../socialData.body.dto';
+import { ApplicationSocialDataBodyDto } from '../applicationSocialData.body.dto';
+import { ApplicationFileDataBodyDto } from '../applicationFileData.body.dto';
 
 export class StoreApplicationBodyDto implements IBodyDto {
     // TODO: remove after authentication comes
@@ -22,16 +28,18 @@ export class StoreApplicationBodyDto implements IBodyDto {
     categories: number[];
 
     @ValidateNested()
-    @Type(() => ProfileDataBodyDto)
+    @Type(() => ApplicationProfileDataBodyDto)
     @IsNotEmpty()
-    profileData: ProfileDataBodyDto;
+    profileData: ApplicationProfileDataBodyDto;
 
     @ValidateNested({ each: true })
-    @Type(() => SocialDataBodyDto)
+    @Type(() => ApplicationSocialDataBodyDto)
     @IsArray()
-    socialData: SocialDataBodyDto[];
+    socialData: ApplicationSocialDataBodyDto[];
 
-    @ValidateNested()
-    @Type(() => FileType)
-    files: FileType[];
+    @ValidateNested({ each: true })
+    @Type(() => ApplicationFileDataBodyDto)
+    @IsArray()
+    @IsOptional()
+    files: ApplicationFileDataBodyDto[];
 }

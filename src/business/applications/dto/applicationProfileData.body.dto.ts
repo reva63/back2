@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { IProfile } from 'src/core/abstract/interfaces/profile.interface';
 
-export class ProfileDataBodyDto implements IProfile {
+export class ApplicationProfileDataBodyDto implements IProfile {
     @IsString()
     lastName: string;
 

@@ -1,4 +1,4 @@
-import { AttributeTypes } from 'src/core/types/profileAttributeTypes.enum';
+import { AttributeTypes } from 'src/core/types/attributeTypes.enum';
 
 export interface IAttributeDto {
     id?: number;
