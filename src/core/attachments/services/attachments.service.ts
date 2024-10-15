@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DeepPartial } from 'typeorm';
 import { S3Service } from 'src/core/S3/s3.service';
 import { randomBytes } from 'crypto';
-import { FileType } from 'src/core/types/file.type';
+import { IFile } from 'src/core/abstract/interfaces/file.interface';
 import { AttachmentEntityAbstract } from 'src/core/abstract/entities/attachment.entity.abstract';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AttachmentsService {
      * @returns the same entity object
      */
     async saveThenUpdate(
-        file: FileType,
+        file: IFile,
         entity: AttachmentEntityAbstract,
     ): Promise<DeepPartial<AttachmentEntityAbstract>> {
         const key = this.generateS3Key(file.mimetype);

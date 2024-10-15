@@ -1,4 +1,4 @@
-import { FileType } from '../../../types/file.type';
+import { IFile } from '../../interfaces/file.interface';
 import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
 import { IAttributeDto } from 'src/core/abstract/base/dto/attribute.dto.interface';
 import { IProfile } from '../../interfaces/profile.interface';
@@ -6,7 +6,7 @@ import { ISocial } from '../../interfaces/social.interface';
 
 export interface IBodyDto {
     // common
-    files?: FileType[];
+    files?: IFile[];
     categories?: number[];
     contest?: number;
     certificates?: number[];

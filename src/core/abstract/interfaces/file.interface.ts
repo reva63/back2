@@ -1,7 +1,7 @@
-export class FileType {
-    fieldname: string;
+export interface IFile {
+    fieldname?: string;
+    encoding?: string;
     originalname: string;
-    encoding: string;
     mimetype: string;
     size: number;
     buffer: Buffer;

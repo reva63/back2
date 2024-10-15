@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { IAttributeDto } from 'src/core/abstract/base/dto/attribute.dto.interface';
-import { AttributeTypes } from 'src/core/types/profileAttributeTypes.enum';
+import { AttributeTypes } from 'src/core/types/attributeTypes.enum';
 
 export class ProfileAttributeBodyDto implements IAttributeDto {
     @IsNumber()

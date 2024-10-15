@@ -22,7 +22,6 @@ export class NotificationsService implements IService<NotificationEntity> {
         params?: IParamsDto;
         query?: IQueryDto;
     }): Promise<NotificationEntity[]> {
-
         return await this.notificationsRepository.find({
             relations: { receiver: true },
             where: {
@@ -69,7 +68,6 @@ export class NotificationsService implements IService<NotificationEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<NotificationEntity> {
-
         const creatable = {
             title: options.body.title,
             text: options.body.text,

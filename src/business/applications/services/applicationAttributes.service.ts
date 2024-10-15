@@ -6,8 +6,7 @@ import { DeepPartial, In, Repository } from 'typeorm';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { ApplicationNotFoundException } from 'src/exceptions/applications/applicationNotFound.exception';
-import { AttributeTypes } from 'src/core/types/profileAttributeTypes.enum';
-import { ProfileAttributesService } from 'src/business/profiles/services/profileAttributes.service';
+import { AttributeTypes } from 'src/core/types/attributeTypes.enum';
 
 @Injectable()
 export class ApplicationAttributesService
@@ -16,7 +15,6 @@ export class ApplicationAttributesService
     constructor(
         @InjectRepository(ApplicationAttributeEntity)
         private readonly applicationAttributesRepository: Repository<ApplicationAttributeEntity>,
-        private readonly profileAttributesService: ProfileAttributesService,
     ) {}
 
     async create(

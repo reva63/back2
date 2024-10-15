@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    UseInterceptors,
 } from '@nestjs/common';
 import { ApplicationsService } from '../services/applications.service';
 import { StoreApplicationBodyDto } from '../dto/store/storeApplication.body.dto';
@@ -13,6 +14,7 @@ import { ShowApplicationParamsDto } from '../dto/show/showApplication.params.dto
 import { UpdateApplicationBodyDto } from '../dto/update/updateApplication.body.dto';
 import { UpdateApplicationParamsDto } from '../dto/update/updateApplication.params.dto';
 import { RemoveApplicationParamsDto } from '../dto/remove/removeApplication.params.dto';
+import { MultipartInterceptor } from 'src/core/common/interceptors/multipart.interceptor';
 
 @Controller('/applications')
 export class ApplicationsController {
@@ -29,6 +31,7 @@ export class ApplicationsController {
     }
 
     @Post()
+    @UseInterceptors(MultipartInterceptor)
     async store(@Body() body: StoreApplicationBodyDto) {
         // TODO: assign user id in params (from authentication)
         const user = body.user;
