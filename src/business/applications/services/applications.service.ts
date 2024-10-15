@@ -46,7 +46,6 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         options: { params?: IParamsDto; body?: IBodyDto },
         isUpdate?: boolean,
     ): Promise<DeepPartial<ApplicationEntity>> {
-        console.log(options.body);
         const directions = options.body.directions
             ? options.body.directions.map((id) => ({
                   id,
