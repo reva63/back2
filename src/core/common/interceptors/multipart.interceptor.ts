@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     CallHandler,
     ExecutionContext,
     Injectable,
@@ -23,21 +24,29 @@ export class MultipartInterceptor implements NestInterceptor {
         }
 
         const parts = req.parts();
-        const body = { files: [] } as { [key: string]: any; files: IFile[] };
-        for await (const part of parts) {
-            if (part.type === 'file') {
-                const buffer = await part.toBuffer();
-                body.files.push({
-                    originalname: part.filename,
-                    encoding: part.encoding,
-                    fieldname: part.fieldname,
-                    mimetype: part.mimetype,
-                    size: buffer.length,
-                    buffer,
-                });
-            } else if (part.fieldname === 'data') {
-                Object.assign(body, part.value);
+        const body = { files: [] as IFile[] };
+        try {
+            for await (const part of parts) {
+                if (part.type === 'file') {
+                    const buffer = await part.toBuffer();
+                    if (!buffer.length) {
+                        continue;
+                    }
+                    body.files.push({
+                        originalname: part.filename,
+                        encoding: part.encoding,
+                        fieldname: part.fieldname,
+                        mimetype: part.mimetype,
+                        size: buffer.length,
+                        buffer,
+                    });
+                } else if (part.fieldname === 'data') {
+                    const json = JSON.parse(part.value as string);
+                    Object.assign(body, json);
+                }
             }
+        } catch {
+            throw new BadRequestException();
         }
         req.body = body;
         return next.handle();
