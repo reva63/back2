@@ -11,5 +11,5 @@ export abstract class AttachmentEntityAbstract {
     link: string;
 
     @Column('varchar')
-    storedName: string;
+    originalName: string;
 }

@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AttachmentsService } from './services/attachments.service';
 
+@Global()
 @Module({
     providers: [AttachmentsService],
     exports: [AttachmentsService],

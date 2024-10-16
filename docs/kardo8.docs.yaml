@@ -83,7 +83,7 @@ paths:
                   schema:
                       type: string
             responses:
-                '204':
+                '200':
                     description: Application deleted successfully.
                 '404':
                     description: Application not found.
@@ -203,10 +203,6 @@ components:
                     type: string
                     format: date-time
                     nullable: true
-                attributes:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/AttributeResponse'
                 applicant:
                     type: integer
                     description: Applicant ID
@@ -223,6 +219,14 @@ components:
                     description: Category IDs
                     items:
                         type: integer
+                attributes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AttributeResponse'
+                attachments:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AttachmentResponse'
         StoreApplicationBody:
             type: object
             properties:
@@ -405,6 +409,7 @@ components:
                     format: email
                 phone:
                     type: string
+                    example: '+79050341934'
             required:
                 - lastName
                 - firstName
@@ -447,6 +452,18 @@ components:
                     type: string
                 value:
                     type: string
+        AttachmentResponse:
+            type: object
+            properties:
+                id:
+                    type: integer
+                key:
+                    type: string
+                link:
+                    type: string
+                    format: uri
+                originalName:
+                    type: string
         SocialData:
             type: object
             properties:
@@ -455,6 +472,7 @@ components:
                 link:
                     type: string
                     format: uri
+                    example: https://t.me/some_dude
         SocialTypes:
             type: string
             enum:
