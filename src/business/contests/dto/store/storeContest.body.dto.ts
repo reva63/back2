@@ -1,7 +1,7 @@
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IsString } from 'class-validator';
-import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
 import { ValidateParagraphs } from '../../decorators/validateParagraphs.decorator';
+import { ParagraphDto } from '../paragraphs/paragraph.dto';
 
 export class StoreContestBodyDto implements IBodyDto {
     @IsString()
