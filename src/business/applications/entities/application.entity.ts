@@ -42,6 +42,9 @@ export class ApplicationEntity {
     @OneToMany(
         () => ApplicationAttachmentEntity,
         (attachment) => attachment.application,
+        {
+            cascade: ['insert'],
+        },
     )
     attachments: ApplicationAttachmentEntity[];
 

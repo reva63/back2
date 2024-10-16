@@ -9,6 +9,7 @@ import { ApplicationAttributeEntity } from './entities/applicationAttribute.enti
 import { ApplicationAttachmentEntity } from './entities/applicationAttachment.entity';
 import { ApplicationAttributesService } from './services/applicationAttributes.service';
 import { ProfilesModule } from '../profiles/profiles.module';
+import { ApplicationSubscriber } from './subscribers/application.subscriber';
 
 @Module({
     imports: [
@@ -22,7 +23,11 @@ import { ProfilesModule } from '../profiles/profiles.module';
         ]),
     ],
     controllers: [ApplicationsController],
-    providers: [ApplicationsService, ApplicationAttributesService],
+    providers: [
+        ApplicationsService,
+        ApplicationAttributesService,
+        ApplicationSubscriber,
+    ],
     exports: [ApplicationsService],
 })
 export class ApplicationsModule {}

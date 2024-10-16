@@ -8,6 +8,7 @@ import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { ApplicationAttributesService } from './applicationAttributes.service';
 import { ApplicationNotFoundException } from 'src/exceptions/applications/applicationNotFound.exception';
+import { AttachmentsService } from 'src/core/attachments/services/attachments.service';
 
 @Injectable()
 export class ApplicationsService implements IService<ApplicationEntity> {
@@ -15,6 +16,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         @InjectRepository(ApplicationEntity)
         private readonly applicationsRepository: Repository<ApplicationEntity>,
         private readonly applicationAttributesService: ApplicationAttributesService,
+        private readonly attachmentsService: AttachmentsService,
     ) {}
 
     async list(options: {
@@ -72,11 +74,14 @@ export class ApplicationsService implements IService<ApplicationEntity> {
     }): Promise<ApplicationEntity> {
         const attributes =
             await this.applicationAttributesService.create(options);
-
+        const attachments = await this.attachmentsService.saveFiles(
+            options.body.files,
+        );
         const creatable = await this.create(options);
         const application = await this.applicationsRepository.save({
             ...creatable,
             attributes,
+            attachments,
         });
 
         return await this.show({ params: { application: application.id } });
@@ -112,6 +117,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
                 id: options.params.application,
             },
             loadRelationIds: { relations: ['directions', 'categories'] },
+            relations: { attachments: true }, // do not remove attachments. Subscriber depends on it
         });
         if (!applicaion) {
             throw new ApplicationNotFoundException();

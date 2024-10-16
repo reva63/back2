@@ -7,6 +7,8 @@ import { AttachmentEntityAbstract } from 'src/core/abstract/entities/attachment.
 
 @Injectable()
 export class AttachmentsService {
+    private readonly _bucket = process.env.S3CLIENT_BUCKET;
+
     constructor(private readonly s3Service: S3Service) {}
 
     /**
@@ -21,17 +23,30 @@ export class AttachmentsService {
             const key = this.generateS3Key(file.mimetype);
             const output = await this.s3Service.uploadObject({
                 Key: key,
-                Bucket: process.env.S3CLIENT_BUCKET,
+                Bucket: this._bucket,
                 Body: file.buffer,
             });
             attachments.push({
                 key: key,
                 link: output.Location,
-                storedName: file.originalname,
+                originalName: file.originalname,
             });
         }
 
         return attachments;
+    }
+
+    async removeFileByKey(key: string) {
+        const isExists = await this.s3Service.checkObject({
+            Bucket: this._bucket,
+            Key: key,
+        });
+        if (isExists) {
+            await this.s3Service.deleteObject({
+                Bucket: this._bucket,
+                Key: key,
+            });
+        }
     }
 
     protected generateS3Key(mimetype: string) {
