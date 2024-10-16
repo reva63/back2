@@ -1,10 +1,10 @@
 import { applyDecorators } from '@nestjs/common';
 import { Type } from 'class-transformer';
 import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
-import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
-import { ParagraphTypes } from 'src/core/paragraphs/types/paragraphTypes.enum';
-import { ImageParagraphDto } from 'src/core/paragraphs/dto/imageParagraph.dto';
-import { TextParagraphDto } from 'src/core/paragraphs/dto/textParagraph.dto';
+import { TextParagraphDto } from '../dto/paragraphs/textParagraph.dto';
+import { ImageParagraphDto } from '../dto/paragraphs/imageParagraph.dto';
+import { ParagraphTypes } from 'src/core/types/paragraphTypes.enum';
+import { ParagraphDto } from '../dto/paragraphs/paragraph.dto';
 
 export function ValidateParagraphs() {
     return applyDecorators(

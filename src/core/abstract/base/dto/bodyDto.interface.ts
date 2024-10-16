@@ -1,8 +1,8 @@
 import { IFile } from '../../interfaces/file.interface';
-import { ParagraphDto } from 'src/core/paragraphs/dto/paragraph.dto';
-import { IAttributeDto } from 'src/core/abstract/base/dto/attribute.dto.interface';
 import { IProfile } from '../../interfaces/profile.interface';
 import { ISocial } from '../../interfaces/social.interface';
+import { IParagraph } from '../../interfaces/paragraph.interface';
+import { IAttribute } from '../../interfaces/attribute.interface';
 
 export interface IBodyDto {
     // common
@@ -23,7 +23,7 @@ export interface IBodyDto {
 
     // contests
     description?: string;
-    upsertParagraphs?: ParagraphDto[];
+    upsertParagraphs?: IParagraph[];
     preview?: string;
     removeParagraphs?: number[];
 
@@ -49,7 +49,7 @@ export interface IBodyDto {
     phone?: string;
 
     // attributes
-    upsertAttributes?: IAttributeDto[];
+    upsertAttributes?: IAttribute[];
     removeAttributes?: number[];
 
     // notifications
