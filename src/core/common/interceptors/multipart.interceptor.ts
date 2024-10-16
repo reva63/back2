@@ -45,7 +45,8 @@ export class MultipartInterceptor implements NestInterceptor {
                     Object.assign(body, json);
                 }
             }
-        } catch {
+        } catch (e) {
+            console.log(e);
             throw new BadRequestException();
         }
         req.body = body;
