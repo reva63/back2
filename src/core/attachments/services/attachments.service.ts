@@ -10,29 +10,32 @@ export class AttachmentsService {
     constructor(private readonly s3Service: S3Service) {}
 
     /**
-     * Saves file to S3 then updates entity object with key, link and name
-     * @param entity entity object
-     * @returns the same entity object
+     * Saves files to S3 then create attachments array
+     * @returns attachments array
      */
-    async saveThenUpdate(
-        file: IFile,
-        entity: AttachmentEntityAbstract,
-    ): Promise<DeepPartial<AttachmentEntityAbstract>> {
-        const key = this.generateS3Key(file.mimetype);
-        const output = await this.s3Service.uploadObject({
-            Key: key,
-            Bucket: process.env.S3CLIENT_BUCKET,
-            Body: file.buffer,
-        });
-        entity.key = key;
-        entity.link = output.Location;
-        entity.storedName = file.originalname;
+    async saveFiles(
+        files: IFile[],
+    ): Promise<DeepPartial<AttachmentEntityAbstract>[]> {
+        const attachments = [] as DeepPartial<AttachmentEntityAbstract>[];
+        for await (const file of files) {
+            const key = this.generateS3Key(file.mimetype);
+            const output = await this.s3Service.uploadObject({
+                Key: key,
+                Bucket: process.env.S3CLIENT_BUCKET,
+                Body: file.buffer,
+            });
+            attachments.push({
+                key: key,
+                link: output.Location,
+                storedName: file.originalname,
+            });
+        }
 
-        return entity;
+        return attachments;
     }
 
     protected generateS3Key(mimetype: string) {
         const mimeSplit = mimetype.split('/');
-        return `${Date.now().toString()}_${randomBytes(8).join('')}.${mimeSplit[1]}`;
+        return `${Date.now().toString()}_${randomBytes(4).join('')}.${mimeSplit[1]}`;
     }
 }
