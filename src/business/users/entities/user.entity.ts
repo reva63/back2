@@ -3,6 +3,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
     ManyToMany,
     OneToMany,
     OneToOne,
@@ -51,8 +52,9 @@ export class UserEntity {
     @ManyToMany(() => RightEntity, (right) => right.users)
     rights: RightEntity[];
 
-    @OneToMany(() => ChatEntity, (chat) => chat.user)
-    userChats: ChatEntity[];
+    @OneToOne(() => ChatEntity, (chat) => chat.user)
+    @JoinColumn()
+    userChat: ChatEntity;
 
     @OneToMany(() => ChatEntity, (chat) => chat.operator)
     operatorChats: ChatEntity[];

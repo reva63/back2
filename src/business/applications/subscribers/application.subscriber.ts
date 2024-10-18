@@ -18,7 +18,7 @@ export class ApplicationSubscriber
         dataSource.subscribers.push(this);
     }
 
-    listenTo(): Function {
+    listenTo() {
         return ApplicationEntity;
     }
 
