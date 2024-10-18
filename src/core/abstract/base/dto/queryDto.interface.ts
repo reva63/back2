@@ -3,4 +3,5 @@ export interface IQueryDto {
     limit?: number;
     sort?: 'desc' | 'asc';
     user?: number;
+    operator?: number | null;
 }

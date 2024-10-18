@@ -1,4 +1,4 @@
-import { BeforeRemove, Entity, ManyToOne } from 'typeorm';
+import { Entity, ManyToOne } from 'typeorm';
 import { ApplicationEntity } from './application.entity';
 import { AttachmentEntityAbstract } from 'src/core/abstract/entities/attachment.entity.abstract';
 

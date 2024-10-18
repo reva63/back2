@@ -6,6 +6,7 @@ import {
     Entity,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -27,9 +28,11 @@ export class ChatEntity {
     @OneToMany(() => MessageEntity, (message) => message.chat)
     messages: MessageEntity[];
 
-    @ManyToOne(() => UserEntity, (user) => user.userChats)
+    @OneToOne(() => UserEntity, (user) => user.userChat)
     user: UserEntity;
 
-    @ManyToOne(() => UserEntity, (user) => user.operatorChats)
+    @ManyToOne(() => UserEntity, (user) => user.operatorChats, {
+        nullable: true,
+    })
     operator: UserEntity;
 }

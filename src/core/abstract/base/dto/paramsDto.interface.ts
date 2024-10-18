@@ -10,4 +10,7 @@ export interface IParamsDto {
     category?: number;
     profile?: number;
     notification?: number;
+    message?: number;
+    chat?: number;
+    operator?: number | null;
 }
