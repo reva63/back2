@@ -16,6 +16,9 @@ export class StageEntity {
     @Column('varchar')
     title: string;
 
+    @Column('varchar', { nullable: true })
+    templateKey: string;
+
     @Column('timestamptz')
     startDate: Date;
 
