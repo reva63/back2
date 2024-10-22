@@ -77,9 +77,6 @@ export class UsersService implements IService<UserEntity> {
             relations: ['applications', 'applications.contest'],
             where: { id: options.params.user },
         });
-        const contests = user.applications.map(
-            (application) => application.contest,
-        );
-        return contests;
+        return user.applications.map((application) => application.contest);
     }
 }
