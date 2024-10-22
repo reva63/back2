@@ -54,7 +54,7 @@ async function bootstrap() {
 
     await app.register(multiPart, {
         limits: {
-            fileSize: 1024 * 1024 * 2, // 2 Mb,
+            fileSize: 1024 * 1024 * 10, // 10 Mb,
         },
     });
     await app.register(fastifyCookie);

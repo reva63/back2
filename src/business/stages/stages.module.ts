@@ -8,5 +8,6 @@ import { StagesService } from './services/stages.service';
     imports: [TypeOrmModule.forFeature([StageEntity])],
     providers: [StagesService],
     controllers: [StagesController],
+    exports: [StagesService],
 })
 export class StagesModule {}

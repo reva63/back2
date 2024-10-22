@@ -28,6 +28,11 @@ export class CertificatesController {
         return await this.certificatesService.list({ params });
     }
 
+    @Get('/:certificate/pdf')
+    async getPdfUrl(@Param() params: ShowCertificateParamsDto) {
+        return await this.certificatesService.getPdfUrl({ params });
+    }
+
     @Get('/:certificate')
     async show(
         @Param() params: ShowCertificateParamsDto,

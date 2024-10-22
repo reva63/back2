@@ -16,10 +16,15 @@ export interface IBodyDto {
     // stages
     startDate?: Date;
     endDate?: Date;
+    user?: number;
+    category?: number;
+    stage?: number;
+    certificateTemplate?: Buffer;
 
     // applications
     profileData?: IProfile;
     socialData?: ISocial[];
+    directions?: number[];
 
     // contests
     description?: string;
@@ -33,7 +38,6 @@ export interface IBodyDto {
 
     // categories
     direction?: number;
-    directions?: number[];
 
     // profiles
     firstName?: string;
