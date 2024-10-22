@@ -72,7 +72,7 @@ export class UsersService implements IService<UserEntity> {
         await this.usersRepository.remove(user);
     }
 
-    async showUserContests(options: { params?: IParamsDto; body?: IBodyDto }) {
+    async listUserContests(options: { params?: IParamsDto; body?: IBodyDto }) {
         const user = await this.usersRepository.findOne({
             relations: ['applications', 'applications.contest'],
             where: { id: options.params.user },

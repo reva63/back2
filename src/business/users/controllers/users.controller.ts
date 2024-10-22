@@ -30,8 +30,8 @@ export class UsersController {
     }
 
     @Get('/:user/contests')
-    async showUserContests(@Param() params: ShowUserParamsDto) {
-        return await this.usersService.showUserContests({ params });
+    async listUserContests(@Param() params: ShowUserParamsDto) {
+        return await this.usersService.listUserContests({ params });
     }
 
     @Post()
