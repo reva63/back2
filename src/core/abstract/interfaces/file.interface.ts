@@ -1,8 +1,9 @@
 export interface IFile {
     fieldname?: string;
     encoding?: string;
-    originalname: string;
+    originalName: string;
     mimetype: string;
     size: number;
-    buffer: Buffer;
+    buffer?: Buffer;
+    arrayBuffer?: ArrayBuffer;
 }

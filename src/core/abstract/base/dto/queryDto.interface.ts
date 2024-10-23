@@ -4,4 +4,5 @@ export interface IQueryDto {
     sort?: 'desc' | 'asc';
     user?: number;
     operator?: number | null;
+    chat?: number;
 }

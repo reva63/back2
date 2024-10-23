@@ -1,22 +1,18 @@
-import {
-    OnGatewayConnection,
-    WebSocketGateway,
-    WebSocketServer,
-} from '@nestjs/websockets';
+import { OnGatewayConnection, WebSocketGateway } from '@nestjs/websockets';
 import { ChatsService } from '../services/chats.service';
-import { Server, Socket } from 'socket.io';
+import { Socket } from 'socket.io';
 import { getRoomId } from '../helper/getRoomId.helper';
+import { WsExceptionFilter } from 'src/core/common/filters/wsException.filter';
+import { UseFilters } from '@nestjs/common';
 
-@WebSocketGateway({ namespace: 'chats/user' })
+@WebSocketGateway({ namespace: 'chats/user', cors: { origin: '*' } })
+@UseFilters(WsExceptionFilter)
 export class UserChatsGateway implements OnGatewayConnection {
-    @WebSocketServer()
-    private server: Server;
-
     constructor(private readonly chatsService: ChatsService) {}
 
     async handleConnection(client: Socket) {
         // TODO: get user id from socket
-        const user = 0;
+        const user = 1;
         const chat =
             (await this.chatsService.showUserChat({ params: { user } })) ??
             (await this.chatsService.store({ params: { user } }));

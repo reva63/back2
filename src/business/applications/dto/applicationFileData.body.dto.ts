@@ -6,7 +6,7 @@ import { MimeTypes } from 'src/core/types/mimeTypes.enum';
 
 export class ApplicationFileDataBodyDto implements IFile {
     @IsString()
-    originalname: string;
+    originalName: string;
 
     @IsBuffer()
     buffer: Buffer;

@@ -16,7 +16,7 @@ export class AttachmentsService {
      * @returns attachments array
      */
     async saveFiles(
-        files: IFile[],
+        files: IFile[] = [],
     ): Promise<DeepPartial<AttachmentEntityAbstract>[]> {
         const attachments = [] as DeepPartial<AttachmentEntityAbstract>[];
         for await (const file of files) {
@@ -29,7 +29,7 @@ export class AttachmentsService {
             attachments.push({
                 key: key,
                 link: output.Location,
-                originalName: file.originalname,
+                originalName: file.originalName,
             });
         }
 

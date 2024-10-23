@@ -3,7 +3,6 @@ config();
 import * as process from 'node:process';
 import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import fastifyCookie from '@fastify/cookie';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import {
@@ -16,6 +15,7 @@ import { join } from 'path';
 import * as fs from 'fs';
 import { parse } from 'yaml';
 import { SwaggerModule } from '@nestjs/swagger';
+import { CustomValidationPipe } from './core/common/pipes/customValidation.pipe';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -45,12 +45,7 @@ async function bootstrap() {
     app.use(cookieParser());
     app.enableCors({ origin: '*' });
     app.setGlobalPrefix('api');
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            whitelist: true,
-        }),
-    );
+    app.useGlobalPipes(new CustomValidationPipe());
 
     await app.register(multiPart, {
         limits: {

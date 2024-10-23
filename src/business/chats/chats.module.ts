@@ -8,5 +8,6 @@ import { OperatorChatsGateway } from './gateways/operatorChats.gateway';
 @Module({
     imports: [TypeOrmModule.forFeature([ChatEntity])],
     providers: [ChatsService, UserChatsGateway, OperatorChatsGateway],
+    exports: [ChatsService],
 })
 export class ChatsModule {}

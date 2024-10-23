@@ -20,17 +20,22 @@ export class MessageEntity {
     @Column('text')
     text: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn()
-    editedAt: Date;
+    @Column({ type: 'timestamptz', nullable: true })
+    editedAt: Date | null;
 
-    @DeleteDateColumn()
-    deletedAt: Date;
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+    deletedAt: Date | null;
 
-    @ManyToOne(() => ChatEntity, (chat) => chat.messages)
+    @ManyToOne(() => ChatEntity, (chat) => chat.messages, {
+        onDelete: 'CASCADE',
+    })
     chat: ChatEntity;
+
+    @Column({ nullable: false })
+    chatId: number;
 
     @ManyToOne(() => UserEntity, (user) => user.messages)
     author: UserEntity;
@@ -38,6 +43,7 @@ export class MessageEntity {
     @OneToMany(
         () => MessageAttachmentEntity,
         (attachment) => attachment.message,
+        { cascade: ['insert', 'soft-remove'] },
     )
     attachments: MessageAttachmentEntity[];
 }
