@@ -29,6 +29,11 @@ export class UsersController {
         return await this.usersService.show({ params });
     }
 
+    @Get('/:user/contests')
+    async listUserContests(@Param() params: ShowUserParamsDto) {
+        return await this.usersService.listUserContests({ params });
+    }
+
     @Post()
     async store(@Body() body: StoreUserBodyDto) {
         return await this.usersService.store({ body });
