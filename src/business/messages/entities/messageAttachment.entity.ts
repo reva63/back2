@@ -4,6 +4,8 @@ import { AttachmentEntityAbstract } from 'src/core/abstract/entities/attachment.
 
 @Entity()
 export class MessageAttachmentEntity extends AttachmentEntityAbstract {
-    @ManyToOne(() => MessageEntity, (message) => message.attachments)
+    @ManyToOne(() => MessageEntity, (message) => message.attachments, {
+        onDelete: 'CASCADE',
+    })
     message: MessageEntity;
 }

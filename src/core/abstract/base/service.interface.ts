@@ -24,4 +24,6 @@ export interface IService<T> {
     }): Promise<T | T[]>;
 
     remove?(options: { params?: IParamsDto; body?: IBodyDto }): Promise<void>;
+
+    isExists?(options: { params?: IParamsDto }): Promise<boolean>;
 }

@@ -26,13 +26,13 @@ export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
     editeddAt: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
     deleteddAt: Date;
 
     @Column('varchar')
@@ -53,7 +53,6 @@ export class UserEntity {
     rights: RightEntity[];
 
     @OneToOne(() => ChatEntity, (chat) => chat.user)
-    @JoinColumn()
     userChat: ChatEntity;
 
     @OneToMany(() => ChatEntity, (chat) => chat.operator)

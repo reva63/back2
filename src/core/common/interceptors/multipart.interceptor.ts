@@ -33,7 +33,7 @@ export class MultipartInterceptor implements NestInterceptor {
                         continue;
                     }
                     body.files.push({
-                        originalname: part.filename,
+                        originalName: part.filename,
                         encoding: part.encoding,
                         fieldname: part.fieldname,
                         mimetype: part.mimetype,
@@ -46,7 +46,7 @@ export class MultipartInterceptor implements NestInterceptor {
                 }
             }
         } catch (e) {
-            console.log(e);
+            console.error(e);
             throw new BadRequestException();
         }
         req.body = body;

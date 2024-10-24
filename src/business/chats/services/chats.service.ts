@@ -72,4 +72,10 @@ export class ChatsService implements IService<ChatEntity> {
             { operator: { id: options.params.operator } },
         );
     }
+
+    async isExists(options: { params?: IParamsDto }): Promise<boolean> {
+        return await this.chatsRepository.existsBy({
+            id: options.params.chat,
+        });
+    }
 }

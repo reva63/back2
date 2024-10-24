@@ -1,4 +1,9 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export abstract class AttachmentEntityAbstract {
     @PrimaryGeneratedColumn()
@@ -12,4 +17,10 @@ export abstract class AttachmentEntityAbstract {
 
     @Column('varchar')
     originalName: string;
+
+    @CreateDateColumn({ type: 'timestamptz' })
+    createdAt: Date;
+
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+    deletedAt: Date | null;
 }

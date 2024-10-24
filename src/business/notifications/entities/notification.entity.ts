@@ -14,13 +14,13 @@ export class NotificationEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
     editedAt: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
     deletedAt: Date;
 
     @Column('varchar')

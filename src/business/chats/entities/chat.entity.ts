@@ -1,9 +1,11 @@
 import { MessageEntity } from 'src/business/messages/entities/message.entity';
 import { UserEntity } from 'src/business/users/entities/user.entity';
 import {
+    Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -16,22 +18,29 @@ export class ChatEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
     editedAt: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
     deletedAt: Date;
 
     @OneToMany(() => MessageEntity, (message) => message.chat)
     messages: MessageEntity[];
 
-    @OneToOne(() => UserEntity, (user) => user.userChat)
+    @OneToOne(() => UserEntity, (user) => user.userChat, {
+        onDelete: 'CASCADE',
+    })
+    @JoinColumn()
     user: UserEntity;
 
+    @Column({ nullable: false })
+    userId: number;
+
     @ManyToOne(() => UserEntity, (user) => user.operatorChats, {
+        onDelete: 'SET NULL',
         nullable: true,
     })
     operator: UserEntity;
