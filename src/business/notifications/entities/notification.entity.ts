@@ -13,15 +13,8 @@ import {
 export class NotificationEntity {
     @PrimaryGeneratedColumn()
     id: number;
-
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
-
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    editedAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt: Date;
 
     @Column('varchar')
     title: string;

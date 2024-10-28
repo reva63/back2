@@ -24,12 +24,6 @@ export class ApplicationEntity {
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    editedAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt: Date;
-
     @OneToMany(
         () => ApplicationAttributeEntity,
         (attribute) => attribute.applicaion,

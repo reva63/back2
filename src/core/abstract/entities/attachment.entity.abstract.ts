@@ -17,10 +17,4 @@ export abstract class AttachmentEntityAbstract {
 
     @Column('varchar')
     originalName: string;
-
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt: Date | null;
 }

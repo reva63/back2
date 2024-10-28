@@ -26,15 +26,6 @@ export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
-
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    editeddAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deleteddAt: Date;
-
     @Column('varchar')
     rvsId: string;
 
