@@ -1,0 +1,289 @@
+asyncapi: 3.0.0
+info:
+  title: Kardo Support Chats
+  version: 1.0.0
+servers:
+  staging:
+    host: localhost:3000
+    protocol: http
+channels:
+  user_chats:
+    address: /chats/user
+    description: Channel for user messaging.
+    tags:
+      - name: messages
+    messages:
+      request_message_list:
+        $ref: '#/components/messages/RequestMessageList'
+      receive_message_list:
+        $ref: '#/components/messages/ReceiveMessageList'
+      send_new_message:
+        $ref: '#/components/messages/SendNewMessage'
+      new_message_sent:
+        $ref: '#/components/messages/ReceiveNewMessage'
+      update_message:
+        $ref: '#/components/messages/SendMessageUpdate'
+      message_updated:
+        $ref: '#/components/messages/ReceiveMessageUpdate'
+      remove_message:
+        $ref: '#/components/messages/SendMessageRemove'
+      message_removed:
+        $ref: '#/components/messages/ReceiveMessageRemove'
+    bindings:
+      ws:
+        query:
+          type: object
+          properties:
+            token:
+              type: string
+              description: JWT token.
+operations:
+  emitListMessagesRequest:
+    action: send
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/request_message_list'
+    reply:
+      channel:
+        $ref: '#/channels/user_chats'
+      messages:
+        - $ref: '#/channels/user_chats/messages/receive_message_list'
+  emitNewMessageSend:
+    action: send
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/send_new_message'
+  onNewMessageSent:
+    action: receive
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/new_message_sent'
+  emitMessageUpdate:
+    action: send
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/update_message'
+  onMessageUpdated:
+    action: receive
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/message_updated'
+  emitMessageRemove:
+    action: send
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/remove_message'
+  onMessageRemoved:
+    action: receive
+    tags:
+      - name: messages
+    channel:
+      $ref: '#/channels/user_chats'
+    messages:
+      - $ref: '#/channels/user_chats/messages/message_removed'
+components:
+  messages:
+    RequestMessageList:
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - chat
+        properties:
+          page:
+            type: integer
+            description: The page number of the message list.
+            default: 1
+            minimum: 1
+          limit:
+            type: integer
+            description: The number of messages per page.
+            default: 20
+            minimum: 1
+          chat:
+            type: integer
+            description: Identifier for the chat.
+    ReceiveMessageList:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          messages:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                text:
+                  type: integer
+                  example: hello there
+                createdAt:
+                  type: string
+                  format: date-time
+                editedAt:
+                  type:
+                    - string
+                    - 'null'
+                  format: date-time
+                deletedAt:
+                  type:
+                    - string
+                    - 'null'
+                  format: date-time
+                chatId:
+                  type: integer
+                  example: 1
+                authorId:
+                  type: integer
+                  example: 1
+                attachments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Attachment'
+    SendNewMessage:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          chat:
+            type: integer
+            description: Identifier for the chat.
+            example: 1
+          text:
+            type: string
+            description: Message text.
+            example: hello there
+          files:
+            type: array
+            description: Attachments to this message.
+    ReceiveNewMessage:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          chatId:
+            type: integer
+            description: Identifier for the chat room.
+            example: 1
+          newMessage:
+            $ref: '#/components/schemas/Message'
+    SendMessageUpdate:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          message:
+            type: integer
+            description: Identifier for the message to be updated.
+          text:
+            type: string
+            description: The text of the message to be updated.
+    ReceiveMessageUpdate:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          chatId:
+            type: integer
+            description: Identifier for the chat.
+            example: 1
+          updatedMessage:
+            $ref: '#/components/schemas/Message'
+    SendMessageRemove:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          message:
+            type: integer
+            description: Identifier for the message to be deleted.
+            example: 1
+          chat:
+            type: integer
+            description: Identifier for the chat.
+            example: 1
+    ReceiveMessageRemove:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          chatId:
+            type: integer
+            description: Identifier for the chat.
+            example: 1
+          messageId:
+            type: integer
+            description: Identifier for the deleted message.
+            example: 1
+  schemas:
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        text:
+          type: string
+          example: hello there
+        createdAt:
+          type: string
+          format: date-time
+        editedAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        deletedAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        chatId:
+          type: integer
+          example: 1
+        authorId:
+          type: integer
+          example: 1
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        key:
+          type: string
+          description: >-
+            "File name in S3 vault where the string consists of three parts: timestamp when was created (_) random bytes (.) file extention"
+          example: 1730026147910_22014134106.pdf
+        link:
+          type: string
+          description: Link to the file in the S3 vault
+          example: 'https://03ed5441-82b95be4-ffef-4dca-92a8-72415d19bf19.s3.timeweb.cloud/1730026147910_22014134106.pdf'
+        originalName:
+          type: string
+          description: File name before the upload.

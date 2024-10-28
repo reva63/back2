@@ -2,5 +2,13 @@
     "singleQuote": true,
     "trailingComma": "all",
     "tabWidth": 4,
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "overrides": [
+        {
+            "files": ["docs/**/*.y{aml,ml}"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }

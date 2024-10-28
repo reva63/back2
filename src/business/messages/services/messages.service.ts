@@ -31,7 +31,6 @@ export class MessagesService implements IService<MessageEntity> {
             },
             skip: (page - 1) * limit,
             take: limit,
-            loadRelationIds: true,
             relations: { attachments: true },
         });
     }
@@ -42,7 +41,7 @@ export class MessagesService implements IService<MessageEntity> {
     }): Promise<MessageEntity> {
         return await this.messagesRepository.findOne({
             where: { id: options.params.message },
-            relations: { attachments: true, author: true },
+            relations: { attachments: true },
         });
     }
 

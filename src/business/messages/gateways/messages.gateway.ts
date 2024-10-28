@@ -25,7 +25,7 @@ export class MessagesGateway {
 
     constructor(private readonly messagesService: MessagesService) {}
 
-    @SubscribeMessage('send_get_messages')
+    @SubscribeMessage('request_message_list')
     async onGetMessages(
         @MessageBody() payload: ListMessagesPayloadDto,
         @ConnectedSocket() socket: Socket,
@@ -36,23 +36,24 @@ export class MessagesGateway {
             query: { page, limit },
         });
 
-        socket.emit('receive_get_messages', { messages });
+        socket.emit('receive_message_list', { messages });
     }
 
     @SubscribeMessage('send_new_message')
     async onNewMessage(@MessageBody() payload: StoreMessagePayloadDto) {
-        const { chat, user, ...body } = payload;
+        const { chat, ...body } = payload;
         const newMessage = await this.messagesService.store({
-            params: { chat, user },
+            params: { chat },
             body,
         });
         const roomId = getRoomId(chat);
-        this.server.to(roomId).emit('receive_new_message', {
+        this.server.to(roomId).emit('new_message_sent', {
+            chatId: chat,
             newMessage,
         });
     }
 
-    @SubscribeMessage('send_update_message')
+    @SubscribeMessage('update_message')
     async onUpdateMessage(@MessageBody() payload: UpdateMessagePayloadDto) {
         const { message, ...body } = payload;
         const updatedMessage = await this.messagesService.update({
@@ -60,17 +61,19 @@ export class MessagesGateway {
             body,
         });
         const roomId = getRoomId(updatedMessage.chatId);
-        this.server
-            .to(roomId)
-            .emit('receive_update_message', { updatedMessage });
+        this.server.to(roomId).emit('message_updated', {
+            chatId: updatedMessage.chatId,
+            updatedMessage,
+        });
     }
 
-    @SubscribeMessage('send_remove_message')
+    @SubscribeMessage('remove_message')
     async onRemoveMessage(@MessageBody() payload: RemoveMessagePayloadDto) {
         const { message } = payload;
         await this.messagesService.remove({ params: { message } });
         const roomId = getRoomId(payload.chat);
-        this.server.to(roomId).emit('receive_remove_message', {
+        this.server.to(roomId).emit('message_removed', {
+            chatId: payload.chat,
             messageId: message,
         });
     }

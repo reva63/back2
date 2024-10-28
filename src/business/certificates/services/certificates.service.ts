@@ -135,5 +135,4 @@ export class CertificatesService implements IService<CertificateEntity> {
     generateS3Key(certificate: number): string {
         return `certificates/certificate-${certificate}.pdf`;
     }
-
 }
