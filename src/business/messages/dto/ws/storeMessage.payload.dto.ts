@@ -10,10 +10,6 @@ import { IPayloadDto } from 'src/core/abstract/base/dto/payloadDto.interface';
 import { MessageFileDataPayloadDto } from '../messageFileData.payload.dto';
 
 export class StoreMessagePayloadDto implements IPayloadDto {
-    @IsNumber()
-    @Transform(({ value }) => Number(value))
-    user: number;
-
     @IsString()
     text: string;
 

@@ -8,7 +8,6 @@ import {
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
 import { MessageAttachmentEntity } from './messageAttachment.entity';
 
@@ -39,6 +38,9 @@ export class MessageEntity {
 
     @ManyToOne(() => UserEntity, (user) => user.messages)
     author: UserEntity;
+
+    @Column({ nullable: false })
+    authorId: number;
 
     @OneToMany(
         () => MessageAttachmentEntity,
