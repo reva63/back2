@@ -31,7 +31,4 @@ export class PostEntity {
 
     @UpdateDateColumn({ type: 'timestamptz' })
     updatedAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz' })
-    deletedAt: Date;
 }

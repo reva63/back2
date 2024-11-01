@@ -18,15 +18,6 @@ export class ChatEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
-
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    editedAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt: Date;
-
     @OneToMany(() => MessageEntity, (message) => message.chat)
     messages: MessageEntity[];
 

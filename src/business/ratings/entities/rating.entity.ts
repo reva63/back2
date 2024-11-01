@@ -15,15 +15,6 @@ export class RatingEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
-
-    @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-    editedAt: Date;
-
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt: Date;
-
     @Column('integer')
     value: number;
 
