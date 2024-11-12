@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { ListUsersParamsDto } from '../dto/list/listUsers.params.dto';
@@ -14,14 +15,18 @@ import { StoreUserBodyDto } from '../dto/store/storeUser.body.dto';
 import { UpdateUserParamsDto } from '../dto/update/updateUser.params.dto';
 import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
 import { RemoveUserParamsDto } from '../dto/remove/removeUser.params.dto';
+import { ListUsersQueryDto } from '../dto/list/listUsers.query.dto';
 
 @Controller('/users')
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
     @Get()
-    async list(@Param() params: ListUsersParamsDto) {
-        return await this.usersService.list({ params });
+    async list(
+        @Param() params: ListUsersParamsDto,
+        @Query() query: ListUsersQueryDto,
+    ) {
+        return await this.usersService.list({ params, query });
     }
 
     @Get('/:user')

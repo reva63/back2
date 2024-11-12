@@ -5,4 +5,5 @@ export interface IQueryDto {
     user?: number;
     operator?: number | null;
     chat?: number;
+    roles?: string[];
 }

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, In } from 'typeorm';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
@@ -19,7 +19,13 @@ export class UsersService implements IService<UserEntity> {
         params?: IParamsDto;
         query?: IQueryDto;
     }): Promise<UserEntity[]> {
-        return await this.usersRepository.find();
+        const roleFilter = options.query.roles?.length
+            ? In(options.query.roles)
+            : undefined;
+        return await this.usersRepository.find({
+            where: { roles: { title: roleFilter } },
+            relations: { profile: true, roles: true },
+        });
     }
 
     async show(options: {

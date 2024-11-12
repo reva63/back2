@@ -2,13 +2,11 @@ import { ContestEntity } from 'src/business/contests/entities/contest.entity';
 import { UserEntity } from 'src/business/users/entities/user.entity';
 import {
     CreateDateColumn,
-    DeleteDateColumn,
     Entity,
     ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
 import { ApplicationAttachmentEntity } from './applicationAttachment.entity';
 import { ApplicationAttributeEntity } from './applicationAttribute.entity';

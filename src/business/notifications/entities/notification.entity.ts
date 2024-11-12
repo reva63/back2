@@ -2,11 +2,9 @@ import { UserEntity } from 'src/business/users/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
-    DeleteDateColumn,
     Entity,
     ManyToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()

@@ -1,13 +1,11 @@
 import {
     Column,
-    CreateDateColumn,
-    DeleteDateColumn,
     Entity,
+    JoinTable,
     ManyToMany,
     OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
 import { RoleEnity } from 'src/business/permissions/entities/role.entity';
 import { RightEntity } from 'src/business/permissions/entities/right.entity';
@@ -37,9 +35,11 @@ export class UserEntity {
     attributes: UserAttributeEntity[];
 
     @ManyToMany(() => RoleEnity, (role) => role.users)
+    @JoinTable()
     roles: RoleEnity[];
 
     @ManyToMany(() => RightEntity, (right) => right.users)
+    @JoinTable()
     rights: RightEntity[];
 
     @OneToOne(() => ChatEntity, (chat) => chat.user)

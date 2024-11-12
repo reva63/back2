@@ -1,9 +1,4 @@
-import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export abstract class AttachmentEntityAbstract {
     @PrimaryGeneratedColumn()
