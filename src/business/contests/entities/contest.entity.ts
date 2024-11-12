@@ -1,13 +1,11 @@
 import {
     Column,
     CreateDateColumn,
-    DeleteDateColumn,
     Entity,
     JoinTable,
     ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
 import { ContestAttributeEntity } from './contestAttribute.entity';
 import { CertificateEntity } from 'src/business/certificates/entities/certificate.entity';

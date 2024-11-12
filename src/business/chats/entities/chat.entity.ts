@@ -2,15 +2,12 @@ import { MessageEntity } from 'src/business/messages/entities/message.entity';
 import { UserEntity } from 'src/business/users/entities/user.entity';
 import {
     Column,
-    CreateDateColumn,
-    DeleteDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
     OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
