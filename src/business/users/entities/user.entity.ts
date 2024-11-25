@@ -17,6 +17,7 @@ import { NotificationEntity } from 'src/business/notifications/entities/notifica
 import { ApplicationEntity } from 'src/business/applications/entities/application.entity';
 import { RatingEntity } from 'src/business/ratings/entities/rating.entity';
 import { ProfileEntity } from 'src/business/profiles/entities/profile.entity';
+import { BannerEntity } from 'src/business/banners/entities/banner.entity';
 
 @Entity()
 export class UserEntity {
@@ -65,4 +66,7 @@ export class UserEntity {
         (notification) => notification.receiver,
     )
     notifications: NotificationEntity[];
+
+    @OneToMany(() => BannerEntity, (banner) => banner.user)
+    banners: BannerEntity[];
 }

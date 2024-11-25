@@ -59,4 +59,10 @@ export interface IBodyDto {
     // notifications
     reciever?: number;
     type?: string;
+
+    // banners
+    header?: string;
+    buttonText?: string;
+    buttonUrl?: string;
+
 }
