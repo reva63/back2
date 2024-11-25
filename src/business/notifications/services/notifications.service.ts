@@ -60,6 +60,7 @@ export class NotificationsService implements IService<NotificationEntity> {
             title: options.body.title,
             text: options.body.text,
             receiver: user,
+            type: options.body.type,
         } as DeepPartial<NotificationEntity>;
         return await this.notificationsRepository.save(creatable);
     }
@@ -71,6 +72,7 @@ export class NotificationsService implements IService<NotificationEntity> {
         const creatable = {
             title: options.body.title,
             text: options.body.text,
+            type: options.body.type,
         } as DeepPartial<NotificationEntity>;
 
         await this.notificationsRepository.update(

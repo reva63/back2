@@ -20,6 +20,9 @@ export class NotificationEntity {
     @Column('varchar')
     text: string;
 
+    @Column('varchar')
+    type: string;
+
     @ManyToOne(() => UserEntity, (user) => user.notifications)
     receiver: UserEntity;
 }

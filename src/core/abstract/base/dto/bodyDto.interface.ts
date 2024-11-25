@@ -58,4 +58,5 @@ export interface IBodyDto {
 
     // notifications
     reciever?: number;
+    type?: string;
 }

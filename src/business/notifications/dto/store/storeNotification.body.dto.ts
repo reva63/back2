@@ -1,5 +1,6 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
+import { NotificationTypes } from 'src/core/types/notificationTypes.enum';
 
 export class StoreNotificationBodyDto implements IBodyDto {
     @IsString()
@@ -10,4 +11,7 @@ export class StoreNotificationBodyDto implements IBodyDto {
 
     @IsNumber()
     reciever: number;
+
+    @IsEnum(NotificationTypes)
+    type: string;
 }
