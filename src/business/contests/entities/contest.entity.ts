@@ -4,6 +4,7 @@ import {
     Entity,
     JoinTable,
     ManyToMany,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,6 +16,7 @@ import { CategoryEntity } from 'src/business/categories/entities/category.entity
 import { BlockEntity } from 'src/business/blocks/entities/block.entity';
 import { ParagraphEntity } from './paragraph.entity';
 import { DirectionEntity } from 'src/business/directions/entities/direction.entity';
+import { SeasonEntity } from 'src/business/seasons/entities/season.entity';
 
 @Entity()
 export class ContestEntity {
@@ -62,4 +64,7 @@ export class ContestEntity {
 
     @OneToMany(() => ApplicationEntity, (application) => application.contest)
     applications: ApplicationEntity[];
+
+    @ManyToOne(() => SeasonEntity, (season) => season.contests)
+    season: SeasonEntity;
 }

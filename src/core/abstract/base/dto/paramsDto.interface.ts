@@ -14,4 +14,5 @@ export interface IParamsDto {
     chat?: number;
     operator?: number | null;
     banner?: number;
+    season?: number;
 }

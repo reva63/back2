@@ -76,6 +76,7 @@ export class ContestsService implements IService<ContestEntity> {
             title: options.body.title,
             description: options.body.description,
             preview: options.body.preview,
+            season: options.body.season,
         } as DeepPartial<ContestEntity>;
 
         await this.contestsRepository.update(
