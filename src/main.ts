@@ -18,9 +18,14 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { CustomValidationPipe } from './core/common/pipes/customValidation.pipe';
 
 async function bootstrap() {
+    const httpsOptions = {
+        //TODO: new certificate for production
+        key: fs.readFileSync('./src/cert/key.pem'),
+        cert: fs.readFileSync('./src/cert/cert.pem'),
+    };
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
-        new FastifyAdapter(),
+        new FastifyAdapter({ https: httpsOptions }),
         {
             rawBody: true,
         },
@@ -31,7 +36,7 @@ async function bootstrap() {
 
     app.use(cookieParser());
     app.enableCors({ origin: '*' });
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix('api', { exclude: ['auth/rsv'] });
     app.useGlobalPipes(new CustomValidationPipe());
 
     await app.register(multiPart, {
