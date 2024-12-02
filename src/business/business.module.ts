@@ -17,6 +17,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { DirectionsModule } from './directions/directions.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { BannersModule } from './banners/banners.module';
+import { SeasonsModule } from './seasons/seasons.module';
 
 @Module({
     imports: [
@@ -38,6 +39,7 @@ import { BannersModule } from './banners/banners.module';
         DirectionsModule,
         ProfilesModule,
         BannersModule,
+        SeasonsModule,
     ],
 })
 export class BusinessModule {}

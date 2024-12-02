@@ -24,4 +24,8 @@ export class UpdateContestBodyDto implements IBodyDto {
     @IsArray()
     @IsOptional()
     removeParagraphs?: number[];
+
+    @IsNumber()
+    @IsOptional()
+    season: number;
 }

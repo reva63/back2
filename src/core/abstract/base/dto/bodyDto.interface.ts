@@ -31,6 +31,7 @@ export interface IBodyDto {
     upsertParagraphs?: IParagraph[];
     preview?: string;
     removeParagraphs?: number[];
+    season?: number;
 
     // certificates
     key?: string;
@@ -65,4 +66,7 @@ export interface IBodyDto {
     buttonText?: string;
     buttonUrl?: string;
 
+    // seasons
+    number?: number;
+    year?: number;
 }
