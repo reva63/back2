@@ -61,6 +61,10 @@ export interface IBodyDto {
     reciever?: number;
     type?: string;
 
+    // users
+    id?: number;
+
+
     // banners
     header?: string;
     buttonText?: string;
@@ -69,4 +73,5 @@ export interface IBodyDto {
     // seasons
     number?: number;
     year?: number;
+
 }

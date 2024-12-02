@@ -16,6 +16,7 @@ import { StagesModule } from './stages/stages.module';
 import { CategoriesModule } from './categories/categories.module';
 import { DirectionsModule } from './directions/directions.module';
 import { ProfilesModule } from './profiles/profiles.module';
+import { TokensModule } from './tokens/tokens.module';
 import { BannersModule } from './banners/banners.module';
 import { SeasonsModule } from './seasons/seasons.module';
 
@@ -38,6 +39,7 @@ import { SeasonsModule } from './seasons/seasons.module';
         ScheduleModule.forRoot(),
         DirectionsModule,
         ProfilesModule,
+        TokensModule,
         BannersModule,
         SeasonsModule,
     ],

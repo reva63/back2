@@ -42,7 +42,7 @@ export class UsersService implements IService<UserEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<UserEntity> {
-        const creatable = {} as DeepPartial<UserEntity>;
+        const creatable = { id: options.body.id } as DeepPartial<UserEntity>;
         return await this.usersRepository.save(creatable);
     }
 

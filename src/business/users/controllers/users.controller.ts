@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    UseGuards,
     Query,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
@@ -15,6 +16,7 @@ import { StoreUserBodyDto } from '../dto/store/storeUser.body.dto';
 import { UpdateUserParamsDto } from '../dto/update/updateUser.params.dto';
 import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
 import { RemoveUserParamsDto } from '../dto/remove/removeUser.params.dto';
+import { JwtGuard } from 'src/business/auth/guard/jwt.guard';
 import { ListUsersQueryDto } from '../dto/list/listUsers.query.dto';
 
 @Controller('/users')
@@ -44,6 +46,7 @@ export class UsersController {
         return await this.usersService.store({ body });
     }
 
+    @UseGuards(JwtGuard)
     @Patch('/:user')
     async update(
         @Param() params: UpdateUserParamsDto,
@@ -52,6 +55,7 @@ export class UsersController {
         return await this.usersService.update({ params, body });
     }
 
+    @UseGuards(JwtGuard)
     @Delete('/:user')
     async remove(@Param() params: RemoveUserParamsDto) {
         await this.usersService.remove({ params });

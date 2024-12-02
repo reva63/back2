@@ -1,11 +1,10 @@
 import {
-    Column,
     Entity,
     JoinTable,
     ManyToMany,
     OneToMany,
     OneToOne,
-    PrimaryGeneratedColumn,
+    PrimaryColumn,
 } from 'typeorm';
 import { RoleEnity } from 'src/business/permissions/entities/role.entity';
 import { RightEntity } from 'src/business/permissions/entities/right.entity';
@@ -21,11 +20,8 @@ import { BannerEntity } from 'src/business/banners/entities/banner.entity';
 
 @Entity()
 export class UserEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id: number;
-
-    @Column('varchar')
-    rvsId: string;
 
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;

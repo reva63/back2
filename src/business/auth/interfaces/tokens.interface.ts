@@ -1,8 +1,4 @@
-export interface TokensInterface {
+export interface ITokensInterface {
     accessToken: string;
-    refreshToken: {
-        token: string;
-        exp: number;
-    };
-    device_id: string;
+    refreshToken: string;
 }
