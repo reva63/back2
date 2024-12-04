@@ -5,7 +5,6 @@ import {
     IsDateString,
     IsEmail,
     IsIn,
-    IsNumber,
     IsOptional,
     IsPhoneNumber,
     IsString,
@@ -14,10 +13,6 @@ import {
 import { Type } from 'class-transformer';
 
 export class StoreProfileBodyDto implements IBodyDto {
-    // TODO: remove after authentication comes
-    @IsNumber()
-    user: number;
-
     @IsString()
     firstName: string;
 

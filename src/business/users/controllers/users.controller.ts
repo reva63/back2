@@ -18,6 +18,7 @@ import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
 import { RemoveUserParamsDto } from '../dto/remove/removeUser.params.dto';
 import { JwtGuard } from 'src/business/auth/guard/jwt.guard';
 import { ListUsersQueryDto } from '../dto/list/listUsers.query.dto';
+import { UserOwnerGuard } from '../guards/userOwner.guard';
 
 @Controller('/users')
 export class UsersController {
@@ -46,7 +47,7 @@ export class UsersController {
         return await this.usersService.store({ body });
     }
 
-    @UseGuards(JwtGuard)
+    @UseGuards(JwtGuard, UserOwnerGuard)
     @Patch('/:user')
     async update(
         @Param() params: UpdateUserParamsDto,
@@ -55,7 +56,7 @@ export class UsersController {
         return await this.usersService.update({ params, body });
     }
 
-    @UseGuards(JwtGuard)
+    @UseGuards(JwtGuard, UserOwnerGuard)
     @Delete('/:user')
     async remove(@Param() params: RemoveUserParamsDto) {
         await this.usersService.remove({ params });

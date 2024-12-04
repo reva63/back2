@@ -23,22 +23,22 @@ export class ProfileEntity {
     @Column('varchar', { nullable: true })
     middleName: string | null;
 
-    @Column('simple-enum', { enum: ['male', 'female'] })
+    @Column('simple-enum', { enum: ['male', 'female'], nullable: true })
     gender: 'male' | 'female';
 
-    @Column()
+    @Column({ nullable: true })
     dateOfBirth: Date;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     citizenship: string;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     country: string;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     region: string;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     city: string;
 
     @Column('varchar')
@@ -55,7 +55,4 @@ export class ProfileEntity {
     @OneToOne(() => UserEntity, (user) => user.profile, { onDelete: 'CASCADE' })
     @JoinColumn()
     user: UserEntity;
-
-    @Column()
-    userId: number;
 }

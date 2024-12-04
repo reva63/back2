@@ -32,7 +32,7 @@ export class ProfilesService implements IService<ProfileEntity> {
     }): Promise<ProfileEntity> {
         return await this.profilesRepository.findOne({
             where: { id: options.params.profile },
-            relations: { attributes: true },
+            relations: { attributes: true, user: true },
         });
     }
 
