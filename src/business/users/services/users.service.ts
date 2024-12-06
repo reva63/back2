@@ -1,18 +1,22 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, In } from 'typeorm';
+import { DeepPartial, FindManyOptions, In } from 'typeorm';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
 import { IService } from 'src/core/abstract/base/service.interface';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
+import { ExportFilter } from 'src/core/common/classes/filterOptions';
+import * as XLSX from 'xlsx';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService implements IService<UserEntity> {
     constructor(
         @InjectRepository(UserEntity)
         private readonly usersRepository: Repository<UserEntity>,
+        private readonly configService: ConfigService,
     ) {}
 
     async list(options: {
@@ -84,5 +88,38 @@ export class UsersService implements IService<UserEntity> {
             where: { id: options.params.user },
         });
         return user.applications.map((application) => application.contest);
+    }
+
+    async exportXLSX(exportFilter: ExportFilter) {
+        const selectedFields = exportFilter.getSelectedFields();
+        const whereConditions = exportFilter.getWhereConditions();
+
+        const findManyOptions: FindManyOptions = {
+            select: selectedFields,
+            where: whereConditions,
+            skip: 0,
+            take: this.configService.getOrThrow<number>('LIST_UNLOAD_NUMBER'),
+        };
+
+        const ws = XLSX.utils.aoa_to_sheet([selectedFields]);
+        while (true) {
+            const users = await this.usersRepository.find(findManyOptions);
+            if (users.length === 0) break;
+            const data = users.map((app) => {
+                const fieldsArray = [];
+                for (let i = 0; i < selectedFields.length; i++) {
+                    fieldsArray[i] = app[selectedFields[i]];
+                }
+                return fieldsArray;
+            });
+
+            XLSX.utils.sheet_add_aoa(ws, data, { origin: -1 });
+            findManyOptions.skip += findManyOptions.take;
+        }
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Users');
+        const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+        return new StreamableFile(buf);
     }
 }

@@ -10,12 +10,14 @@ import { ApplicationAttachmentEntity } from './entities/applicationAttachment.en
 import { ApplicationAttributesService } from './services/applicationAttributes.service';
 import { ProfilesModule } from '../profiles/profiles.module';
 import { ApplicationSubscriber } from './subscribers/application.subscriber';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
         UsersModule,
         ContestsModule,
         ProfilesModule,
+        ConfigModule,
         TypeOrmModule.forFeature([
             ApplicationEntity,
             ApplicationAttributeEntity,
