@@ -23,6 +23,9 @@ export class UserEntity {
     @PrimaryColumn()
     id: number;
 
+    // @Column('varchar')
+    // rvsId: string;
+    
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;
 

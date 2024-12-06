@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IService } from 'src/core/abstract/base/service.interface';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, FindManyOptions, Repository } from 'typeorm';
 import { ApplicationEntity } from '../entities/application.entity';
 import { IParamsDto } from 'src/core/abstract/base/dto/paramsDto.interface';
 import { IQueryDto } from 'src/core/abstract/base/dto/queryDto.interface';
@@ -9,6 +9,9 @@ import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
 import { ApplicationAttributesService } from './applicationAttributes.service';
 import { ApplicationNotFoundException } from 'src/exceptions/applications/applicationNotFound.exception';
 import { AttachmentsService } from 'src/core/attachments/services/attachments.service';
+import { ExportFilter } from 'src/core/common/classes/filterOptions';
+import * as XLSX from 'xlsx';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ApplicationsService implements IService<ApplicationEntity> {
@@ -17,6 +20,7 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         private readonly applicationsRepository: Repository<ApplicationEntity>,
         private readonly applicationAttributesService: ApplicationAttributesService,
         private readonly attachmentsService: AttachmentsService,
+        private readonly configService: ConfigService,
     ) {}
 
     async list(options: {
@@ -124,5 +128,39 @@ export class ApplicationsService implements IService<ApplicationEntity> {
         }
 
         await this.applicationsRepository.remove(applicaion);
+    }
+
+    async exportXLSX(exportFilter: ExportFilter) {
+        const selectedFields = exportFilter.getSelectedFields();
+        const whereConditions = exportFilter.getWhereConditions();
+
+        const findManyOptions: FindManyOptions = {
+            select: selectedFields,
+            where: whereConditions,
+            skip: 0,
+            take: this.configService.getOrThrow<number>('LIST_UNLOAD_NUMBER'),
+        };
+
+        const sheet = XLSX.utils.aoa_to_sheet([selectedFields]);
+        while (true) {
+            const applications =
+                await this.applicationsRepository.find(findManyOptions);
+            if (applications.length === 0) break;
+            const data = applications.map((app) => {
+                const fieldsArray = [];
+                for (let i = 0; i < selectedFields.length; i++) {
+                    fieldsArray[i] = app[selectedFields[i]];
+                }
+                return fieldsArray;
+            });
+
+            XLSX.utils.sheet_add_aoa(sheet, data, { origin: -1 });
+            findManyOptions.skip += findManyOptions.take;
+        }
+
+        const book = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(book, sheet, 'Applications');
+        const buf = XLSX.write(book, { type: 'buffer', bookType: 'xlsx' });
+        return new StreamableFile(buf);
     }
 }

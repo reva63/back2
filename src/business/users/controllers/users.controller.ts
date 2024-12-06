@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    Header,
     Param,
     Patch,
     Post,
@@ -18,6 +19,7 @@ import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
 import { RemoveUserParamsDto } from '../dto/remove/removeUser.params.dto';
 import { JwtGuard } from 'src/business/auth/guard/jwt.guard';
 import { ListUsersQueryDto } from '../dto/list/listUsers.query.dto';
+import { ExportFilter } from 'src/core/common/classes/filterOptions';
 import { UserOwnerGuard } from '../guards/userOwner.guard';
 
 @Controller('/users')
@@ -60,5 +62,11 @@ export class UsersController {
     @Delete('/:user')
     async remove(@Param() params: RemoveUserParamsDto) {
         await this.usersService.remove({ params });
+    }
+
+    @Post('/export')
+    @Header('Content-Disposition', 'attachment; filename="Users.xlsx"')
+    async exportXLSX(@Body() body: ExportFilter) {
+        return await this.usersService.exportXLSX(body);
     }
 }

@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    Header,
     Param,
     Patch,
     Post,
@@ -15,6 +16,7 @@ import { UpdateApplicationBodyDto } from '../dto/update/updateApplication.body.d
 import { UpdateApplicationParamsDto } from '../dto/update/updateApplication.params.dto';
 import { RemoveApplicationParamsDto } from '../dto/remove/removeApplication.params.dto';
 import { MultipartInterceptor } from 'src/core/common/interceptors/multipart.interceptor';
+import { ExportFilter } from 'src/core/common/classes/filterOptions';
 
 @Controller('/applications')
 export class ApplicationsController {
@@ -49,5 +51,11 @@ export class ApplicationsController {
     @Delete('/:application')
     async remove(@Param() params: RemoveApplicationParamsDto) {
         return await this.applicationsService.remove({ params });
+    }
+
+    @Post('/export')
+    @Header('Content-Disposition', 'attachment; filename="Applications.xlsx"')
+    async exportXLSX(@Body() body: ExportFilter) {
+        return await this.applicationsService.exportXLSX(body);
     }
 }
