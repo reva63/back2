@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+    StreamableFile,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, FindManyOptions, In } from 'typeorm';
 import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
@@ -10,6 +15,8 @@ import { UserEntity } from '../entities/user.entity';
 import { ExportFilter } from 'src/core/common/classes/filterOptions';
 import * as XLSX from 'xlsx';
 import { ConfigService } from '@nestjs/config';
+import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
+import { UserNotFoundException } from 'src/exceptions/users/userNotFound.exception';
 
 @Injectable()
 export class UsersService implements IService<UserEntity> {
@@ -46,7 +53,27 @@ export class UsersService implements IService<UserEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<UserEntity> {
-        const creatable = { id: options.body.id } as DeepPartial<UserEntity>;
+        const { rsvId, email, phone, password } = options.body;
+
+        if (await this.usersRepository.existsBy({ email })) {
+            throw new BadRequestException(
+                'The user with this email already exists',
+            );
+        }
+
+        if (await this.usersRepository.existsBy({ phone })) {
+            throw new BadRequestException(
+                'The user with this phone already exists',
+            );
+        }
+
+        const creatable = {
+            rsvId: rsvId,
+            email: email,
+            phone: phone,
+            password: password,
+        } as DeepPartial<UserEntity>;
+
         return await this.usersRepository.save(creatable);
     }
 
@@ -57,10 +84,29 @@ export class UsersService implements IService<UserEntity> {
         const user = await this.usersRepository.findOne({
             where: { id: options.params.user },
         });
+
         if (!user) {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
+
+        if (!Object.keys(options.body || {}).length) {
+            throw new BadRequestException(
+                'At least one field must be provided for update.',
+            );
+        }
+
+        const { phone } = options.body as UpdateUserBodyDto;
+
         const creatable = {} as DeepPartial<UserEntity>;
+
+        if (phone) {
+            if (await this.usersRepository.existsBy({ phone })) {
+                throw new BadRequestException(
+                    'The user with this phone already exists',
+                );
+            }
+            creatable.phone = phone;
+        }
 
         await this.usersRepository.update({ id: user.id }, creatable);
         return await this.usersRepository.findOne({

@@ -19,9 +19,9 @@ import { AxiosError } from 'axios';
 import { IDiscoveryDocument } from '../interfaces/DiscoveryDocument.interface';
 import { IOidcUser } from '../interfaces/userResponse.interface';
 import { TokensService } from '../../tokens/services/tokens.service';
-import { StoreUserBodyDto } from '../../users/dto/store/storeUser.body.dto';
 import { ProfilesService } from 'src/business/profiles/services/profiles.service';
 import { StoreProfileBodyDto } from 'src/business/profiles/dto/store/storeProfile.body.dto';
+import { StoreUserWithRsvBodyDto } from 'src/business/users/dto/store/storeUserWithRsv.body.dto';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -106,7 +106,11 @@ export class AuthService implements OnModuleInit {
             params: { user: userData.user_id },
         });
         if (!user) {
-            const creatable = { id: userData.user_id } as StoreUserBodyDto;
+            const creatable = {
+                rsvId: userData.user_id,
+                email: userData.user_email,
+                phone: userData.user_phone,
+            } as StoreUserWithRsvBodyDto;
             user = await this.usersService.store({ body: creatable });
             const profileCreatable = {
                 firstName: userData.user_name,

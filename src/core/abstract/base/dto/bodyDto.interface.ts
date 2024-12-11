@@ -50,8 +50,6 @@ export interface IBodyDto {
     country?: string;
     region?: string;
     city?: string;
-    email?: string;
-    phone?: string;
 
     // attributes
     upsertAttributes?: IAttribute[];
@@ -64,6 +62,10 @@ export interface IBodyDto {
 
     // users
     id?: number;
+    email?: string;
+    password?: string;
+    rsvId?: number;
+    phone?: string;
 
     // seasons
     number?: number;
