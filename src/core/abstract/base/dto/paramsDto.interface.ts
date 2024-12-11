@@ -13,6 +13,6 @@ export interface IParamsDto {
     message?: number;
     chat?: number;
     operator?: number | null;
-    banner?: number;
     season?: number;
+    author?: number;
 }

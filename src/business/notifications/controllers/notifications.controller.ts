@@ -17,11 +17,15 @@ import { UpdateNotificationBodyDto } from '../dto/update/updateNotification.body
 import { UpdateNotificationParamsDto } from '../dto/update/updateNotification.params.dto';
 import { NotificationEntity } from '../entities/notification.entity';
 import { ListNotificationsQueryDto } from '../dto/list/listNotifications.query.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Notifications')
 @Controller('/notifications')
 export class NotificationsController {
     constructor(private notificationsService: NotificationsService) {}
 
+    @ApiOperation({ summary: 'List notifications' })
+    @ApiResponse({ status: 200, type: [NotificationEntity] })
     @Get()
     async list(
         @Query() query: ListNotificationsQueryDto,
@@ -29,6 +33,9 @@ export class NotificationsController {
         return await this.notificationsService.list({ query });
     }
 
+    @ApiOperation({ summary: 'Show notification' })
+    @ApiResponse({ status: 200, type: NotificationEntity })
+    @ApiResponse({ status: 404, description: 'Notification not found' })
     @Get('/:notification')
     async show(
         @Param() params: ShowNotificationParamsDto,
@@ -36,6 +43,10 @@ export class NotificationsController {
         return this.notificationsService.show({ params });
     }
 
+    @ApiOperation({ summary: 'Store notification' })
+    @ApiResponse({ status: 200, type: NotificationEntity })
+    @ApiResponse({ status: 400, description: 'Invalid data' })
+    @ApiResponse({ status: 404, description: 'User not found' })
     @Post()
     async store(
         @Param() params: StoreNotificationParamsDto,
@@ -44,6 +55,10 @@ export class NotificationsController {
         return this.notificationsService.store({ params, body });
     }
 
+    @ApiOperation({ summary: 'Update notification' })
+    @ApiResponse({ status: 200, type: NotificationEntity })
+    @ApiResponse({ status: 400, description: 'Invalid data' })
+    @ApiResponse({ status: 404, description: 'Notification not found' })
     @Patch('/:notification')
     async update(
         @Param() params: UpdateNotificationParamsDto,
@@ -52,6 +67,9 @@ export class NotificationsController {
         return await this.notificationsService.update({ params, body });
     }
 
+    @ApiOperation({ summary: 'Remove notification' })
+    @ApiResponse({ status: 200, description: 'Notification removed' })
+    @ApiResponse({ status: 404, description: 'Notification not found' })
     @Delete('/:notification')
     async remove(@Param() params: RemoveNotificationParamsDto): Promise<void> {
         await this.notificationsService.remove({ params });

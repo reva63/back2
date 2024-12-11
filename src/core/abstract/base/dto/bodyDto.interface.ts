@@ -60,18 +60,12 @@ export interface IBodyDto {
     // notifications
     reciever?: number;
     type?: string;
+    content?: string;
 
     // users
     id?: number;
 
-
-    // banners
-    header?: string;
-    buttonText?: string;
-    buttonUrl?: string;
-
     // seasons
     number?: number;
     year?: number;
-
 }
