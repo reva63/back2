@@ -18,6 +18,7 @@ import { DirectionsModule } from './directions/directions.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { TokensModule } from './tokens/tokens.module';
 import { SeasonsModule } from './seasons/seasons.module';
+import { AttributesModule } from './attributes/attributes.module';
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import { SeasonsModule } from './seasons/seasons.module';
         ProfilesModule,
         TokensModule,
         SeasonsModule,
+        AttributesModule,
     ],
 })
 export class BusinessModule {}

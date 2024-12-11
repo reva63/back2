@@ -1,10 +1,11 @@
 import {
+    Column,
     Entity,
     JoinTable,
     ManyToMany,
     OneToMany,
     OneToOne,
-    PrimaryColumn,
+    PrimaryGeneratedColumn,
 } from 'typeorm';
 import { RoleEnity } from 'src/business/permissions/entities/role.entity';
 import { RightEntity } from 'src/business/permissions/entities/right.entity';
@@ -20,19 +21,32 @@ import { NotificationViewEntity } from 'src/business/notifications/entities/noti
 
 @Entity()
 export class UserEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
-    // @Column('varchar')
-    // rvsId: string;
+    @Column({ nullable: true })
+    rsvId: number;
+
+    @Column({ nullable: true, unique: true })
+    email: string;
+
+    @Column({ nullable: true, select: false })
+    password: string;
+
+    @Column({ nullable: true, unique: true })
+    phone: string;
 
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;
 
-    @OneToMany(() => UserAttributeEntity, (attribute) => attribute.user, {
-        cascade: ['insert'],
-    })
-    attributes: UserAttributeEntity[];
+    @OneToMany(
+        () => UserAttributeEntity,
+        (userAttribute) => userAttribute.user,
+        {
+            cascade: ['insert'],
+        },
+    )
+    userAttributes: UserAttributeEntity[];
 
     @ManyToMany(() => RoleEnity, (role) => role.users)
     @JoinTable()
