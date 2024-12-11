@@ -16,7 +16,7 @@ import { NotificationEntity } from 'src/business/notifications/entities/notifica
 import { ApplicationEntity } from 'src/business/applications/entities/application.entity';
 import { RatingEntity } from 'src/business/ratings/entities/rating.entity';
 import { ProfileEntity } from 'src/business/profiles/entities/profile.entity';
-import { BannerEntity } from 'src/business/banners/entities/banner.entity';
+import { NotificationViewEntity } from 'src/business/notifications/entities/notificationViews.entity';
 
 @Entity()
 export class UserEntity {
@@ -25,7 +25,7 @@ export class UserEntity {
 
     // @Column('varchar')
     // rvsId: string;
-    
+
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;
 
@@ -62,10 +62,15 @@ export class UserEntity {
 
     @OneToMany(
         () => NotificationEntity,
-        (notification) => notification.receiver,
+        (notification) => notification.author,
+        {
+            cascade: ['remove'],
+        },
     )
     notifications: NotificationEntity[];
 
-    @OneToMany(() => BannerEntity, (banner) => banner.user)
-    banners: BannerEntity[];
+    @OneToMany(() => NotificationViewEntity, (view) => view.user, {
+        cascade: ['remove'],
+    })
+    notificationViews: NotificationViewEntity[];
 }

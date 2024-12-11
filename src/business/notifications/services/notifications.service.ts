@@ -9,6 +9,9 @@ import { Repository, DeepPartial } from 'typeorm';
 import { NotificationNotFoundException } from 'src/exceptions/notifications/notificationNotFound.exception';
 import { UsersService } from 'src/business/users/services/users.service';
 import { UserNotFoundException } from 'src/exceptions/users/userNotFound.exception';
+import { StoreNotificationBodyDto } from '../dto/store/storeNotification.body.dto';
+import { NotificationTypes } from 'src/core/types/notificationTypes.enum';
+import { UpdateNotificationBodyDto } from '../dto/update/updateNotification.body.dto';
 
 @Injectable()
 export class NotificationsService implements IService<NotificationEntity> {
@@ -23,11 +26,9 @@ export class NotificationsService implements IService<NotificationEntity> {
         query?: IQueryDto;
     }): Promise<NotificationEntity[]> {
         return await this.notificationsRepository.find({
-            relations: { receiver: true },
+            relations: { views: true },
             where: {
-                receiver: {
-                    id: options.query.user,
-                },
+                views: { user: { id: options.params.user } },
             },
         });
     }
@@ -49,19 +50,25 @@ export class NotificationsService implements IService<NotificationEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<NotificationEntity> {
-        const user = await this.usersService.show({
-            params: { user: options.body.reciever },
-        });
-        if (!user) {
-            throw new UserNotFoundException();
+        const { author, content, title, type } =
+            options.body as StoreNotificationBodyDto;
+
+        if (author) {
+            const user = await this.usersService.show({
+                params: { user: author },
+            });
+            if (!user) {
+                throw new UserNotFoundException();
+            }
         }
 
         const creatable = {
-            title: options.body.title,
-            text: options.body.text,
-            receiver: user,
-            type: options.body.type,
+            title,
+            content,
+            type: type ?? NotificationTypes.Other,
+            author,
         } as DeepPartial<NotificationEntity>;
+
         return await this.notificationsRepository.save(creatable);
     }
 
@@ -69,14 +76,17 @@ export class NotificationsService implements IService<NotificationEntity> {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<NotificationEntity> {
+        const { content, title, type } =
+            options.body as UpdateNotificationBodyDto;
+
         const creatable = {
-            title: options.body.title,
-            text: options.body.text,
-            type: options.body.type,
+            title,
+            content,
+            type,
         } as DeepPartial<NotificationEntity>;
 
         await this.notificationsRepository.update(
-            { id: options.params.direction },
+            { id: options.params.notification },
             creatable,
         );
 
