@@ -14,7 +14,7 @@ import multiPart from '@fastify/multipart';
 import { join } from 'path';
 import * as fs from 'fs';
 import { parse } from 'yaml';
-import { SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CustomValidationPipe } from './core/common/pipes/customValidation.pipe';
 
 async function bootstrap() {
@@ -53,9 +53,14 @@ async function bootstrap() {
 }
 
 function loadSwagger(app: NestFastifyApplication) {
-    const documentPath = join(__dirname, '..', 'docs', 'openapi.docs.yaml');
-    const fileContents = fs.readFileSync(documentPath, 'utf8');
-    const document = parse(fileContents);
+    const config = new DocumentBuilder()
+        .setTitle('KARDO API Documentation')
+        .setDescription('API documentation for Kardo')
+        .setVersion('1.0')
+        .addBearerAuth()
+        .build();
+
+    const document = SwaggerModule.createDocument(app, config);
 
     SwaggerModule.setup('/api', app, document);
 }

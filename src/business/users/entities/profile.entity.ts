@@ -13,10 +13,10 @@ export class ProfileEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     firstName: string;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     lastName: string;
 
     @Column('varchar', { nullable: true })
@@ -25,10 +25,10 @@ export class ProfileEntity {
     @Column('simple-enum', { enum: ['male', 'female'], nullable: true })
     gender: 'male' | 'female';
 
-    @Column('timestamptz')
+    @Column('date', { nullable: true })
     dateOfBirth: Date;
 
-    @Column('enum', { enum: CitizenshipTypes })
+    @Column('enum', { enum: CitizenshipTypes, nullable: true })
     citizenship: CitizenshipTypes;
 
     @Column('text', { nullable: true })

@@ -49,29 +49,49 @@ export class UsersService implements IService<UserEntity> {
         return user ?? null;
     }
 
+    async showUserByEmail(options: { params?: IParamsDto; body?: IBodyDto }) {
+        const user = await this.usersRepository.findOne({
+            where: { email: options.params.email },
+            select: ['id', 'email', 'password'],
+        });
+        return user ?? null;
+    }
+
     async store(options: {
         params?: IParamsDto;
         body?: IBodyDto;
     }): Promise<UserEntity> {
-        const { rsvId, email, phone, password } = options.body;
-
+        const { email, phone } = options.body;
         if (await this.usersRepository.existsBy({ email })) {
             throw new BadRequestException(
                 'The user with this email already exists',
             );
         }
 
-        if (await this.usersRepository.existsBy({ phone })) {
+        if (phone && (await this.usersRepository.existsBy({ phone }))) {
             throw new BadRequestException(
                 'The user with this phone already exists',
             );
         }
 
         const creatable = {
-            rsvId: rsvId,
-            email: email,
-            phone: phone,
-            password: password,
+            rsvId: options.body.rsvId,
+            email: options.body.email,
+            phone: options.body.phone,
+            password: options.body.password,
+            profile: {
+                firstName: options.body.firstName,
+                lastName: options.body.lastName,
+                middleName: options.body.middleName,
+                gender: options.body.gender,
+                dateOfBirth: options.body.dateOfBirth,
+                citizenship: options.body.citizenship,
+            },
+            address: {
+                country: options.body.country,
+                region: options.body.region,
+                city: options.body.city,
+            },
         } as DeepPartial<UserEntity>;
 
         return await this.usersRepository.save(creatable);
