@@ -54,6 +54,7 @@ export interface IBodyDto {
     // attributes
     upsertAttributes?: IAttribute[];
     removeAttributes?: number[];
+    comment?: string;
 
     // notifications
     reciever?: number;

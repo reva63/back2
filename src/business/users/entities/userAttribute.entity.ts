@@ -7,7 +7,7 @@ export class UserAttributeEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column('text')
     value: string;
 
     @ManyToOne(() => UserEntity, (user) => user.userAttributes, {

@@ -16,6 +16,9 @@ export class AttributeEntity {
     })
     type: AttributeTypes;
 
+    @Column('text', { nullable: true })
+    comment: string | null;
+
     @OneToMany(
         () => UserAttributeEntity,
         (userAttribute) => userAttribute.attribute,

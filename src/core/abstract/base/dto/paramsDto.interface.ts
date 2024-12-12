@@ -15,4 +15,5 @@ export interface IParamsDto {
     operator?: number | null;
     season?: number;
     author?: number;
+    attribute?: number;
 }
