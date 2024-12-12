@@ -62,17 +62,17 @@ export class PdfService {
                     alignment: 'center',
                 },
                 {
-                    text: certificate.user.profile.country,
+                    text: certificate.user.address.country,
                     absolutePosition: { x: 240, y: 350 },
                     alignment: 'center',
                 },
                 {
-                    text: certificate.user.profile.region,
+                    text: certificate.user.address.region,
                     absolutePosition: { y: 390 },
                     alignment: 'center',
                 },
                 {
-                    text: certificate.user.profile.city,
+                    text: certificate.user.address.city,
                     absolutePosition: { x: 540, y: 390 },
                     alignment: 'center',
                 },

@@ -19,8 +19,6 @@ import { AxiosError } from 'axios';
 import { IDiscoveryDocument } from '../interfaces/DiscoveryDocument.interface';
 import { IOidcUser } from '../interfaces/userResponse.interface';
 import { TokensService } from '../../tokens/services/tokens.service';
-import { ProfilesService } from 'src/business/profiles/services/profiles.service';
-import { StoreProfileBodyDto } from 'src/business/profiles/dto/store/storeProfile.body.dto';
 import { StoreUserWithRsvBodyDto } from 'src/business/users/dto/store/storeUserWithRsv.body.dto';
 
 @Injectable()
@@ -32,7 +30,6 @@ export class AuthService implements OnModuleInit {
 
     constructor(
         private readonly usersService: UsersService,
-        private readonly profilesService: ProfilesService,
         private readonly configService: ConfigService,
         private readonly httpService: HttpService,
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -112,16 +109,6 @@ export class AuthService implements OnModuleInit {
                 phone: userData.user_phone,
             } as StoreUserWithRsvBodyDto;
             user = await this.usersService.store({ body: creatable });
-            const profileCreatable = {
-                firstName: userData.user_name,
-                lastName: userData.user_surname,
-                email: userData.user_email,
-                phone: userData.user_phone,
-            } as StoreProfileBodyDto;
-            await this.profilesService.store({
-                params: { user: user.id },
-                body: profileCreatable,
-            });
         }
 
         const payload = this.generatePayload(user);

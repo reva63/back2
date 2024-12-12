@@ -16,8 +16,11 @@ import { UserAttributeEntity } from './userAttribute.entity';
 import { NotificationEntity } from 'src/business/notifications/entities/notification.entity';
 import { ApplicationEntity } from 'src/business/applications/entities/application.entity';
 import { RatingEntity } from 'src/business/ratings/entities/rating.entity';
-import { ProfileEntity } from 'src/business/profiles/entities/profile.entity';
+import { ProfileEntity } from 'src/business/users/entities/profile.entity';
 import { NotificationViewEntity } from 'src/business/notifications/entities/notificationViews.entity';
+import { AddressEntity } from './address.entity';
+import { PassportEntity } from './passport.entity';
+import { SocialEntity } from './social.entity';
 
 @Entity()
 export class UserEntity {
@@ -36,8 +39,29 @@ export class UserEntity {
     @Column({ nullable: true, unique: true })
     phone: string;
 
-    @OneToOne(() => ProfileEntity, (profile) => profile.user)
+    @OneToOne(() => ProfileEntity, (profile) => profile.user, {
+        cascade: ['insert'],
+        onDelete: 'CASCADE',
+    })
     profile: ProfileEntity;
+
+    @OneToOne(() => AddressEntity, (address) => address.user, {
+        cascade: ['insert'],
+        onDelete: 'CASCADE',
+    })
+    address: AddressEntity;
+
+    @OneToOne(() => PassportEntity, (passport) => passport.user, {
+        cascade: ['insert'],
+        onDelete: 'CASCADE',
+    })
+    passport: PassportEntity;
+
+    @OneToMany(() => SocialEntity, (social) => social.user, {
+        cascade: ['insert'],
+        onDelete: 'CASCADE',
+    })
+    socials: SocialEntity[];
 
     @OneToMany(
         () => UserAttributeEntity,

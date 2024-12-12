@@ -15,7 +15,6 @@ import { BlocksModule } from './blocks/blocks.module';
 import { StagesModule } from './stages/stages.module';
 import { CategoriesModule } from './categories/categories.module';
 import { DirectionsModule } from './directions/directions.module';
-import { ProfilesModule } from './profiles/profiles.module';
 import { TokensModule } from './tokens/tokens.module';
 import { SeasonsModule } from './seasons/seasons.module';
 import { AttributesModule } from './attributes/attributes.module';
@@ -38,7 +37,6 @@ import { AttributesModule } from './attributes/attributes.module';
         NotificationsModule,
         ScheduleModule.forRoot(),
         DirectionsModule,
-        ProfilesModule,
         TokensModule,
         SeasonsModule,
         AttributesModule,

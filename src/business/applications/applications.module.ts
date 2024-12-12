@@ -8,7 +8,6 @@ import { ApplicationEntity } from './entities/application.entity';
 import { ApplicationAttributeEntity } from './entities/applicationAttribute.entity';
 import { ApplicationAttachmentEntity } from './entities/applicationAttachment.entity';
 import { ApplicationAttributesService } from './services/applicationAttributes.service';
-import { ProfilesModule } from '../profiles/profiles.module';
 import { ApplicationSubscriber } from './subscribers/application.subscriber';
 import { ConfigModule } from '@nestjs/config';
 
@@ -16,7 +15,6 @@ import { ConfigModule } from '@nestjs/config';
     imports: [
         UsersModule,
         ContestsModule,
-        ProfilesModule,
         ConfigModule,
         TypeOrmModule.forFeature([
             ApplicationEntity,
