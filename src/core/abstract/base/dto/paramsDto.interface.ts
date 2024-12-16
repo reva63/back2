@@ -1,5 +1,6 @@
 export interface IParamsDto {
     user?: number;
+    email?: string;
     post?: number;
     contest?: number;
     rating?: number;

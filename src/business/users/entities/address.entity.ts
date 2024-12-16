@@ -12,10 +12,10 @@ export class AddressEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     country: string;
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     region: string;
 
     @Column('varchar', { nullable: true })

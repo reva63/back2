@@ -13,7 +13,6 @@ import {
 import { UsersService } from '../services/users.service';
 import { ListUsersParamsDto } from '../dto/list/listUsers.params.dto';
 import { ShowUserParamsDto } from '../dto/show/showUser.params.dto';
-import { StoreUserBodyDto } from '../dto/store/storeUser.body.dto';
 import { UpdateUserParamsDto } from '../dto/update/updateUser.params.dto';
 import { UpdateUserBodyDto } from '../dto/update/updateUser.body.dto';
 import { RemoveUserParamsDto } from '../dto/remove/removeUser.params.dto';
@@ -61,14 +60,6 @@ export class UsersController {
     @Get('/:user/contests')
     async listUserContests(@Param() params: ShowUserParamsDto) {
         return await this.usersService.listUserContests({ params });
-    }
-
-    @ApiOperation({ summary: 'Create a new user' })
-    @ApiResponse({ status: 201, description: 'User created successfully' })
-    @ApiResponse({ status: 400, description: 'Invalid request body' })
-    @Post()
-    async store(@Body() body: StoreUserBodyDto) {
-        return await this.usersService.store({ body });
     }
 
     @ApiOperation({ summary: 'Update an existing user' })

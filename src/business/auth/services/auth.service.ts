@@ -19,7 +19,8 @@ import { AxiosError } from 'axios';
 import { IDiscoveryDocument } from '../interfaces/DiscoveryDocument.interface';
 import { IOidcUser } from '../interfaces/userResponse.interface';
 import { TokensService } from '../../tokens/services/tokens.service';
-import { StoreUserWithRsvBodyDto } from 'src/business/users/dto/store/storeUserWithRsv.body.dto';
+import { IBodyDto } from 'src/core/abstract/base/dto/bodyDto.interface';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -98,7 +99,7 @@ export class AuthService implements OnModuleInit {
         return userData.data;
     }
 
-    public async login(userData: IOidcUser): Promise<ITokensInterface> {
+    public async rsvLogin(userData: IOidcUser): Promise<ITokensInterface> {
         let user = await this.usersService.show({
             params: { user: userData.user_id },
         });
@@ -106,8 +107,10 @@ export class AuthService implements OnModuleInit {
             const creatable = {
                 rsvId: userData.user_id,
                 email: userData.user_email,
+                firstName: userData.user_name,
+                lastName: userData.user_surname,
                 phone: userData.user_phone,
-            } as StoreUserWithRsvBodyDto;
+            };
             user = await this.usersService.store({ body: creatable });
         }
 
@@ -138,6 +141,45 @@ export class AuthService implements OnModuleInit {
         const tokens = this.tokenService.generateTokens(payload);
 
         await this.tokenService.saveToken(user, tokens.refreshToken);
+        return tokens;
+    }
+
+    public async register(options: { body?: IBodyDto }) {
+        const hashedPassword = await bcrypt.hash(options.body.password, 10);
+
+        await this.usersService.store({
+            body: {
+                ...options.body,
+                password: hashedPassword,
+            },
+        });
+
+        const tokens = await this.login({ body: options.body });
+
+        return tokens;
+    }
+
+    public async login(options: {
+        body?: IBodyDto;
+    }): Promise<ITokensInterface> {
+        const user = await this.usersService.showUserByEmail({
+            params: { email: options.body.email },
+        });
+
+        if (!user) throw new UnauthorizedException();
+
+        const isValidPassword = await bcrypt.compare(
+            options.body.password,
+            user.password,
+        );
+
+        if (!isValidPassword) throw new UnauthorizedException();
+
+        const payload = this.generatePayload(user);
+        const tokens = this.tokenService.generateTokens(payload);
+
+        await this.tokenService.saveToken(user, tokens.refreshToken);
+
         return tokens;
     }
 

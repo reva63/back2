@@ -47,6 +47,8 @@ export interface IBodyDto {
     gender?: 'male' | 'female';
     dateOfBirth?: Date;
     citizenship?: string;
+
+    // address
     country?: string;
     region?: string;
     city?: string;

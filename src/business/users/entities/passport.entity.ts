@@ -21,8 +21,8 @@ export class PassportEntity {
     @Column('text', { nullable: true })
     issuedBy: string | null;
 
-    @Column('timestamptz', { nullable: true })
-    issueDate: Date | null;
+    @Column('date', { nullable: true })
+    issueDate: Date;
 
     @Column('text', { nullable: true })
     mainPage: string | null;

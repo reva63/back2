@@ -14,8 +14,9 @@ import { RemoveAttributeParamsDto } from '../dto/remove/removeAttribute.params.d
 import { AttributeEntity } from '../entities/attribute.entity';
 import { StoreAttributeBodyDto } from '../dto/store/storeAttribute.body.dto';
 import { UpdateAttributeBodyDto } from '../dto/update/updateAttribute.body.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Attributes')
 @Controller('attributes')
 export class AttributesController {
     constructor(private readonly attributesService: AttributesService) {}

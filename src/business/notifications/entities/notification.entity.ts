@@ -9,9 +9,11 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { NotificationViewEntity } from './notificationViews.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class NotificationEntity {
+    @ApiProperty()
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -22,12 +24,15 @@ export class NotificationEntity {
     })
     type: NotificationTypes;
 
+    @ApiProperty()
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
+    @ApiProperty()
     @Column('varchar')
     title: string;
 
+    @ApiProperty()
     @Column('text')
     content: string;
 
