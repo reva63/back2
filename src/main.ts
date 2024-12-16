@@ -16,6 +16,7 @@ import * as fs from 'fs';
 import { parse } from 'yaml';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CustomValidationPipe } from './core/common/pipes/customValidation.pipe';
+import { CustomSocketIOAdapter } from './core/adapters/customSocketIo.adapter';
 
 async function bootstrap() {
     const httpsOptions = {
@@ -38,6 +39,7 @@ async function bootstrap() {
     app.enableCors({ origin: '*' });
     app.setGlobalPrefix('api', { exclude: ['auth/rsv'] });
     app.useGlobalPipes(new CustomValidationPipe());
+    app.useWebSocketAdapter(new CustomSocketIOAdapter(app));
 
     await app.register(multiPart, {
         limits: {

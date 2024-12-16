@@ -4,9 +4,10 @@ import { ChatEntity } from './entities/chat.entity';
 import { ChatsService } from './services/chats.service';
 import { UserChatsGateway } from './gateways/userChats.gateway';
 import { OperatorChatsGateway } from './gateways/operatorChats.gateway';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ChatEntity])],
+    imports: [TypeOrmModule.forFeature([ChatEntity]), ConfigModule],
     providers: [ChatsService, UserChatsGateway, OperatorChatsGateway],
     exports: [ChatsService],
 })
