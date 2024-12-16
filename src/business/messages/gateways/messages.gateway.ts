@@ -11,11 +11,14 @@ import { Server, Socket } from 'socket.io';
 import { getRoomId } from 'src/business/chats/helper/getRoomId.helper';
 import { UpdateMessagePayloadDto } from '../dto/ws/updateMessage.payload.dto';
 import { RemoveMessagePayloadDto } from '../dto/ws/removeMessage.payload.dto';
-import { UseFilters, UsePipes } from '@nestjs/common';
+import { UseFilters, UseGuards, UsePipes } from '@nestjs/common';
 import { CustomValidationPipe } from 'src/core/common/pipes/customValidation.pipe';
 import { WsExceptionFilter } from 'src/core/common/filters/wsException.filter';
 import { ListMessagesPayloadDto } from '../dto/ws/listMessages.payload.dto';
+import { WebSocketUser } from 'src/core/common/decorators/ws/webSocketUser.decorator';
+import { WebSocketJwtGuard } from 'src/business/auth/guard/webSocket.jwt.guard';
 
+@UseGuards(WebSocketJwtGuard)
 @WebSocketGateway({ namespace: 'chats/user', cors: true })
 @UseFilters(WsExceptionFilter)
 @UsePipes(CustomValidationPipe)
@@ -40,10 +43,13 @@ export class MessagesGateway {
     }
 
     @SubscribeMessage('send_new_message')
-    async onNewMessage(@MessageBody() payload: StoreMessagePayloadDto) {
+    async onNewMessage(
+        @MessageBody() payload: StoreMessagePayloadDto,
+        @WebSocketUser() user: number,
+    ) {
         const { chat, ...body } = payload;
         const newMessage = await this.messagesService.store({
-            params: { chat },
+            params: { chat, user },
             body,
         });
         const roomId = getRoomId(chat);
