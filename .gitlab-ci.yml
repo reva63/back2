@@ -47,7 +47,7 @@ deploy_backend:
     - echo "Подключение к серверу и обновление Docker Compose..."
     - |
       sshpass -p "$DEPLOY_PASSWORD" ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_SERVER_URL <<EOF
-        cd front
+        cd frontAndBeck
         docker-compose stop
         docker-compose rm $(docker ps -aq)
         sed -i 's|image: cr.yandex/crpihpplbca7ji035lo7/backend:.*|image: cr.yandex/crpihpplbca7ji035lo7/backend:${CI_PIPELINE_ID}|' docker-compose.yml
