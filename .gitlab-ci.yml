@@ -34,7 +34,7 @@ push_backend_image:
     - echo "Вход в Docker реестр Яндекс.Облака..."
     - echo "$REGISTRY_PASSWORD" | docker login --username "$REGISTRY_USERNAME" --password-stdin $REGISTRY_URL || { echo "Ошибка входа в реестр"; exit 1; }
     - echo "Загрузка образа бэкенда в реестр с тегом ${CI_PIPELINE_ID}..."
-    - docker tag frontend_container $BACKEND_IMAGE
+    - docker tag backend_container $BACKEND_IMAGE
     - docker push $BACKEND_IMAGE || { echo "Ошибка загрузки фронта в реестр"; exit 1; }
   tags:
     - docker
