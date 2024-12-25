@@ -6,7 +6,7 @@ stages:
 variables:
   DOCKER_DRIVER: overlay2
   REGISTRY_URL: "cr.yandex"
-  FRONTEND_IMAGE: "$REGISTRY_URL/crpihpplbca7ji035lo7/frontend:${CI_PIPELINE_ID}"  
+  FRONTEND_IMAGE: "$REGISTRY_URL/crpihpplbca7ji035lo7/backend:${CI_PIPELINE_ID}"  
 
 before_script:
   - if ! command -v docker &> /dev/null; then
@@ -19,23 +19,23 @@ before_script:
       apt-get update && apt-get install -y docker-compose;
     fi
 
-build_frontend:
+build_backend:
   stage: build
   script:
     - docker info 
-    - echo "Сборка Docker образа фронта..."
-    - docker build -t frontend_container . || { echo "Ошибка сборки фронта"; exit 1; }
+    - echo "Сборка Docker образа бэкенда..."
+    - docker build -t backend_container . || { echo "Ошибка сборки бэкенда"; exit 1; }
   tags:
     - docker
 
-push_frontend_image:
+push_backend_image:
   stage: push
   script:
     - echo "Вход в Docker реестр Яндекс.Облака..."
     - echo "$REGISTRY_PASSWORD" | docker login --username "$REGISTRY_USERNAME" --password-stdin $REGISTRY_URL || { echo "Ошибка входа в реестр"; exit 1; }
-    - echo "Загрузка образа фронта в реестр с тегом ${CI_PIPELINE_ID}..."
-    - docker tag frontend_container $FRONTEND_IMAGE
-    - docker push $FRONTEND_IMAGE || { echo "Ошибка загрузки фронта в реестр"; exit 1; }
+    - echo "Загрузка образа бэкенда в реестр с тегом ${CI_PIPELINE_ID}..."
+    - docker tag frontend_container $BACKEND_IMAGE
+    - docker push $BACKEND_IMAGE || { echo "Ошибка загрузки фронта в реестр"; exit 1; }
   tags:
     - docker
 
@@ -50,7 +50,7 @@ deploy_frontend_qa:
         cd front
         docker-compose stop
         docker-compose rm $(docker ps -aq)
-        sed -i 's|image: cr.yandex/crpihpplbca7ji035lo7/frontend:.*|image: cr.yandex/crpihpplbca7ji035lo7/frontend:${CI_PIPELINE_ID}|' docker-compose.yml
+        sed -i 's|image: cr.yandex/crpihpplbca7ji035lo7/backend:.*|image: cr.yandex/crpihpplbca7ji035lo7/backend:${CI_PIPELINE_ID}|' docker-compose.yml
         docker-compose up -d
       EOF
   tags:
