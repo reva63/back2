@@ -21,8 +21,8 @@ import { CustomSocketIOAdapter } from './core/adapters/customSocketIo.adapter';
 async function bootstrap() {
     const httpsOptions = {
         //TODO: new certificate for production
-        key: fs.readFileSync('./src/cert/key.pem'),
-        cert: fs.readFileSync('./src/cert/cert.pem'),
+        key: fs.readFileSync('./public/cert/key.pem'),
+        cert: fs.readFileSync('./public/cert/cert.pem'),
     };
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
