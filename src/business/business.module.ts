@@ -29,7 +29,7 @@ import { AttributesModule } from './attributes/attributes.module';
         UsersModule,
         AuthModule,
         PermissionsModule,
-        ChatsModule,
+        // ChatsModule,
         MessagesModule,
         BlocksModule,
         StagesModule,
