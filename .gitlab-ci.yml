@@ -1,0 +1,59 @@
+stages:
+  - build
+  - push
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  REGISTRY_URL: "cr.yandex"
+  BACKEND_IMAGE: "$REGISTRY_URL/crp7rpugv9sm8id9u16g/backend:${CI_PIPELINE_ID}"  
+
+before_script:
+  - if ! command -v docker &> /dev/null; then
+      apt-get update && apt-get install -y docker.io;
+    fi
+  - if ! command -v sshpass &> /dev/null; then
+      apt-get update && apt-get install -y sshpass;
+    fi
+  - if ! command -v docker-compose &> /dev/null; then
+      apt-get update && apt-get install -y docker-compose;
+    fi
+
+build_backend:
+  stage: build
+  script:
+    - docker info 
+    - echo "Сборка Docker образа бэкенда..."
+    - docker build -t backend_container . || { echo "Ошибка сборки бэкенда"; exit 1; }
+  tags:
+    - docker
+
+push_backend_image:
+  stage: push
+  script:
+    - echo "Вход в Docker реестр Яндекс.Облака..."
+    - echo "$REGISTRY_PASSWORD" | docker login --username "$REGISTRY_USERNAME" --password-stdin $REGISTRY_URL || { echo "Ошибка входа в реестр"; exit 1; }
+    - echo "Загрузка образа бэкенда в реестр с тегом ${CI_PIPELINE_ID}..."
+    - docker tag backend_container $BACKEND_IMAGE
+    - docker push $BACKEND_IMAGE || { echo "Ошибка загрузки фронта в реестр"; exit 1; }
+  tags:
+    - docker
+
+deploy_backend:
+  stage: deploy
+  script:
+    - echo "Настройка SSH доступа с использованием пароля..."
+    - ssh-keyscan $DEPLOY_SERVER_URL >> ~/.ssh/known_hosts
+    - echo "Подключение к серверу и обновление Docker Compose..."
+    - |
+      sshpass -p "$DEPLOY_PASSWORD" ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_SERVER_URL <<EOF
+        cd frontAndBack
+        docker-compose stop
+        docker-compose rm $(docker ps -aq)
+        sed -i 's|image: cr.yandex/crp7rpugv9sm8id9u16g/backend:.*|image: cr.yandex/crp7rpugv9sm8id9u16g/backend:${CI_PIPELINE_ID}|' docker-compose.yml
+        docker-compose up -d
+      EOF
+  tags:
+    - ssh
+  when: manual # Ручной запуск только для этого job
+
